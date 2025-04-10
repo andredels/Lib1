@@ -23,6 +23,8 @@ namespace Lib1
                 return;
             }
 
+            string hashedPassword = SecurityHelper.HashPassword(password); // ??
+
             try
             {
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
@@ -33,7 +35,7 @@ namespace Lib1
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("?", username);
-                        cmd.Parameters.AddWithValue("?", password);
+                        cmd.Parameters.AddWithValue("?", hashedPassword); // ? Check hashed password
 
                         using (OleDbDataReader reader = cmd.ExecuteReader())
                         {
@@ -42,11 +44,9 @@ namespace Lib1
                                 int userID = Convert.ToInt32(reader["UserID"]);
                                 string fullName = reader["Fullname"].ToString();
 
-                                // Login successful - open the student menu
                                 MessageBox.Show("Login successful! Welcome, " + fullName, "Success",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                // Open student menu and close the login form
                                 StudentMenu studentMenu = new StudentMenu(userID, fullName);
                                 studentMenu.Show();
                                 this.Hide();
@@ -58,7 +58,6 @@ namespace Lib1
                             }
                         }
                     }
-                    conn.Close();
                 }
             }
             catch (Exception ex)

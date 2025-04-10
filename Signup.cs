@@ -22,21 +22,21 @@ namespace Lib1
         {
             string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
 
-            // Gather input values
             string username = txtbxSignupUsername.Text.Trim();
-            string password = Password.Text.Trim();
+            string rawPassword = Password.Text.Trim(); // Original input
             string fullname = txtbxSignupFirstName.Text.Trim() + " " + txtbxSignupLastName.Text.Trim();
             string email = txtbxSignupEmail.Text.Trim();
-            string userType = radiobtnStudent.Checked ? "student" : "admin"; // Determine role
-            string approvalStatus = "Pending"; // All new users start as "Pending"
+            string userType = radiobtnStudent.Checked ? "student" : "admin";
+            string approvalStatus = "Pending";
 
-            // Check if any field is empty
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) ||
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(rawPassword) ||
                 string.IsNullOrEmpty(fullname) || string.IsNullOrEmpty(email))
             {
                 MessageBox.Show("All fields are required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            string hashedPassword = SecurityHelper.HashPassword(rawPassword); // 🔐 Hash the password here
 
             try
             {
@@ -44,24 +44,22 @@ namespace Lib1
                 {
                     conn.Open();
                     string query = "INSERT INTO Users (Username, [Password], Fullname, Email, UserType, ApprovalStatus) " +
-                                   "VALUES (@Username, @Password, @Fullname, @Email, @UserType, @ApprovalStatus)";
+                                   "VALUES (?, ?, ?, ?, ?, ?)";
 
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@Username", username);
-                        cmd.Parameters.AddWithValue("@Password", password);
-                        cmd.Parameters.AddWithValue("@Fullname", fullname);
-                        cmd.Parameters.AddWithValue("@Email", email);
-                        cmd.Parameters.AddWithValue("@UserType", userType);
-                        cmd.Parameters.AddWithValue("@ApprovalStatus", approvalStatus);
+                        cmd.Parameters.AddWithValue("?", username);
+                        cmd.Parameters.AddWithValue("?", hashedPassword); // 🔐 Save hashed password
+                        cmd.Parameters.AddWithValue("?", fullname);
+                        cmd.Parameters.AddWithValue("?", email);
+                        cmd.Parameters.AddWithValue("?", userType);
+                        cmd.Parameters.AddWithValue("?", approvalStatus);
 
                         cmd.ExecuteNonQuery();
                     }
                 }
 
                 MessageBox.Show("Signup successful! Please wait for admin approval.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Redirect to login form
                 Form1 loginForm = new Form1();
                 loginForm.Show();
                 this.Close();

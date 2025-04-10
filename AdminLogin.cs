@@ -14,6 +14,7 @@ namespace Lib1
     public partial class AdminLogin : Form
     {
 
+
         private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
         public AdminLogin()
         {
@@ -40,6 +41,8 @@ namespace Lib1
                 return;
             }
 
+            string hashedPassword = SecurityHelper.HashPassword(password); // 🔐
+
             try
             {
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
@@ -50,7 +53,7 @@ namespace Lib1
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("?", username);
-                        cmd.Parameters.AddWithValue("?", password);
+                        cmd.Parameters.AddWithValue("?", hashedPassword); // ✅ Check hashed password
 
                         using (OleDbDataReader reader = cmd.ExecuteReader())
                         {
@@ -59,11 +62,9 @@ namespace Lib1
                                 int userID = Convert.ToInt32(reader["UserID"]);
                                 string fullName = reader["Fullname"].ToString();
 
-                                // Login successful - open the admin menu
                                 MessageBox.Show("Admin login successful! Welcome, " + fullName, "Success",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                // Open admin menu and close the login form
                                 AdminMenu adminMenu = new AdminMenu(userID, fullName);
                                 adminMenu.Show();
                                 this.Hide();
@@ -75,7 +76,6 @@ namespace Lib1
                             }
                         }
                     }
-                    conn.Close();
                 }
             }
             catch (Exception ex)
