@@ -20,10 +20,10 @@ namespace Lib1
 
         private void btnSignUpSIGNUP_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
+            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb;";
 
             string username = txtbxSignupUsername.Text.Trim();
-            string rawPassword = Password.Text.Trim(); // Original input
+            string rawPassword = Password.Text.Trim(); // 🔐 Original input
             string fullname = txtbxSignupFirstName.Text.Trim() + " " + txtbxSignupLastName.Text.Trim();
             string email = txtbxSignupEmail.Text.Trim();
             string userType = radiobtnStudent.Checked ? "student" : "admin";
@@ -36,7 +36,7 @@ namespace Lib1
                 return;
             }
 
-            string hashedPassword = SecurityHelper.HashPassword(rawPassword); // 🔐 Hash the password here
+            string hashedPassword = SecurityHelper.HashPassword(rawPassword); // ✔ Password is hashed here
 
             try
             {
@@ -49,7 +49,7 @@ namespace Lib1
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("?", username);
-                        cmd.Parameters.AddWithValue("?", hashedPassword); // 🔐 Save hashed password
+                        cmd.Parameters.AddWithValue("?", hashedPassword); // ✔ Hashed password stored
                         cmd.Parameters.AddWithValue("?", fullname);
                         cmd.Parameters.AddWithValue("?", email);
                         cmd.Parameters.AddWithValue("?", userType);
@@ -69,6 +69,7 @@ namespace Lib1
                 MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+    
 
         private void lblLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {

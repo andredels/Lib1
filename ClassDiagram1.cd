@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Lib1.Addbook">
-    <Position X="9.25" Y="9.75" Width="1.5" />
+    <Position X="8.75" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAABgAAAACMABBoACACAIAACAICgAQAwAAAAAQBAQAA=</HashCode>
       <FileName>Addbook.cs</FileName>
@@ -12,80 +12,100 @@
     <TypeIdentifier />
   </Class>
   <Class Name="Lib1.AdminLogin">
-    <Position X="11.5" Y="9.75" Width="1.5" />
+    <Position X="11" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAgIhAAACAAABhCAACAQAQCAAAAQCAAABAAAQBAQAA=</HashCode>
       <FileName>AdminLogin.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.AdminMenu">
-    <Position X="13.75" Y="9.75" Width="1.5" />
+    <Position X="13.25" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CQAAAABgAGgGAAAADACAAAACAAAgQAQAIAAAAACgBAA=</HashCode>
       <FileName>AdminMenu.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.BorrowRequests">
-    <Position X="16" Y="9.75" Width="1.5" />
+    <Position X="15.5" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEkJgkBMGQUEZxACBCwAAQCAAABAAAADhAAAspDCgE=</HashCode>
       <FileName>BorrowRequests.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.CompleteBookDetails">
-    <Position X="18.25" Y="9.75" Width="1.5" />
+    <Position X="17.75" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIgAAACAAAABACACAAAQCBAAQAAAAAAAAAABAAAA=</HashCode>
       <FileName>CompleteBookDetails.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.Form1">
-    <Position X="20.5" Y="9.75" Width="1.5" />
+    <Position X="20" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACIhAAACAAABhAAACCQAQCAAgACAgAABAAIUBAAAA=</HashCode>
       <FileName>Form1.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.Signup">
-    <Position X="22.75" Y="9.75" Width="1.5" />
+    <Position X="22.25" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAwCAACAAANAABACAQHYmAgAgAAICBDAAAAACAAg=</HashCode>
       <FileName>Signup.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.StudentMenu">
-    <Position X="25" Y="9.75" Width="1.5" />
+    <Position X="24.5" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQCAAAAAACAAAAAACACAAAACAAgAAABAQAAAAAAAMAA=</HashCode>
       <FileName>StudentMenu.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.StudentRegistrants">
-    <Position X="27.25" Y="9.75" Width="1.5" />
+    <Position X="26.75" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEYgRAECAgAQhBAFCgAAQHACZBAQBUQAhAAgBMACA=</HashCode>
       <FileName>StudentRegistrants.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.ViewAllBooks">
-    <Position X="29.5" Y="9.75" Width="1.5" />
+    <Position X="29" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIIGIhACA2CVNQlAACGCAA4CEBEQgggpAAAAEgJJAYA=</HashCode>
       <FileName>ViewAllBooks.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.ViewBorrowedBooks">
-    <Position X="31.75" Y="9.75" Width="1.5" />
+    <Position X="31.25" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAMgAAACAQAQhQAACAAAQCAAgAAAIAMAAAAABIAAA=</HashCode>
       <FileName>ViewBorrowedBooks.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.ViewStudentInfo">
-    <Position X="34" Y="9.75" Width="1.5" />
+    <Position X="33.5" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ICAFIgAAACAQAQhAAACQAARCIAgAAAEgFAAAAABICgQ=</HashCode>
       <FileName>ViewStudentInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.Properties.Resources">
+    <Position X="16" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.Program">
+    <Position X="13.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.SecurityHelper">
+    <Position X="11" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SecurityHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

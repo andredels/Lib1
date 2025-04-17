@@ -15,7 +15,7 @@ namespace Lib1
     {
 
 
-        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb;";
         public AdminLogin()
         {
             InitializeComponent();
@@ -41,7 +41,7 @@ namespace Lib1
                 return;
             }
 
-            string hashedPassword = SecurityHelper.HashPassword(password); // 🔐
+            string hashedPassword = SecurityHelper.HashPassword(password); // ✔ Hashing enabled again
 
             try
             {
@@ -53,7 +53,7 @@ namespace Lib1
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("?", username);
-                        cmd.Parameters.AddWithValue("?", hashedPassword); // ✅ Check hashed password
+                        cmd.Parameters.AddWithValue("?", hashedPassword);
 
                         using (OleDbDataReader reader = cmd.ExecuteReader())
                         {

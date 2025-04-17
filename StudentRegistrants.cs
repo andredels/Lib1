@@ -13,7 +13,7 @@ namespace Lib1
 {
     public partial class StudentRegistrants : Form
     {
-        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb;";
         public StudentRegistrants()
         {
             InitializeComponent();
@@ -26,7 +26,7 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT UserID, Username, Fullname, Email FROM Users WHERE ApprovalStatus = 'Pending'";
+                    string query = "SELECT UserID, Username, Fullname, Email, UserType FROM Users WHERE ApprovalStatus = 'Pending'";
 
                     using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, conn))
                     {
@@ -54,7 +54,7 @@ namespace Lib1
 
         private void dataGridView_UserRegistrants_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) // Ensure the row index is valid
+            if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridView_UserRegistrants.Rows[e.RowIndex];
 
@@ -133,8 +133,15 @@ namespace Lib1
 
                 MessageBox.Show($"User has been {status.ToLower()}!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Refresh the list after updating
+                // ✅ Refresh the list
                 LoadPendingRegistrants();
+
+                // ✅ Clear the fields after update
+                txtboxstdntrgstrnts_UserId.Clear();
+                txtboxstdntrgstrnts_Username.Clear();
+                txtboxstdntrgstrnts_FirstName.Clear();
+                txtboxstdntrgstrnts_Email.Clear();
+                txtboxstdntrgstrnts_Usertype.Clear();
             }
             catch (Exception ex)
             {
@@ -149,32 +156,14 @@ namespace Lib1
 
         private void siticoneButtonstdntrgstrnts_Load_Click(object sender, EventArgs e)
         {
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
+            LoadPendingRegistrants();
 
-            try
-            {
-                using (OleDbConnection conn = new OleDbConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = "SELECT UserID, Fullname, Username, Email, UserType FROM Users WHERE ApprovalStatus = 'Pending'";
-
-                    using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, conn))
-                    {
-                        DataTable dt = new DataTable();
-                        adapter.Fill(dt);
-                        dataGridView_UserRegistrants.DataSource = dt;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void txtboxstdntrgstrnts_Usertype_TextChanged(object sender, EventArgs e)
         {
 
         }
+
     }
 }

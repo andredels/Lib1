@@ -31,6 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Addbook));
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
+            comboBoxAddBookGenre = new ComboBox();
+            label8 = new Label();
+            txtbxAddBookISBN = new TextBox();
+            label7 = new Label();
             btnCancelAddbook = new SiticoneNetCoreUI.SiticoneButton();
             siticonebtn_AddBookSave = new SiticoneNetCoreUI.SiticoneButton();
             txtbxAddBookQuantity = new TextBox();
@@ -56,7 +60,7 @@
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(347, 450);
+            pictureBox1.Size = new Size(347, 509);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -64,6 +68,10 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(255, 224, 192);
+            panel1.Controls.Add(comboBoxAddBookGenre);
+            panel1.Controls.Add(label8);
+            panel1.Controls.Add(txtbxAddBookISBN);
+            panel1.Controls.Add(label7);
             panel1.Controls.Add(btnCancelAddbook);
             panel1.Controls.Add(siticonebtn_AddBookSave);
             panel1.Controls.Add(txtbxAddBookQuantity);
@@ -78,8 +86,45 @@
             panel1.Controls.Add(label2);
             panel1.Location = new Point(345, 83);
             panel1.Name = "panel1";
-            panel1.Size = new Size(456, 369);
+            panel1.Size = new Size(456, 426);
             panel1.TabIndex = 1;
+            // 
+            // comboBoxAddBookGenre
+            // 
+            comboBoxAddBookGenre.FormattingEnabled = true;
+            comboBoxAddBookGenre.Location = new Point(201, 303);
+            comboBoxAddBookGenre.Name = "comboBoxAddBookGenre";
+            comboBoxAddBookGenre.Size = new Size(242, 28);
+            comboBoxAddBookGenre.TabIndex = 17;
+            comboBoxAddBookGenre.SelectedIndexChanged += comboBoxAddBookGenre_SelectedIndexChanged;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label8.Location = new Point(8, 303);
+            label8.Name = "label8";
+            label8.Size = new Size(108, 24);
+            label8.TabIndex = 16;
+            label8.Text = "Book Genre";
+            // 
+            // txtbxAddBookISBN
+            // 
+            txtbxAddBookISBN.Location = new Point(201, 256);
+            txtbxAddBookISBN.Name = "txtbxAddBookISBN";
+            txtbxAddBookISBN.Size = new Size(242, 27);
+            txtbxAddBookISBN.TabIndex = 15;
+            txtbxAddBookISBN.TextChanged += txtbxAddBookISBN_TextChanged;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.Location = new Point(8, 256);
+            label7.Name = "label7";
+            label7.Size = new Size(95, 24);
+            label7.TabIndex = 14;
+            label7.Text = "Book ISBN";
             // 
             // btnCancelAddbook
             // 
@@ -129,7 +174,7 @@
             btnCancelAddbook.IsReadOnly = false;
             btnCancelAddbook.IsToggleButton = false;
             btnCancelAddbook.IsToggled = false;
-            btnCancelAddbook.Location = new Point(343, 296);
+            btnCancelAddbook.Location = new Point(343, 376);
             btnCancelAddbook.LongPressDurationMS = 1000;
             btnCancelAddbook.Name = "btnCancelAddbook";
             btnCancelAddbook.NormalFontStyle = FontStyle.Regular;
@@ -206,7 +251,7 @@
             siticonebtn_AddBookSave.IsReadOnly = false;
             siticonebtn_AddBookSave.IsToggleButton = false;
             siticonebtn_AddBookSave.IsToggled = false;
-            siticonebtn_AddBookSave.Location = new Point(201, 296);
+            siticonebtn_AddBookSave.Location = new Point(201, 376);
             siticonebtn_AddBookSave.LongPressDurationMS = 1000;
             siticonebtn_AddBookSave.Name = "siticonebtn_AddBookSave";
             siticonebtn_AddBookSave.NormalFontStyle = FontStyle.Regular;
@@ -237,7 +282,7 @@
             // 
             // txtbxAddBookQuantity
             // 
-            txtbxAddBookQuantity.Location = new Point(201, 246);
+            txtbxAddBookQuantity.Location = new Point(201, 211);
             txtbxAddBookQuantity.Name = "txtbxAddBookQuantity";
             txtbxAddBookQuantity.Size = new Size(242, 27);
             txtbxAddBookQuantity.TabIndex = 9;
@@ -247,7 +292,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(8, 246);
+            label6.Location = new Point(8, 211);
             label6.Name = "label6";
             label6.Size = new Size(129, 24);
             label6.TabIndex = 8;
@@ -255,7 +300,7 @@
             // 
             // txtbxAddBookPublisher
             // 
-            txtbxAddBookPublisher.Location = new Point(201, 189);
+            txtbxAddBookPublisher.Location = new Point(201, 161);
             txtbxAddBookPublisher.Name = "txtbxAddBookPublisher";
             txtbxAddBookPublisher.Size = new Size(242, 27);
             txtbxAddBookPublisher.TabIndex = 7;
@@ -263,7 +308,7 @@
             // 
             // txtbxAddBookPublicationYear
             // 
-            txtbxAddBookPublicationYear.Location = new Point(201, 135);
+            txtbxAddBookPublicationYear.Location = new Point(201, 115);
             txtbxAddBookPublicationYear.Name = "txtbxAddBookPublicationYear";
             txtbxAddBookPublicationYear.Size = new Size(242, 27);
             txtbxAddBookPublicationYear.TabIndex = 6;
@@ -271,7 +316,7 @@
             // 
             // txtbxAddBookAuthorName
             // 
-            txtbxAddBookAuthorName.Location = new Point(201, 80);
+            txtbxAddBookAuthorName.Location = new Point(201, 66);
             txtbxAddBookAuthorName.Name = "txtbxAddBookAuthorName";
             txtbxAddBookAuthorName.Size = new Size(242, 27);
             txtbxAddBookAuthorName.TabIndex = 5;
@@ -289,7 +334,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(8, 192);
+            label5.Location = new Point(8, 161);
             label5.Name = "label5";
             label5.Size = new Size(135, 24);
             label5.TabIndex = 3;
@@ -299,7 +344,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(8, 135);
+            label4.Location = new Point(8, 115);
             label4.Name = "label4";
             label4.Size = new Size(191, 24);
             label4.TabIndex = 2;
@@ -309,7 +354,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(8, 83);
+            label3.Location = new Point(8, 66);
             label3.Name = "label3";
             label3.Size = new Size(170, 24);
             label3.TabIndex = 1;
@@ -319,7 +364,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(8, 26);
+            label2.Location = new Point(8, 23);
             label2.Name = "label2";
             label2.Size = new Size(94, 24);
             label2.TabIndex = 0;
@@ -350,7 +395,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(255, 192, 128);
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 509);
             Controls.Add(label1);
             Controls.Add(panel1);
             Controls.Add(pictureBox2);
@@ -385,5 +430,9 @@
         private SiticoneNetCoreUI.SiticoneButton siticonebtn_AddBookSave;
         private SiticoneNetCoreUI.SiticoneButton siticoneButton2;
         private SiticoneNetCoreUI.SiticoneButton btnCancelAddbook;
+        private TextBox txtbxAddBookISBN;
+        private Label label7;
+        private Label label8;
+        private ComboBox comboBoxAddBookGenre;
     }
 }

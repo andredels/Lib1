@@ -13,12 +13,42 @@ namespace Lib1
 {
     public partial class Addbook : Form
     {
-        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb;";
         private string adminFullName;
         public Addbook(string adminName)
         {
             InitializeComponent();
             adminFullName = adminName;
+            LoadGenres();
+        }
+        private void LoadGenres()
+        {
+            try
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT GenreID, GenreName FROM Genres ORDER BY GenreName";
+
+                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    {
+                        OleDbDataAdapter adapter = new OleDbDataAdapter(cmd);
+                        DataTable genreTable = new DataTable();
+                        adapter.Fill(genreTable);
+
+                        // Set up the combobox to display genre names but store genre IDs
+                        comboBoxAddBookGenre.DataSource = genreTable;
+                        comboBoxAddBookGenre.DisplayMember = "GenreName";
+                        comboBoxAddBookGenre.ValueMember = "GenreID";
+                        comboBoxAddBookGenre.SelectedIndex = -1; // No default selection
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading genres: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnCancelAddbook_Click(object sender, EventArgs e)
@@ -60,11 +90,13 @@ namespace Lib1
             string publisher = txtbxAddBookPublisher.Text.Trim();
             string publicationYearText = txtbxAddBookPublicationYear.Text.Trim();
             string quantityText = txtbxAddBookQuantity.Text.Trim();
-            string dateAdded = DateTime.Now.ToString("yyyy-MM-dd"); // Automatically store today's date
+            string isbn = txtbxAddBookISBN.Text.Trim();
+            string dateAdded = DateTime.Now.ToString("yyyy-MM-dd");
 
-            // Validate input
+            // Input validation
             if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(author) || string.IsNullOrEmpty(publisher) ||
-                string.IsNullOrEmpty(publicationYearText) || string.IsNullOrEmpty(quantityText))
+                string.IsNullOrEmpty(publicationYearText) || string.IsNullOrEmpty(quantityText) ||
+                string.IsNullOrEmpty(isbn) || comboBoxAddBookGenre.SelectedIndex == -1)
             {
                 MessageBox.Show("All fields are required!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -88,9 +120,21 @@ namespace Lib1
                 {
                     conn.Open();
 
-                    // ✅ Insert book with automatic DateAdded and AddedBy
-                    string query = "INSERT INTO Books (Title, Author, Publisher, PublicationYear, TotalCopies, AvailableCopies, DateAdded, AddedBy) " +
-                                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    // Get the selected genre ID
+                    int genreID;
+                    if (comboBoxAddBookGenre.SelectedValue != null)
+                    {
+                        genreID = Convert.ToInt32(comboBoxAddBookGenre.SelectedValue);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a valid genre!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Insert the new book with the correct GenreID
+                    string query = "INSERT INTO Books (Title, Author, Publisher, PublicationYear, TotalCopies, AvailableCopies, DateAdded, AddedBy, ISBN, GenreID) " +
+                                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
@@ -98,10 +142,12 @@ namespace Lib1
                         cmd.Parameters.AddWithValue("?", author);
                         cmd.Parameters.AddWithValue("?", publisher);
                         cmd.Parameters.AddWithValue("?", publicationYear);
-                        cmd.Parameters.AddWithValue("?", quantity);
-                        cmd.Parameters.AddWithValue("?", quantity);
-                        cmd.Parameters.AddWithValue("?", DateTime.Parse(dateAdded)); // Auto-fill date
-                        cmd.Parameters.AddWithValue("?", adminFullName); // Auto-fill admin's name
+                        cmd.Parameters.AddWithValue("?", quantity); // TotalCopies
+                        cmd.Parameters.AddWithValue("?", quantity); // AvailableCopies
+                        cmd.Parameters.AddWithValue("?", DateTime.Parse(dateAdded));
+                        cmd.Parameters.AddWithValue("?", adminFullName);
+                        cmd.Parameters.AddWithValue("?", isbn);
+                        cmd.Parameters.AddWithValue("?", genreID); // Use GenreID instead of Genre name
 
                         cmd.ExecuteNonQuery();
                         MessageBox.Show("Book added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -110,17 +156,29 @@ namespace Lib1
                     conn.Close();
                 }
 
-                // Clear fields after saving
+                // Clear input fields
                 txtbxAddBookTitle.Clear();
                 txtbxAddBookAuthorName.Clear();
                 txtbxAddBookPublisher.Clear();
                 txtbxAddBookPublicationYear.Clear();
                 txtbxAddBookQuantity.Clear();
+                txtbxAddBookISBN.Clear();
+                comboBoxAddBookGenre.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Database Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void txtbxAddBookISBN_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBoxAddBookGenre_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
