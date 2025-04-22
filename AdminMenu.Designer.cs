@@ -49,7 +49,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { btnBooksAdminMenu, btnStudentAdminMenu, completeBookDetailsToolStripMenuItem1, btnExitAdminMenu });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(738, 40);
+            menuStrip1.Size = new Size(878, 40);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -139,7 +139,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(738, 413);
+            ClientSize = new Size(878, 500);
             Controls.Add(menuStrip1);
             FormBorderStyle = FormBorderStyle.None;
             MainMenuStrip = menuStrip1;

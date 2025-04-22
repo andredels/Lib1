@@ -279,6 +279,7 @@
             datagridViewAllBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             datagridViewAllBooks.Location = new Point(12, 152);
             datagridViewAllBooks.Name = "datagridViewAllBooks";
+            datagridViewAllBooks.ReadOnly = true;
             datagridViewAllBooks.RowHeadersWidth = 51;
             datagridViewAllBooks.Size = new Size(944, 307);
             datagridViewAllBooks.TabIndex = 1;

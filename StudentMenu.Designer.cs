@@ -42,7 +42,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { ToolStripMenustdntViewAllBooks, ToolStripMenustdntViewBorrowedBooks, exitToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(738, 40);
+            menuStrip1.Size = new Size(904, 40);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -78,7 +78,8 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new Size(738, 413);
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(904, 503);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "StudentMenu";

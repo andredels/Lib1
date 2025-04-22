@@ -15,7 +15,7 @@ namespace Lib1
     public partial class ViewAllBooks : Form
     {
 
-        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb;";
         private DataTable booksTable = new DataTable();
         private OleDbDataAdapter adapter;
         public ViewAllBooks(string userRole, int userId = -1)
@@ -26,7 +26,6 @@ namespace Lib1
             ConfigureButtons();
         }
         public int UserID { get; set; }
-
         public string UserRole { get; set; }
 
         private void ConfigureButtons()
@@ -52,7 +51,11 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT * FROM Books";
+                    // Modified query to include Genre from Genres table via JOIN
+                    string query = @"SELECT Books.BookID, Books.Title, Books.Author, Books.Publisher, 
+                                   Books.PublicationYear, Books.ISBN, Books.TotalCopies, Books.AvailableCopies, 
+                                   Genres.GenreName as Genre 
+                                   FROM Books LEFT JOIN Genres ON Books.GenreID = Genres.GenreID";
 
                     adapter = new OleDbDataAdapter(query, conn);
                     booksTable.Clear();
@@ -90,11 +93,12 @@ namespace Lib1
                 DataGridViewRow row = datagridViewAllBooks.Rows[e.RowIndex];
 
                 // Display selected book details in textboxes
-                textBoxBookNameVwBks.Text = row.Cells["Title"].Value.ToString();
-                textBoxAuthorNameVwBks.Text = row.Cells["Author"].Value.ToString();
-                textBoxPublisherVwBks.Text = row.Cells["Publisher"].Value.ToString();
-                textBoxPublicationVwBks.Text = row.Cells["PublicationYear"].Value.ToString();
-                textBoxAvailableCopiesVwBks.Text = row.Cells["AvailableCopies"].Value.ToString();
+                textBoxBookNameVwBks.Text = row.Cells["Title"].Value?.ToString() ?? "";
+                textBoxAuthorNameVwBks.Text = row.Cells["Author"].Value?.ToString() ?? "";
+                textBoxPublisherVwBks.Text = row.Cells["Publisher"].Value?.ToString() ?? "";
+                textBoxPublicationVwBks.Text = row.Cells["PublicationYear"].Value?.ToString() ?? "";
+                textBoxAvailableCopiesVwBks.Text = row.Cells["AvailableCopies"].Value?.ToString() ?? "";
+                // You may want to add additional fields if displaying ISBN, Genre, etc.
             }
         }
 
@@ -118,7 +122,14 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT * FROM Books WHERE Title LIKE @Search OR Author LIKE @Search OR Publisher LIKE @Search";
+                    // Updated search query to include genre and join
+                    string query = @"SELECT Books.BookID, Books.Title, Books.Author, Books.Publisher, 
+                                   Books.PublicationYear, Books.ISBN, Books.TotalCopies, Books.AvailableCopies, 
+                                   Genres.GenreName as Genre 
+                                   FROM Books LEFT JOIN Genres ON Books.GenreID = Genres.GenreID
+                                   WHERE Books.Title LIKE @Search OR Books.Author LIKE @Search 
+                                   OR Books.Publisher LIKE @Search OR Books.ISBN LIKE @Search 
+                                   OR Genres.GenreName LIKE @Search";
 
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
@@ -426,7 +437,7 @@ namespace Lib1
         {
             try
             {
-                // Check if a row is selected
+                // Check if a book is selected
                 if (datagridViewAllBooks.SelectedRows.Count == 0 && datagridViewAllBooks.SelectedCells.Count == 0)
                 {
                     MessageBox.Show("Please select a book to borrow", "Selection Required",
@@ -434,79 +445,79 @@ namespace Lib1
                     return;
                 }
 
-                // Get the BookID of the selected row
+                // Get the selected book information
                 int rowIndex = datagridViewAllBooks.SelectedCells[0].RowIndex;
-                if (rowIndex < 0 || rowIndex >= datagridViewAllBooks.Rows.Count)
-                {
-                    MessageBox.Show("Invalid row selection", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
                 int bookId = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["BookID"].Value);
                 string bookTitle = datagridViewAllBooks.Rows[rowIndex].Cells["Title"].Value.ToString();
                 int availableCopies = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["AvailableCopies"].Value);
 
-                // Check if the book is available
+                // Check if book is available
                 if (availableCopies <= 0)
                 {
-                    MessageBox.Show("Sorry, this book is currently not available for borrowing.",
+                    MessageBox.Show("Sorry, there are no available copies of this book.",
                         "Book Unavailable", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                // Check if user ID is valid
-                if (this.UserID <= 0)
+                // Get the current user ID
+                int userId = GetCurrentUserId();
+                if (userId <= 0)
                 {
-                    MessageBox.Show("Unable to identify your user account. Please log in again.",
+                    MessageBox.Show("User information is not available. Please login again.",
                         "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Confirm borrow request
-                DialogResult result = MessageBox.Show($"Do you want to request to borrow '{bookTitle}'?",
-                    "Confirm Borrow Request", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
-                    using (OleDbConnection conn = new OleDbConnection(connectionString))
+                    conn.Open();
+
+                    // Check if user already has a pending request for this book
+                    string checkQuery = "SELECT COUNT(*) FROM BookTransactions WHERE UserID = ? AND BookID = ? AND Status = 'Pending'";
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
                     {
-                        conn.Open();
+                        checkCmd.Parameters.Add("?", OleDbType.Integer).Value = userId;
+                        checkCmd.Parameters.Add("?", OleDbType.Integer).Value = bookId;
 
-                        // Check if the user already has a pending request for this book
-                        string checkQuery = "SELECT COUNT(*) FROM BookTransactions WHERE BookID = ? AND UserID = ? AND " +
-                                           "(Status = 'Pending' OR Status = 'Approved' OR Status = 'Borrowed')";
+                        int pendingRequests = Convert.ToInt32(checkCmd.ExecuteScalar());
 
-                        using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
+                        if (pendingRequests > 0)
                         {
-                            checkCmd.Parameters.AddWithValue("?", bookId);
-                            checkCmd.Parameters.AddWithValue("?", this.UserID);
-                            int existingRequests = Convert.ToInt32(checkCmd.ExecuteScalar());
-
-                            if (existingRequests > 0)
-                            {
-                                MessageBox.Show("You already have a pending or active request for this book.",
-                                    "Duplicate Request", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                return;
-                            }
+                            MessageBox.Show("You already have a pending request for this book.",
+                                "Duplicate Request", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
                         }
+                    }
 
-                        // Insert the borrow request - note the bracket syntax for column names with spaces
-                        string insertQuery = "INSERT INTO BookTransactions (BookID, UserID, [Request Date], Status) VALUES (?, ?, ?, ?)";
+                    // Create transaction with current date as the request date and NULL for BorrowDate/ReturnDate
+                    DateTime requestDate = DateTime.Now;
 
-                        using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn))
+                    // Insert into BookTransactions with minimal fields needed for a pending request
+                    string insertQuery = @"INSERT INTO BookTransactions 
+                                (BookID, UserID, Status, RequestDate) 
+                                VALUES (?, ?, ?, ?)";
+
+                    using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn))
+                    {
+                        // Add parameters with explicit types - keep it minimal
+                        insertCmd.Parameters.Add("?", OleDbType.Integer).Value = bookId;
+                        insertCmd.Parameters.Add("?", OleDbType.Integer).Value = userId;
+                        insertCmd.Parameters.Add("?", OleDbType.VarChar).Value = "Pending";
+                        insertCmd.Parameters.Add("?", OleDbType.Date).Value = requestDate;
+
+                        try
                         {
-                            insertCmd.Parameters.Add("?", OleDbType.Integer).Value = bookId;
-                            insertCmd.Parameters.Add("?", OleDbType.Integer).Value = this.UserID;
-                            insertCmd.Parameters.Add("?", OleDbType.Date).Value = DateTime.Now;
-                            insertCmd.Parameters.Add("?", OleDbType.VarChar).Value = "Pending";
+                            int result = insertCmd.ExecuteNonQuery();
 
-                            int insertResult = insertCmd.ExecuteNonQuery();
-
-                            if (insertResult > 0)
+                            if (result > 0)
                             {
-                                MessageBox.Show("Your borrow request has been submitted successfully! An administrator will review your request.",
-                                    "Request Submitted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show($"Borrow request for '{bookTitle}' has been submitted successfully. " +
+                                    $"Your request is pending approval from an administrator.", "Request Submitted",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                // Clear selections and refresh the books view
+                                datagridViewAllBooks.ClearSelection();
+                                ClearTextBoxes();
                             }
                             else
                             {
@@ -514,14 +525,21 @@ namespace Lib1
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-                        conn.Close();
+                        catch (OleDbException ex)
+                        {
+                            // Provide specific error information
+                            MessageBox.Show($"Database error: {ex.Message}\nError code: {ex.ErrorCode}",
+                                "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
+                    conn.Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error processing borrow request: " + ex.Message, "Database Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // More detailed error message
+                MessageBox.Show($"Error processing borrow request: {ex.Message}\n\nStack Trace: {ex.StackTrace}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private int GetCurrentUserId()
