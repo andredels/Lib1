@@ -77,7 +77,7 @@ namespace Lib1
 
         private void bookBorrowRequestsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BorrowRequests bookBorrowRequests = new BorrowRequests();
+            BorrowRequests bookBorrowRequests = new BorrowRequests(userId, adminFullName);
             bookBorrowRequests.Show();
             this.Hide();
         }

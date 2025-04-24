@@ -62,6 +62,10 @@
             siticoneLabel4 = new SiticoneNetCoreUI.SiticoneLabel();
             txtbxBorrowRequest_BookName = new TextBox();
             siticoneLabel8 = new SiticoneNetCoreUI.SiticoneLabel();
+            txtbxBorrowRequest_ISBN = new TextBox();
+            siticoneLabel14 = new SiticoneNetCoreUI.SiticoneLabel();
+            txtbxBorrowRequest_Genre = new TextBox();
+            siticoneLabel15 = new SiticoneNetCoreUI.SiticoneLabel();
             siticoneAdvancedPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_BookBorrowRequests).BeginInit();
             siticoneAdvancedPanelBookRequests.SuspendLayout();
@@ -325,6 +329,10 @@
             siticoneAdvancedPanelBookRequests.BottomLeftRadius = 5;
             siticoneAdvancedPanelBookRequests.BottomRightRadius = 5;
             siticoneAdvancedPanelBookRequests.ContentAlignmentCustom = ContentAlignment.MiddleCenter;
+            siticoneAdvancedPanelBookRequests.Controls.Add(txtbxBorrowRequest_Genre);
+            siticoneAdvancedPanelBookRequests.Controls.Add(siticoneLabel15);
+            siticoneAdvancedPanelBookRequests.Controls.Add(txtbxBorrowRequest_ISBN);
+            siticoneAdvancedPanelBookRequests.Controls.Add(siticoneLabel14);
             siticoneAdvancedPanelBookRequests.Controls.Add(txtbxBorrowRequest_RequestDate);
             siticoneAdvancedPanelBookRequests.Controls.Add(siticoneLabel13);
             siticoneAdvancedPanelBookRequests.Controls.Add(txtbxBorrowRequest_TotalCopies);
@@ -385,7 +393,7 @@
             siticoneAdvancedPanelBookRequests.ShadowDepth = 5;
             siticoneAdvancedPanelBookRequests.ShadowOffset = new Point(2, 2);
             siticoneAdvancedPanelBookRequests.ShadowOpacity = 0.3F;
-            siticoneAdvancedPanelBookRequests.Size = new Size(944, 335);
+            siticoneAdvancedPanelBookRequests.Size = new Size(944, 424);
             siticoneAdvancedPanelBookRequests.SlideDirection = new Point(0, -30);
             siticoneAdvancedPanelBookRequests.TabIndex = 8;
             siticoneAdvancedPanelBookRequests.TopLeftRadius = 5;
@@ -529,7 +537,7 @@
             btnDecline_BorrowBookRequests.IsReadOnly = false;
             btnDecline_BorrowBookRequests.IsToggleButton = false;
             btnDecline_BorrowBookRequests.IsToggled = false;
-            btnDecline_BorrowBookRequests.Location = new Point(262, 266);
+            btnDecline_BorrowBookRequests.Location = new Point(262, 369);
             btnDecline_BorrowBookRequests.LongPressDurationMS = 1000;
             btnDecline_BorrowBookRequests.Name = "btnDecline_BorrowBookRequests";
             btnDecline_BorrowBookRequests.NormalFontStyle = FontStyle.Regular;
@@ -606,7 +614,7 @@
             btnLoad_BorrowBookRequests.IsReadOnly = false;
             btnLoad_BorrowBookRequests.IsToggleButton = false;
             btnLoad_BorrowBookRequests.IsToggled = false;
-            btnLoad_BorrowBookRequests.Location = new Point(484, 266);
+            btnLoad_BorrowBookRequests.Location = new Point(484, 369);
             btnLoad_BorrowBookRequests.LongPressDurationMS = 1000;
             btnLoad_BorrowBookRequests.Name = "btnLoad_BorrowBookRequests";
             btnLoad_BorrowBookRequests.NormalFontStyle = FontStyle.Regular;
@@ -683,7 +691,7 @@
             btnBack_BorrowBookRequests.IsReadOnly = false;
             btnBack_BorrowBookRequests.IsToggleButton = false;
             btnBack_BorrowBookRequests.IsToggled = false;
-            btnBack_BorrowBookRequests.Location = new Point(718, 266);
+            btnBack_BorrowBookRequests.Location = new Point(718, 369);
             btnBack_BorrowBookRequests.LongPressDurationMS = 1000;
             btnBack_BorrowBookRequests.Name = "btnBack_BorrowBookRequests";
             btnBack_BorrowBookRequests.NormalFontStyle = FontStyle.Regular;
@@ -760,7 +768,7 @@
             btnAccept_BorrowBookRequests.IsReadOnly = false;
             btnAccept_BorrowBookRequests.IsToggleButton = false;
             btnAccept_BorrowBookRequests.IsToggled = false;
-            btnAccept_BorrowBookRequests.Location = new Point(33, 266);
+            btnAccept_BorrowBookRequests.Location = new Point(33, 369);
             btnAccept_BorrowBookRequests.LongPressDurationMS = 1000;
             btnAccept_BorrowBookRequests.Name = "btnAccept_BorrowBookRequests";
             btnAccept_BorrowBookRequests.NormalFontStyle = FontStyle.Regular;
@@ -879,12 +887,46 @@
             siticoneLabel8.TabIndex = 0;
             siticoneLabel8.Text = "Book Title";
             // 
+            // txtbxBorrowRequest_ISBN
+            // 
+            txtbxBorrowRequest_ISBN.Location = new Point(211, 250);
+            txtbxBorrowRequest_ISBN.Name = "txtbxBorrowRequest_ISBN";
+            txtbxBorrowRequest_ISBN.Size = new Size(207, 27);
+            txtbxBorrowRequest_ISBN.TabIndex = 27;
+            // 
+            // siticoneLabel14
+            // 
+            siticoneLabel14.BackColor = Color.Transparent;
+            siticoneLabel14.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel14.Location = new Point(13, 251);
+            siticoneLabel14.Name = "siticoneLabel14";
+            siticoneLabel14.Size = new Size(142, 29);
+            siticoneLabel14.TabIndex = 26;
+            siticoneLabel14.Text = "Book ISBN";
+            // 
+            // txtbxBorrowRequest_Genre
+            // 
+            txtbxBorrowRequest_Genre.Location = new Point(690, 251);
+            txtbxBorrowRequest_Genre.Name = "txtbxBorrowRequest_Genre";
+            txtbxBorrowRequest_Genre.Size = new Size(207, 27);
+            txtbxBorrowRequest_Genre.TabIndex = 29;
+            // 
+            // siticoneLabel15
+            // 
+            siticoneLabel15.BackColor = Color.Transparent;
+            siticoneLabel15.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel15.Location = new Point(484, 252);
+            siticoneLabel15.Name = "siticoneLabel15";
+            siticoneLabel15.Size = new Size(142, 29);
+            siticoneLabel15.TabIndex = 28;
+            siticoneLabel15.Text = "Book Genre";
+            // 
             // BorrowRequests
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(255, 192, 128);
-            ClientSize = new Size(968, 875);
+            ClientSize = new Size(968, 1051);
             Controls.Add(siticoneAdvancedPanelBookRequests);
             Controls.Add(dataGridView_BookBorrowRequests);
             Controls.Add(siticoneLabel3);
@@ -935,5 +977,9 @@
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel13;
         private TextBox txtbxBorrowRequest_TotalCopies;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel12;
+        private TextBox txtbxBorrowRequest_Genre;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel15;
+        private TextBox txtbxBorrowRequest_ISBN;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel14;
     }
 }

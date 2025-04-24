@@ -13,13 +13,22 @@ namespace Lib1
 {
     public partial class BorrowRequests : Form
     {
-        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Lib.accdb;";
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb;";
+        private int adminId;
+        private string adminName;
 
+        public BorrowRequests(int adminId, string adminName)
+        {
+            InitializeComponent();
+            this.adminId = adminId;
+            this.adminName = adminName;
+            LoadBorrowRequests();
+        }
         public BorrowRequests()
         {
             InitializeComponent();
+            LoadBorrowRequests();
         }
-
 
         private void btnRefresh_BookBorrowRequests_Click(object sender, EventArgs e)
         {
@@ -33,21 +42,53 @@ namespace Lib1
             {
                 DataGridViewRow row = dataGridView_BookBorrowRequests.Rows[e.RowIndex];
 
-                // These aren't in your query results directly, but if you want to use them:
-                txtbxBorrowRequest_UserId.Text = row.Cells["UserId"].Value?.ToString() ?? "";
-                txtbxBorrowRequest_BookID.Text = row.Cells["BookID"].Value?.ToString() ?? "";
-                txtbxBorrowRequest_TotalCopies.Text = row.Cells["TotalCopies"].Value?.ToString() ?? "";
-                txtbxBorrowRequest_AvailableCopies.Text = row.Cells["AvailableCopies"].Value?.ToString() ?? "";
+                // Get the values safely with null checking
+                // First check if the column exists in the DataGridView
+                if (dataGridView_BookBorrowRequests.Columns.Contains("UserId"))
+                    txtbxBorrowRequest_UserId.Text = row.Cells["UserId"].Value?.ToString() ?? "";
 
-                // Fill textboxes with data from the selected row
-                txtbxBorrowRequest_Fullname.Text = row.Cells["Fullname"].Value?.ToString() ?? "";
-                txtbxBorrowRequest_BookName.Text = row.Cells["Title"].Value?.ToString() ?? "";
-                txtbxBorrowRequest_Author.Text = row.Cells["Author"].Value?.ToString() ?? "";
-                txtbxBorrowRequest_Publisher.Text = row.Cells["Publisher"].Value?.ToString() ?? "";
-                txtbxBorrowRequest_PublicationYear.Text = row.Cells["PublicationYear"].Value?.ToString() ?? "";
-                txtbxBorrowRequest_RequestDate.Text = row.Cells["Request Date"].Value?.ToString() ?? "";
+                if (dataGridView_BookBorrowRequests.Columns.Contains("BookID"))
+                    txtbxBorrowRequest_BookID.Text = row.Cells["BookID"].Value?.ToString() ?? "";
 
-               
+                // For TotalCopies, we need to check if the column exists
+                if (dataGridView_BookBorrowRequests.Columns.Contains("TotalCopies"))
+                    txtbxBorrowRequest_TotalCopies.Text = row.Cells["TotalCopies"].Value?.ToString() ?? "";
+
+                if (dataGridView_BookBorrowRequests.Columns.Contains("AvailableCopies"))
+                    txtbxBorrowRequest_AvailableCopies.Text = row.Cells["AvailableCopies"].Value?.ToString() ?? "";
+
+                // Fill other textboxes
+                if (dataGridView_BookBorrowRequests.Columns.Contains("Fullname"))
+                    txtbxBorrowRequest_Fullname.Text = row.Cells["Fullname"].Value?.ToString() ?? "";
+
+                if (dataGridView_BookBorrowRequests.Columns.Contains("Title"))
+                    txtbxBorrowRequest_BookName.Text = row.Cells["Title"].Value?.ToString() ?? "";
+
+                if (dataGridView_BookBorrowRequests.Columns.Contains("Author"))
+                    txtbxBorrowRequest_Author.Text = row.Cells["Author"].Value?.ToString() ?? "";
+
+                if (dataGridView_BookBorrowRequests.Columns.Contains("Publisher"))
+                    txtbxBorrowRequest_Publisher.Text = row.Cells["Publisher"].Value?.ToString() ?? "";
+
+                if (dataGridView_BookBorrowRequests.Columns.Contains("PublicationYear"))
+                    txtbxBorrowRequest_PublicationYear.Text = row.Cells["PublicationYear"].Value?.ToString() ?? "";
+
+                // Handle possible name differences for request date
+                if (dataGridView_BookBorrowRequests.Columns.Contains("Request Date"))
+                    txtbxBorrowRequest_RequestDate.Text = row.Cells["Request Date"].Value?.ToString() ?? "";
+                else if (dataGridView_BookBorrowRequests.Columns.Contains("RequestDate"))
+                    txtbxBorrowRequest_RequestDate.Text = row.Cells["RequestDate"].Value?.ToString() ?? "";
+
+                // Handle new textboxes
+                if (dataGridView_BookBorrowRequests.Columns.Contains("ISBN"))
+                    txtbxBorrowRequest_ISBN.Text = row.Cells["ISBN"].Value?.ToString() ?? "";
+
+                if (dataGridView_BookBorrowRequests.Columns.Contains("Genre") ||
+                    dataGridView_BookBorrowRequests.Columns.Contains("GenreName"))
+                {
+                    string genreColName = dataGridView_BookBorrowRequests.Columns.Contains("Genre") ? "Genre" : "GenreName";
+                    txtbxBorrowRequest_Genre.Text = row.Cells[genreColName].Value?.ToString() ?? "";
+                }
             }
         }
 
@@ -64,33 +105,83 @@ namespace Lib1
                 return;
             }
 
-            int transactionID = Convert.ToInt32(dataGridView_BookBorrowRequests.SelectedRows[0].Cells["TransactionID"].Value);
-            int bookID = Convert.ToInt32(dataGridView_BookBorrowRequests.SelectedRows[0].Cells["BookID"].Value);
+            DataGridViewRow row = dataGridView_BookBorrowRequests.SelectedRows[0];
+
+            // Check that required columns exist and get values safely
+            if (!dataGridView_BookBorrowRequests.Columns.Contains("TransactionID") ||
+                !dataGridView_BookBorrowRequests.Columns.Contains("BookID"))
+            {
+                MessageBox.Show("Missing required transaction or book information.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            int transactionID = Convert.ToInt32(row.Cells["TransactionID"].Value);
+            int bookID = Convert.ToInt32(row.Cells["BookID"].Value);
+
+            // Check for available copies if the column exists
+            if (dataGridView_BookBorrowRequests.Columns.Contains("AvailableCopies"))
+            {
+                int availableCopies = Convert.ToInt32(row.Cells["AvailableCopies"].Value);
+                if (availableCopies <= 0)
+                {
+                    MessageBox.Show("This book has no available copies left.", "No Copies Available", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            DateTime currentDate = DateTime.Now;
+            DateTime returnDate = currentDate.AddDays(7); // Return date is 1 week later
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 conn.Open();
+                OleDbTransaction transaction = conn.BeginTransaction();
 
-                // Update transaction status to Approved and set Approval Date
-                string updateQuery = "UPDATE BookTransactions SET Status = 'Approved', [Approval Date] = ? WHERE TransactionID = ?";
-                using (OleDbCommand cmd = new OleDbCommand(updateQuery, conn))
+                try
                 {
-                    cmd.Parameters.Add("?", OleDbType.Date).Value = DateTime.Now;
-                    cmd.Parameters.Add("?", OleDbType.Integer).Value = transactionID;
-                    cmd.ExecuteNonQuery();
+                    // Update transaction status to Approved and set all dates and ProcessedBy
+                    string updateQuery = @"UPDATE BookTransactions 
+                                        SET Status = 'Approved', 
+                                            [ApprovalDate] = ?, 
+                                            [BorrowDate] = ?, 
+                                            [ReturnDate] = ?,
+                                            [ProcessedBy] = ? 
+                                        WHERE TransactionID = ?";
+
+                    using (OleDbCommand cmd = new OleDbCommand(updateQuery, conn, transaction))
+                    {
+                        cmd.Parameters.Add("?", OleDbType.Date).Value = currentDate;
+                        cmd.Parameters.Add("?", OleDbType.Date).Value = currentDate;
+                        cmd.Parameters.Add("?", OleDbType.Date).Value = returnDate;
+                        cmd.Parameters.Add("?", OleDbType.VarChar).Value = adminName;
+                        cmd.Parameters.Add("?", OleDbType.Integer).Value = transactionID;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Reduce AvailableCopies in Books table
+                    string updateBookQuery = "UPDATE Books SET AvailableCopies = AvailableCopies - 1 WHERE BookID = ?";
+                    using (OleDbCommand cmd = new OleDbCommand(updateBookQuery, conn, transaction))
+                    {
+                        cmd.Parameters.Add("?", OleDbType.Integer).Value = bookID;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Commit the transaction if everything is successful
+                    transaction.Commit();
+
+                    MessageBox.Show("Borrow request approved! The book is now marked as borrowed and will be due in one week.",
+                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
-                // Reduce AvailableCopies in Books table
-                string updateBookQuery = "UPDATE Books SET AvailableCopies = AvailableCopies - 1 WHERE BookID = ?";
-                using (OleDbCommand cmd = new OleDbCommand(updateBookQuery, conn))
+                catch (Exception ex)
                 {
-                    cmd.Parameters.Add("?", OleDbType.Integer).Value = bookID;
-                    cmd.ExecuteNonQuery();
+                    // If any operation fails, roll back all changes
+                    transaction.Rollback();
+                    MessageBox.Show("Error approving request: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
-            MessageBox.Show("Borrow request approved!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            LoadBorrowRequests(); // Refresh data
+            // Refresh the data to show updated list (pending request should be gone)
+            LoadBorrowRequests();
         }
 
         private void btnDecline_BorrowBookRequests_Click(object sender, EventArgs e)
@@ -101,24 +192,33 @@ namespace Lib1
                 return;
             }
 
+            // Check that TransactionID column exists
+            if (!dataGridView_BookBorrowRequests.Columns.Contains("TransactionID"))
+            {
+                MessageBox.Show("Missing required transaction information.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             int transactionID = Convert.ToInt32(dataGridView_BookBorrowRequests.SelectedRows[0].Cells["TransactionID"].Value);
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 conn.Open();
 
-                // Update transaction status to Rejected
-                string updateQuery = "UPDATE BookTransactions SET Status = 'Rejected' WHERE TransactionID = ?";
+                // Update transaction status to Rejected and set who processed it
+                string updateQuery = "UPDATE BookTransactions SET Status = 'Rejected', [ProcessedBy] = ? WHERE TransactionID = ?";
                 using (OleDbCommand cmd = new OleDbCommand(updateQuery, conn))
                 {
+                    cmd.Parameters.Add("?", OleDbType.VarChar).Value = adminName;
                     cmd.Parameters.Add("?", OleDbType.Integer).Value = transactionID;
                     cmd.ExecuteNonQuery();
                 }
             }
 
             MessageBox.Show("Borrow request declined!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            LoadBorrowRequests(); // Refresh data
+            LoadBorrowRequests();
         }
+    
         private void LoadBorrowRequests()
         {
             try
@@ -126,20 +226,31 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT BookTransactions.TransactionID, BookTransactions.UserId, BookTransactions.BookID, " +
-                                   "Users.Fullname, Books.Title, Books.Author, Books.Publisher, Books.PublicationYear, " +
-                                   "Books.TotalCopies, Books.AvailableCopies, " +
-                                   "BookTransactions.[Request Date], BookTransactions.Status " +
-                                   "FROM (BookTransactions " +
-                                   "INNER JOIN Users ON BookTransactions.UserId = Users.UserId) " +
-                                   "INNER JOIN Books ON BookTransactions.BookID = Books.BookID " +
-                                   "WHERE BookTransactions.Status = 'Pending'";
+
+                    // Use the PendingBorrowRequest query directly
+                    string query = "SELECT * FROM PendingBorrowRequest";
 
                     using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, conn))
                     {
                         DataTable dt = new DataTable();
                         adapter.Fill(dt);
                         dataGridView_BookBorrowRequests.DataSource = dt;
+
+                        // Clear text boxes if there's no data
+                        if (dt.Rows.Count == 0)
+                        {
+                            ClearTextBoxes();
+                        }
+                    }
+
+                    // Debug: Print column names 
+                    if (dataGridView_BookBorrowRequests.Columns.Count > 0)
+                    {
+                        Console.WriteLine("Available columns in the DataGridView:");
+                        foreach (DataGridViewColumn col in dataGridView_BookBorrowRequests.Columns)
+                        {
+                            Console.WriteLine($"- {col.Name}");
+                        }
                     }
                 }
             }
@@ -148,16 +259,32 @@ namespace Lib1
                 MessageBox.Show("Error loading borrow requests: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-    
+        private void ClearTextBoxes()
+        {
+            // Clear all textboxes when there's no data
+            txtbxBorrowRequest_UserId.Text = "";
+            txtbxBorrowRequest_BookID.Text = "";
+            txtbxBorrowRequest_TotalCopies.Text = "";
+            txtbxBorrowRequest_AvailableCopies.Text = "";
+            txtbxBorrowRequest_Fullname.Text = "";
+            txtbxBorrowRequest_BookName.Text = "";
+            txtbxBorrowRequest_Author.Text = "";
+            txtbxBorrowRequest_Publisher.Text = "";
+            txtbxBorrowRequest_PublicationYear.Text = "";
+            txtbxBorrowRequest_RequestDate.Text = "";
+            txtbxBorrowRequest_ISBN.Text = "";
+            txtbxBorrowRequest_Genre.Text = "";
+        }
 
-    private void btnLoad_BorrowBookRequests_Click(object sender, EventArgs e)
+
+        private void btnLoad_BorrowBookRequests_Click(object sender, EventArgs e)
         {
             LoadBorrowRequests();
         }
 
         private void btnBack_BorrowBookRequests_Click(object sender, EventArgs e)
         {
-            AdminMenu adminMenu = new AdminMenu(); // Create a new instance of AdminMenu
+            AdminMenu adminMenu = new AdminMenu(adminId, adminName);
             adminMenu.Show();
             this.Close();
         }

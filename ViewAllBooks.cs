@@ -459,9 +459,8 @@ namespace Lib1
                     return;
                 }
 
-                // Get the current user ID
-                int userId = GetCurrentUserId();
-                if (userId <= 0)
+                // Get the current user ID - this is now stored as a property
+                if (UserID <= 0)
                 {
                     MessageBox.Show("User information is not available. Please login again.",
                         "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -472,73 +471,64 @@ namespace Lib1
                 {
                     conn.Open();
 
-                    // Check if user already has a pending request for this book
-                    string checkQuery = "SELECT COUNT(*) FROM BookTransactions WHERE UserID = ? AND BookID = ? AND Status = 'Pending'";
-                    using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
+                    // First check if user already has this book borrowed or pending
+                    string checkBorrowedQuery = @"SELECT COUNT(*) FROM BookTransactions 
+                                         WHERE UserID = ? AND BookID = ? 
+                                         AND (Status = 'Pending' OR Status = 'Borrowed')";
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkBorrowedQuery, conn))
                     {
-                        checkCmd.Parameters.Add("?", OleDbType.Integer).Value = userId;
+                        checkCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
                         checkCmd.Parameters.Add("?", OleDbType.Integer).Value = bookId;
 
-                        int pendingRequests = Convert.ToInt32(checkCmd.ExecuteScalar());
+                        int existingTransactions = Convert.ToInt32(checkCmd.ExecuteScalar());
 
-                        if (pendingRequests > 0)
+                        if (existingTransactions > 0)
                         {
-                            MessageBox.Show("You already have a pending request for this book.",
+                            MessageBox.Show("You already have this book borrowed or have a pending request for it.",
                                 "Duplicate Request", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             return;
                         }
                     }
 
-                    // Create transaction with current date as the request date and NULL for BorrowDate/ReturnDate
+                    // Create transaction with current date as the request date
                     DateTime requestDate = DateTime.Now;
 
-                    // Insert into BookTransactions with minimal fields needed for a pending request
+                    // Insert into BookTransactions with all necessary fields for a pending request
                     string insertQuery = @"INSERT INTO BookTransactions 
-                                (BookID, UserID, Status, RequestDate) 
-                                VALUES (?, ?, ?, ?)";
+                        (BookID, UserID, Status, RequestDate) 
+                        VALUES (?, ?, ?, ?)";
 
                     using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn))
                     {
-                        // Add parameters with explicit types - keep it minimal
                         insertCmd.Parameters.Add("?", OleDbType.Integer).Value = bookId;
-                        insertCmd.Parameters.Add("?", OleDbType.Integer).Value = userId;
+                        insertCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
                         insertCmd.Parameters.Add("?", OleDbType.VarChar).Value = "Pending";
                         insertCmd.Parameters.Add("?", OleDbType.Date).Value = requestDate;
 
-                        try
+                        int result = insertCmd.ExecuteNonQuery();
+
+                        if (result > 0)
                         {
-                            int result = insertCmd.ExecuteNonQuery();
+                            MessageBox.Show($"Borrow request for '{bookTitle}' has been submitted successfully. " +
+                                $"Your request is pending approval from an administrator.", "Request Submitted",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            if (result > 0)
-                            {
-                                MessageBox.Show($"Borrow request for '{bookTitle}' has been submitted successfully. " +
-                                    $"Your request is pending approval from an administrator.", "Request Submitted",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                // Clear selections and refresh the books view
-                                datagridViewAllBooks.ClearSelection();
-                                ClearTextBoxes();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Failed to submit borrow request.", "Error",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
+                            // Clear selections and refresh the books view
+                            datagridViewAllBooks.ClearSelection();
+                            ClearTextBoxes();
+                            LoadAllBooks(); // Refresh the book list
                         }
-                        catch (OleDbException ex)
+                        else
                         {
-                            // Provide specific error information
-                            MessageBox.Show($"Database error: {ex.Message}\nError code: {ex.ErrorCode}",
-                                "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Failed to submit borrow request.", "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
-                    conn.Close();
                 }
             }
             catch (Exception ex)
             {
-                // More detailed error message
-                MessageBox.Show($"Error processing borrow request: {ex.Message}\n\nStack Trace: {ex.StackTrace}",
+                MessageBox.Show($"Error processing borrow request: {ex.Message}",
                     "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

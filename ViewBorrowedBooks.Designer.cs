@@ -31,19 +31,35 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewBorrowedBooks));
             siticoneAdvancedPanel1 = new SiticoneNetCoreUI.SiticoneAdvancedPanel();
             btnRefresh = new SiticoneNetCoreUI.SiticoneButton();
-            textBox1 = new TextBox();
+            txtxbxVwBrwdBksSearchBar = new TextBox();
             siticoneLabel2 = new SiticoneNetCoreUI.SiticoneLabel();
             siticoneLabel1 = new SiticoneNetCoreUI.SiticoneLabel();
             siticonePictureBox1 = new SiticoneNetCoreUI.SiticonePictureBox();
             dataGridView1 = new DataGridView();
             siticoneAdvancedPanel2 = new SiticoneNetCoreUI.SiticoneAdvancedPanel();
+            txtxbxVwBrwdBksBookGenre = new TextBox();
+            siticoneLabel15 = new SiticoneNetCoreUI.SiticoneLabel();
+            txtxbxVwBrwdBksISBN = new TextBox();
+            siticoneLabel14 = new SiticoneNetCoreUI.SiticoneLabel();
+            txtxbxVwBrwdBksRequestDate = new TextBox();
+            siticoneLabel13 = new SiticoneNetCoreUI.SiticoneLabel();
+            txtxbxVwBrwdBksTotalCopies = new TextBox();
+            siticoneLabel12 = new SiticoneNetCoreUI.SiticoneLabel();
+            txtxbxVwBrwdBksAvailableCopies = new TextBox();
+            siticoneLabel7 = new SiticoneNetCoreUI.SiticoneLabel();
+            txtxbxVwBrwdBksBookPublisher = new TextBox();
+            txtxbxVwBrwdBksPublicationYear = new TextBox();
+            siticoneLabel6 = new SiticoneNetCoreUI.SiticoneLabel();
+            siticoneLabel8 = new SiticoneNetCoreUI.SiticoneLabel();
+            txtxbxVwBrwdBksAuthor = new TextBox();
+            siticoneLabel9 = new SiticoneNetCoreUI.SiticoneLabel();
             btnCancelViewBorrowedBooks = new SiticoneNetCoreUI.SiticoneButton();
             btnUpdate = new SiticoneNetCoreUI.SiticoneButton();
-            textBoxPublication = new TextBox();
+            txtxbxVwBrwdBksBookReturnDate = new TextBox();
             siticoneLabel5 = new SiticoneNetCoreUI.SiticoneLabel();
-            textBoxAuthorName = new TextBox();
+            txtxbxVwBrwdBksBorrowDate = new TextBox();
             siticoneLabel4 = new SiticoneNetCoreUI.SiticoneLabel();
-            textBoxBookName = new TextBox();
+            txtxbxVwBrwdBksBookName = new TextBox();
             siticoneLabel3 = new SiticoneNetCoreUI.SiticoneLabel();
             siticoneAdvancedPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -71,7 +87,7 @@
             siticoneAdvancedPanel1.BottomRightRadius = 5;
             siticoneAdvancedPanel1.ContentAlignmentCustom = ContentAlignment.MiddleCenter;
             siticoneAdvancedPanel1.Controls.Add(btnRefresh);
-            siticoneAdvancedPanel1.Controls.Add(textBox1);
+            siticoneAdvancedPanel1.Controls.Add(txtxbxVwBrwdBksSearchBar);
             siticoneAdvancedPanel1.Controls.Add(siticoneLabel2);
             siticoneAdvancedPanel1.Controls.Add(siticoneLabel1);
             siticoneAdvancedPanel1.Controls.Add(siticonePictureBox1);
@@ -194,12 +210,12 @@
             btnRefresh.UseAdvancedRendering = true;
             btnRefresh.UseParticles = false;
             // 
-            // textBox1
+            // txtxbxVwBrwdBksSearchBar
             // 
-            textBox1.Location = new Point(548, 94);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(265, 27);
-            textBox1.TabIndex = 3;
+            txtxbxVwBrwdBksSearchBar.Location = new Point(548, 94);
+            txtxbxVwBrwdBksSearchBar.Name = "txtxbxVwBrwdBksSearchBar";
+            txtxbxVwBrwdBksSearchBar.Size = new Size(265, 27);
+            txtxbxVwBrwdBksSearchBar.TabIndex = 3;
             // 
             // siticoneLabel2
             // 
@@ -209,7 +225,7 @@
             siticoneLabel2.Name = "siticoneLabel2";
             siticoneLabel2.Size = new Size(115, 29);
             siticoneLabel2.TabIndex = 2;
-            siticoneLabel2.Text = "Book Name";
+            siticoneLabel2.Text = "Book Title";
             // 
             // siticoneLabel1
             // 
@@ -293,13 +309,29 @@
             siticoneAdvancedPanel2.BottomLeftRadius = 5;
             siticoneAdvancedPanel2.BottomRightRadius = 5;
             siticoneAdvancedPanel2.ContentAlignmentCustom = ContentAlignment.MiddleCenter;
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksBookGenre);
+            siticoneAdvancedPanel2.Controls.Add(siticoneLabel15);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksISBN);
+            siticoneAdvancedPanel2.Controls.Add(siticoneLabel14);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksRequestDate);
+            siticoneAdvancedPanel2.Controls.Add(siticoneLabel13);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksTotalCopies);
+            siticoneAdvancedPanel2.Controls.Add(siticoneLabel12);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksAvailableCopies);
+            siticoneAdvancedPanel2.Controls.Add(siticoneLabel7);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksBookPublisher);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksPublicationYear);
+            siticoneAdvancedPanel2.Controls.Add(siticoneLabel6);
+            siticoneAdvancedPanel2.Controls.Add(siticoneLabel8);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksAuthor);
+            siticoneAdvancedPanel2.Controls.Add(siticoneLabel9);
             siticoneAdvancedPanel2.Controls.Add(btnCancelViewBorrowedBooks);
             siticoneAdvancedPanel2.Controls.Add(btnUpdate);
-            siticoneAdvancedPanel2.Controls.Add(textBoxPublication);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksBookReturnDate);
             siticoneAdvancedPanel2.Controls.Add(siticoneLabel5);
-            siticoneAdvancedPanel2.Controls.Add(textBoxAuthorName);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksBorrowDate);
             siticoneAdvancedPanel2.Controls.Add(siticoneLabel4);
-            siticoneAdvancedPanel2.Controls.Add(textBoxBookName);
+            siticoneAdvancedPanel2.Controls.Add(txtxbxVwBrwdBksBookName);
             siticoneAdvancedPanel2.Controls.Add(siticoneLabel3);
             siticoneAdvancedPanel2.CornerPadding = new Padding(5);
             siticoneAdvancedPanel2.DisabledBackColor = Color.Empty;
@@ -337,11 +369,147 @@
             siticoneAdvancedPanel2.ShadowDepth = 5;
             siticoneAdvancedPanel2.ShadowOffset = new Point(2, 2);
             siticoneAdvancedPanel2.ShadowOpacity = 0.3F;
-            siticoneAdvancedPanel2.Size = new Size(944, 177);
+            siticoneAdvancedPanel2.Size = new Size(944, 328);
             siticoneAdvancedPanel2.SlideDirection = new Point(0, -30);
             siticoneAdvancedPanel2.TabIndex = 3;
             siticoneAdvancedPanel2.TopLeftRadius = 5;
             siticoneAdvancedPanel2.TopRightRadius = 5;
+            // 
+            // txtxbxVwBrwdBksBookGenre
+            // 
+            txtxbxVwBrwdBksBookGenre.Location = new Point(689, 223);
+            txtxbxVwBrwdBksBookGenre.Name = "txtxbxVwBrwdBksBookGenre";
+            txtxbxVwBrwdBksBookGenre.Size = new Size(207, 27);
+            txtxbxVwBrwdBksBookGenre.TabIndex = 45;
+            // 
+            // siticoneLabel15
+            // 
+            siticoneLabel15.BackColor = Color.Transparent;
+            siticoneLabel15.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel15.Location = new Point(483, 224);
+            siticoneLabel15.Name = "siticoneLabel15";
+            siticoneLabel15.Size = new Size(142, 29);
+            siticoneLabel15.TabIndex = 44;
+            siticoneLabel15.Text = "Book Genre";
+            // 
+            // txtxbxVwBrwdBksISBN
+            // 
+            txtxbxVwBrwdBksISBN.Location = new Point(214, 267);
+            txtxbxVwBrwdBksISBN.Name = "txtxbxVwBrwdBksISBN";
+            txtxbxVwBrwdBksISBN.Size = new Size(207, 27);
+            txtxbxVwBrwdBksISBN.TabIndex = 43;
+            // 
+            // siticoneLabel14
+            // 
+            siticoneLabel14.BackColor = Color.Transparent;
+            siticoneLabel14.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel14.Location = new Point(13, 268);
+            siticoneLabel14.Name = "siticoneLabel14";
+            siticoneLabel14.Size = new Size(142, 29);
+            siticoneLabel14.TabIndex = 42;
+            siticoneLabel14.Text = "Book ISBN";
+            // 
+            // txtxbxVwBrwdBksRequestDate
+            // 
+            txtxbxVwBrwdBksRequestDate.Location = new Point(214, 223);
+            txtxbxVwBrwdBksRequestDate.Name = "txtxbxVwBrwdBksRequestDate";
+            txtxbxVwBrwdBksRequestDate.Size = new Size(207, 27);
+            txtxbxVwBrwdBksRequestDate.TabIndex = 41;
+            // 
+            // siticoneLabel13
+            // 
+            siticoneLabel13.BackColor = Color.Transparent;
+            siticoneLabel13.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel13.Location = new Point(14, 224);
+            siticoneLabel13.Name = "siticoneLabel13";
+            siticoneLabel13.Size = new Size(142, 29);
+            siticoneLabel13.TabIndex = 40;
+            siticoneLabel13.Text = "Request Date";
+            // 
+            // txtxbxVwBrwdBksTotalCopies
+            // 
+            txtxbxVwBrwdBksTotalCopies.Location = new Point(689, 134);
+            txtxbxVwBrwdBksTotalCopies.Name = "txtxbxVwBrwdBksTotalCopies";
+            txtxbxVwBrwdBksTotalCopies.Size = new Size(207, 27);
+            txtxbxVwBrwdBksTotalCopies.TabIndex = 39;
+            // 
+            // siticoneLabel12
+            // 
+            siticoneLabel12.BackColor = Color.Transparent;
+            siticoneLabel12.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel12.Location = new Point(483, 135);
+            siticoneLabel12.Name = "siticoneLabel12";
+            siticoneLabel12.Size = new Size(142, 29);
+            siticoneLabel12.TabIndex = 38;
+            siticoneLabel12.Text = "Total Copies";
+            // 
+            // txtxbxVwBrwdBksAvailableCopies
+            // 
+            txtxbxVwBrwdBksAvailableCopies.Location = new Point(689, 177);
+            txtxbxVwBrwdBksAvailableCopies.Name = "txtxbxVwBrwdBksAvailableCopies";
+            txtxbxVwBrwdBksAvailableCopies.Size = new Size(207, 27);
+            txtxbxVwBrwdBksAvailableCopies.TabIndex = 37;
+            // 
+            // siticoneLabel7
+            // 
+            siticoneLabel7.BackColor = Color.Transparent;
+            siticoneLabel7.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel7.Location = new Point(483, 178);
+            siticoneLabel7.Name = "siticoneLabel7";
+            siticoneLabel7.Size = new Size(142, 29);
+            siticoneLabel7.TabIndex = 36;
+            siticoneLabel7.Text = "Available Copies";
+            // 
+            // txtxbxVwBrwdBksBookPublisher
+            // 
+            txtxbxVwBrwdBksBookPublisher.Location = new Point(689, 88);
+            txtxbxVwBrwdBksBookPublisher.Name = "txtxbxVwBrwdBksBookPublisher";
+            txtxbxVwBrwdBksBookPublisher.Size = new Size(207, 27);
+            txtxbxVwBrwdBksBookPublisher.TabIndex = 35;
+            // 
+            // txtxbxVwBrwdBksPublicationYear
+            // 
+            txtxbxVwBrwdBksPublicationYear.Location = new Point(214, 179);
+            txtxbxVwBrwdBksPublicationYear.Name = "txtxbxVwBrwdBksPublicationYear";
+            txtxbxVwBrwdBksPublicationYear.Size = new Size(207, 27);
+            txtxbxVwBrwdBksPublicationYear.TabIndex = 34;
+            // 
+            // siticoneLabel6
+            // 
+            siticoneLabel6.BackColor = Color.Transparent;
+            siticoneLabel6.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel6.Location = new Point(483, 89);
+            siticoneLabel6.Name = "siticoneLabel6";
+            siticoneLabel6.Size = new Size(137, 29);
+            siticoneLabel6.TabIndex = 33;
+            siticoneLabel6.Text = "Book Publisher";
+            // 
+            // siticoneLabel8
+            // 
+            siticoneLabel8.BackColor = Color.Transparent;
+            siticoneLabel8.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel8.Location = new Point(13, 180);
+            siticoneLabel8.Name = "siticoneLabel8";
+            siticoneLabel8.Size = new Size(186, 29);
+            siticoneLabel8.TabIndex = 32;
+            siticoneLabel8.Text = "Book Publication Year";
+            // 
+            // txtxbxVwBrwdBksAuthor
+            // 
+            txtxbxVwBrwdBksAuthor.Location = new Point(214, 133);
+            txtxbxVwBrwdBksAuthor.Name = "txtxbxVwBrwdBksAuthor";
+            txtxbxVwBrwdBksAuthor.Size = new Size(207, 27);
+            txtxbxVwBrwdBksAuthor.TabIndex = 31;
+            // 
+            // siticoneLabel9
+            // 
+            siticoneLabel9.BackColor = Color.Transparent;
+            siticoneLabel9.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel9.Location = new Point(13, 134);
+            siticoneLabel9.Name = "siticoneLabel9";
+            siticoneLabel9.Size = new Size(166, 29);
+            siticoneLabel9.TabIndex = 30;
+            siticoneLabel9.Text = "Book Author Name";
             // 
             // btnCancelViewBorrowedBooks
             // 
@@ -391,7 +559,7 @@
             btnCancelViewBorrowedBooks.IsReadOnly = false;
             btnCancelViewBorrowedBooks.IsToggleButton = false;
             btnCancelViewBorrowedBooks.IsToggled = false;
-            btnCancelViewBorrowedBooks.Location = new Point(746, 92);
+            btnCancelViewBorrowedBooks.Location = new Point(779, 267);
             btnCancelViewBorrowedBooks.LongPressDurationMS = 1000;
             btnCancelViewBorrowedBooks.Name = "btnCancelViewBorrowedBooks";
             btnCancelViewBorrowedBooks.NormalFontStyle = FontStyle.Regular;
@@ -468,7 +636,7 @@
             btnUpdate.IsReadOnly = false;
             btnUpdate.IsToggleButton = false;
             btnUpdate.IsToggled = false;
-            btnUpdate.Location = new Point(549, 92);
+            btnUpdate.Location = new Point(579, 267);
             btnUpdate.LongPressDurationMS = 1000;
             btnUpdate.Name = "btnUpdate";
             btnUpdate.NormalFontStyle = FontStyle.Regular;
@@ -496,63 +664,63 @@
             btnUpdate.UseAdvancedRendering = true;
             btnUpdate.UseParticles = false;
             // 
-            // textBoxPublication
+            // txtxbxVwBrwdBksBookReturnDate
             // 
-            textBoxPublication.Location = new Point(195, 107);
-            textBoxPublication.Name = "textBoxPublication";
-            textBoxPublication.Size = new Size(207, 27);
-            textBoxPublication.TabIndex = 6;
+            txtxbxVwBrwdBksBookReturnDate.Location = new Point(214, 88);
+            txtxbxVwBrwdBksBookReturnDate.Name = "txtxbxVwBrwdBksBookReturnDate";
+            txtxbxVwBrwdBksBookReturnDate.Size = new Size(207, 27);
+            txtxbxVwBrwdBksBookReturnDate.TabIndex = 6;
             // 
             // siticoneLabel5
             // 
             siticoneLabel5.BackColor = Color.Transparent;
             siticoneLabel5.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel5.Location = new Point(23, 107);
+            siticoneLabel5.Location = new Point(14, 89);
             siticoneLabel5.Name = "siticoneLabel5";
-            siticoneLabel5.Size = new Size(152, 29);
+            siticoneLabel5.Size = new Size(166, 29);
             siticoneLabel5.TabIndex = 4;
             siticoneLabel5.Text = "Book Return Date";
             // 
-            // textBoxAuthorName
+            // txtxbxVwBrwdBksBorrowDate
             // 
-            textBoxAuthorName.Location = new Point(590, 43);
-            textBoxAuthorName.Name = "textBoxAuthorName";
-            textBoxAuthorName.Size = new Size(207, 27);
-            textBoxAuthorName.TabIndex = 3;
+            txtxbxVwBrwdBksBorrowDate.Location = new Point(689, 43);
+            txtxbxVwBrwdBksBorrowDate.Name = "txtxbxVwBrwdBksBorrowDate";
+            txtxbxVwBrwdBksBorrowDate.Size = new Size(207, 27);
+            txtxbxVwBrwdBksBorrowDate.TabIndex = 3;
             // 
             // siticoneLabel4
             // 
             siticoneLabel4.BackColor = Color.Transparent;
             siticoneLabel4.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel4.Location = new Point(418, 44);
+            siticoneLabel4.Location = new Point(483, 44);
             siticoneLabel4.Name = "siticoneLabel4";
             siticoneLabel4.Size = new Size(166, 29);
             siticoneLabel4.TabIndex = 2;
             siticoneLabel4.Text = "Book Borrow Date";
             // 
-            // textBoxBookName
+            // txtxbxVwBrwdBksBookName
             // 
-            textBoxBookName.Location = new Point(195, 43);
-            textBoxBookName.Name = "textBoxBookName";
-            textBoxBookName.Size = new Size(207, 27);
-            textBoxBookName.TabIndex = 1;
+            txtxbxVwBrwdBksBookName.Location = new Point(214, 43);
+            txtxbxVwBrwdBksBookName.Name = "txtxbxVwBrwdBksBookName";
+            txtxbxVwBrwdBksBookName.Size = new Size(207, 27);
+            txtxbxVwBrwdBksBookName.TabIndex = 1;
             // 
             // siticoneLabel3
             // 
             siticoneLabel3.BackColor = Color.Transparent;
             siticoneLabel3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel3.Location = new Point(23, 44);
+            siticoneLabel3.Location = new Point(14, 44);
             siticoneLabel3.Name = "siticoneLabel3";
             siticoneLabel3.Size = new Size(125, 29);
             siticoneLabel3.TabIndex = 0;
-            siticoneLabel3.Text = "Book Name";
+            siticoneLabel3.Text = "Book Title";
             // 
             // ViewBorrowedBooks
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(255, 192, 128);
-            ClientSize = new Size(968, 681);
+            ClientSize = new Size(968, 840);
             Controls.Add(siticoneAdvancedPanel2);
             Controls.Add(dataGridView1);
             Controls.Add(siticoneAdvancedPanel1);
@@ -570,7 +738,7 @@
 
         private SiticoneNetCoreUI.SiticoneAdvancedPanel siticoneAdvancedPanel1;
         private SiticoneNetCoreUI.SiticoneButton btnRefresh;
-        private TextBox textBox1;
+        private TextBox txtxbxVwBrwdBksSearchBar;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel2;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel1;
         private SiticoneNetCoreUI.SiticonePictureBox siticonePictureBox1;
@@ -578,11 +746,27 @@
         private SiticoneNetCoreUI.SiticoneAdvancedPanel siticoneAdvancedPanel2;
         private SiticoneNetCoreUI.SiticoneButton btnCancelViewBorrowedBooks;
         private SiticoneNetCoreUI.SiticoneButton btnUpdate;
-        private TextBox textBoxPublication;
+        private TextBox txtxbxVwBrwdBksBookReturnDate;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel5;
-        private TextBox textBoxAuthorName;
+        private TextBox txtxbxVwBrwdBksBorrowDate;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel4;
-        private TextBox textBoxBookName;
+        private TextBox txtxbxVwBrwdBksBookName;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel3;
+        private TextBox txtxbxVwBrwdBksBookGenre;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel15;
+        private TextBox txtxbxVwBrwdBksISBN;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel14;
+        private TextBox txtxbxVwBrwdBksRequestDate;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel13;
+        private TextBox txtxbxVwBrwdBksTotalCopies;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel12;
+        private TextBox txtxbxVwBrwdBksAvailableCopies;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel7;
+        private TextBox txtxbxVwBrwdBksBookPublisher;
+        private TextBox txtxbxVwBrwdBksPublicationYear;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel6;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel8;
+        private TextBox txtxbxVwBrwdBksAuthor;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel9;
     }
 }
