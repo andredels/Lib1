@@ -65,8 +65,8 @@ namespace Lib1
                                 MessageBox.Show("Admin login successful! Welcome, " + fullName, "Success",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                AdminMenu adminMenu = new AdminMenu(userID, fullName);
-                                adminMenu.Show();
+                                AdminDashBoard adminDashboard = new AdminDashBoard(userID, fullName);
+                                adminDashboard.Show();
                                 this.Hide();
                             }
                             else

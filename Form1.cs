@@ -47,8 +47,9 @@ namespace Lib1
                                 MessageBox.Show("Login successful! Welcome, " + fullName, "Success",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                StudentMenu studentMenu = new StudentMenu(userID, fullName);
-                                studentMenu.Show();
+                                // ✅ Open StudentDashBoard instead of StudentMenu
+                                StudentDashBoard studentDash = new StudentDashBoard(userID, fullName);
+                                studentDash.Show();
                                 this.Hide();
                             }
                             else
