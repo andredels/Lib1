@@ -37,7 +37,10 @@ namespace Lib1
 
         private void studentBorrowedBooksbtn_Click(object sender, EventArgs e)
         {
-
+            userControlpanel.Controls.Clear();
+            BorrowedBooks borrowedBooksUC = new BorrowedBooks(false, this.userId);  // false for student view, pass the userId
+            borrowedBooksUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(borrowedBooksUC);
         }
 
         private void studentAccountSettingsbtn_Click(object sender, EventArgs e)

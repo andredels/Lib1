@@ -22,9 +22,7 @@ namespace Lib1
 
         private void btnCancelViewBorrowedBooks_Click(object sender, EventArgs e)
         {
-            StudentMenu studentMenu = new StudentMenu();
-            studentMenu.Show(this);
-            this.Hide();
+
         }
     }
 }

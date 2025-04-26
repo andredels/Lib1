@@ -90,10 +90,8 @@ namespace Lib1
 
                 MessageBox.Show($"User has been {status.ToLower()}!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // ✅ Refresh the list
                 LoadPendingRegistrants();
 
-                // ✅ Clear the fields after update
                 txtboxstdntrgstrnts_UserId.Clear();
                 txtboxstdntrgstrnts_Username.Clear();
                 txtboxstdntrgstrnts_FirstName.Clear();

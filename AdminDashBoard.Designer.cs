@@ -440,6 +440,7 @@
             adminBorrowedBooksbtn.TooltipText = null;
             adminBorrowedBooksbtn.UseAdvancedRendering = true;
             adminBorrowedBooksbtn.UseParticles = false;
+            adminBorrowedBooksbtn.Click += adminBorrowedBooksbtn_Click;
             // 
             // panel5
             // 

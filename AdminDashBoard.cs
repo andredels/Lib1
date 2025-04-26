@@ -68,5 +68,13 @@ namespace Lib1
                 this.FormClosing += (s, args) => this.Dispose();
             }
         }
+
+        private void adminBorrowedBooksbtn_Click(object sender, EventArgs e)
+        {
+            userControlpanel.Controls.Clear();
+            BorrowedBooks borrowedBooksUC = new BorrowedBooks(true, this.userId);  // true for admin view, pass the admin's userId
+            borrowedBooksUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(borrowedBooksUC);
+        }
     }
 }
