@@ -38,6 +38,10 @@ namespace Lib1
             btnReturn.Visible = !isAdmin;
             btnCancelBorrowRequest.Visible = !isAdmin;
 
+            // Initially disable action buttons until a row is selected
+            btnReturn.Enabled = false;
+            btnCancelBorrowRequest.Enabled = false;
+
             // Show/hide student filter for admin, hide for students
             comboBoxStudentNameSearch.Visible = isAdmin;
             if (comboBoxStudentNameSearch.Parent is Label lblStudentName)
@@ -74,14 +78,20 @@ namespace Lib1
                                     FROM (((BookTransactions bt 
                                     INNER JOIN Books b ON bt.BookID = b.BookID)
                                     INNER JOIN Users u ON bt.UserID = u.UserID)
-                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.Status = 'Approved'";
+                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)";
 
-                    // If not admin, only show the current user's books
+                    // If not admin, show both approved and pending books for the current user
                     if (!isAdmin)
                     {
-                        query += " AND bt.UserID = @UserID";
+                        query += " WHERE (bt.Status = 'Approved' OR bt.Status = 'Pending') AND bt.UserID = @UserID";
                     }
+                    else
+                    {
+                        // For admin, show only approved books by default
+                        query += " WHERE bt.Status = 'Approved'";
+                    }
+
+                    query += " ORDER BY bt.Status DESC, bt.RequestDate DESC"; // Show pending first, then sort by request date
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
@@ -157,10 +167,28 @@ namespace Lib1
                 textBoxISBN.Text = row.Cells["ISBN"].Value.ToString();
                 textBoxGenre.Text = row.Cells["GenreName"].Value.ToString();
                 textBoxFullName.Text = row.Cells["FullName"].Value.ToString();
-                textBoxBorrowDate.Text = Convert.ToDateTime(row.Cells["BorrowDate"].Value).ToShortDateString();
-                textBoxReturnDate.Text = Convert.ToDateTime(row.Cells["ReturnDate"].Value).ToShortDateString();
-                textBoxStatus.Text = row.Cells["Status"].Value.ToString();
-                textBoxProcessedBy.Text = row.Cells["ProcessedBy"].Value.ToString();
+                
+                // Handle potentially null dates
+                textBoxBorrowDate.Text = row.Cells["BorrowDate"].Value != DBNull.Value 
+                    ? Convert.ToDateTime(row.Cells["BorrowDate"].Value).ToShortDateString()
+                    : "Not borrowed yet";
+                    
+                textBoxReturnDate.Text = row.Cells["ReturnDate"].Value != DBNull.Value 
+                    ? Convert.ToDateTime(row.Cells["ReturnDate"].Value).ToShortDateString()
+                    : "Not set";
+                    
+                string status = row.Cells["Status"].Value.ToString();
+                textBoxStatus.Text = status;
+                textBoxProcessedBy.Text = row.Cells["ProcessedBy"].Value != DBNull.Value 
+                    ? row.Cells["ProcessedBy"].Value.ToString()
+                    : "Not processed";
+
+                // Enable/disable buttons based on status
+                if (!isAdmin)
+                {
+                    btnReturn.Enabled = status.Equals("Approved", StringComparison.OrdinalIgnoreCase);
+                    btnCancelBorrowRequest.Enabled = status.Equals("Pending", StringComparison.OrdinalIgnoreCase);
+                }
 
                 // Get UserID for the selected transaction
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -295,6 +323,13 @@ namespace Lib1
                 return;
             }
 
+            // Verify the status is "Approved" before proceeding
+            if (!textBoxStatus.Text.Equals("Approved", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Only currently borrowed books can be returned.", "Invalid Action", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -358,19 +393,34 @@ namespace Lib1
                 return;
             }
 
+            // Verify the status is "Pending" before proceeding
+            if (!textBoxStatus.Text.Equals("Pending", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Only pending requests can be cancelled.", "Invalid Action", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
                     connection.Open();
 
-                    // First get the book ID to update available copies
+                    // First get the book ID and current status
                     int bookID = 0;
-                    string getBookIDQuery = "SELECT BookID FROM BookTransactions WHERE TransactionID = @TransactionID";
-                    using (OleDbCommand command = new OleDbCommand(getBookIDQuery, connection))
+                    string currentStatus = "";
+                    string getBookInfoQuery = "SELECT BookID, Status FROM BookTransactions WHERE TransactionID = @TransactionID";
+                    using (OleDbCommand command = new OleDbCommand(getBookInfoQuery, connection))
                     {
                         command.Parameters.AddWithValue("@TransactionID", selectedTransactionID);
-                        bookID = Convert.ToInt32(command.ExecuteScalar());
+                        using (OleDbDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                bookID = Convert.ToInt32(reader["BookID"]);
+                                currentStatus = reader["Status"].ToString();
+                            }
+                        }
                     }
 
                     // Update transaction status to "Cancelled"
@@ -385,18 +435,22 @@ namespace Lib1
 
                         if (rowsAffected > 0)
                         {
-                            // Increase available copies in the Books table
-                            string updateBookQuery = @"UPDATE Books 
-                                                   SET AvailableCopies = AvailableCopies + 1 
-                                                   WHERE BookID = @BookID";
-
-                            using (OleDbCommand bookCommand = new OleDbCommand(updateBookQuery, connection))
+                            // Only increase available copies if the status was "Approved"
+                            // For "Pending" requests, we don't need to modify the available copies
+                            if (currentStatus.Equals("Approved", StringComparison.OrdinalIgnoreCase))
                             {
-                                bookCommand.Parameters.AddWithValue("@BookID", bookID);
-                                bookCommand.ExecuteNonQuery();
+                                string updateBookQuery = @"UPDATE Books 
+                                                       SET AvailableCopies = AvailableCopies + 1 
+                                                       WHERE BookID = @BookID";
+
+                                using (OleDbCommand bookCommand = new OleDbCommand(updateBookQuery, connection))
+                                {
+                                    bookCommand.Parameters.AddWithValue("@BookID", bookID);
+                                    bookCommand.ExecuteNonQuery();
+                                }
                             }
 
-                            MessageBox.Show("Borrow request cancelled successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Request cancelled successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                             // Refresh the data
                             LoadBorrowedBooks();
@@ -409,7 +463,7 @@ namespace Lib1
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error cancelling borrow request: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error cancelling request: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void ClearSelection()
@@ -426,6 +480,13 @@ namespace Lib1
             textBoxReturnDate.Text = string.Empty;
             textBoxStatus.Text = string.Empty;
             textBoxProcessedBy.Text = string.Empty;
+
+            // Disable action buttons when selection is cleared
+            if (!isAdmin)
+            {
+                btnReturn.Enabled = false;
+                btnCancelBorrowRequest.Enabled = false;
+            }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -439,7 +500,15 @@ namespace Lib1
         {
             foreach (DataGridViewRow row in dataGridView_BorrowedBooks.Rows)
             {
-                if (row.Cells["ReturnDate"].Value != null)
+                // First check if the status is Pending
+                if (row.Cells["Status"].Value != null && row.Cells["Status"].Value.ToString() == "Pending")
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightBlue;
+                    continue; // Skip date checking for pending requests
+                }
+
+                // Only check dates for non-pending (approved) books
+                if (row.Cells["ReturnDate"].Value != null && row.Cells["ReturnDate"].Value != DBNull.Value)
                 {
                     DateTime returnDate = Convert.ToDateTime(row.Cells["ReturnDate"].Value);
                     DateTime currentDate = DateTime.Now.Date;

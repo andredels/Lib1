@@ -76,5 +76,13 @@ namespace Lib1
             borrowedBooksUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(borrowedBooksUC);
         }
+
+        private void adminReservation_Click(object sender, EventArgs e)
+        {
+            userControlpanel.Controls.Clear();
+            Reservation reservationUC = new Reservation();
+            reservationUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(reservationUC);
+        }
     }
 }
