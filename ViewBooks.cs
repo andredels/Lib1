@@ -349,8 +349,8 @@ namespace Lib1
 
                     // Insert into BookTransactions with all necessary fields for a pending request
                     string insertQuery = @"INSERT INTO BookTransactions 
-                        (BookID, UserID, Status, RequestDate) 
-                        VALUES (?, ?, ?, ?)";
+                        (BookID, UserID, Status, RequestDate, RequestType) 
+                        VALUES (?, ?, ?, ?, ?)";
 
                     using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn))
                     {
@@ -358,6 +358,7 @@ namespace Lib1
                         insertCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
                         insertCmd.Parameters.Add("?", OleDbType.VarChar).Value = "Pending";
                         insertCmd.Parameters.Add("?", OleDbType.Date).Value = requestDate;
+                        insertCmd.Parameters.Add("?", OleDbType.VarChar).Value = "Borrow";
 
                         int result = insertCmd.ExecuteNonQuery();
 

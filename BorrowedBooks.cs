@@ -73,8 +73,9 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    string query = @"SELECT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, bt.ProcessedBy
+                    string query = @"SELECT DISTINCT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
+                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
+                                    bt.ProcessedBy, bt.RequestType, bt.RequestDate
                                     FROM (((BookTransactions bt 
                                     INNER JOIN Books b ON bt.BookID = b.BookID)
                                     INNER JOIN Users u ON bt.UserID = u.UserID)
@@ -83,12 +84,12 @@ namespace Lib1
                     // If not admin, show both approved and pending books for the current user
                     if (!isAdmin)
                     {
-                        query += " WHERE (bt.Status = 'Approved' OR bt.Status = 'Pending') AND bt.UserID = @UserID";
+                        query += " WHERE (bt.Status = 'Approved' OR bt.Status = 'Pending') AND bt.UserID = @UserID AND bt.RequestType = 'Borrow'";
                     }
                     else
                     {
-                        // For admin, show only approved books by default
-                        query += " WHERE bt.Status = 'Approved'";
+                        // For admin, show all currently borrowed books (Approved status)
+                        query += " WHERE bt.Status = 'Approved' AND bt.RequestType = 'Borrow' AND bt.ReturnDate >= @CurrentDate";
                     }
 
                     query += " ORDER BY bt.Status DESC, bt.RequestDate DESC"; // Show pending first, then sort by request date
@@ -99,12 +100,30 @@ namespace Lib1
                         {
                             command.Parameters.AddWithValue("@UserID", currentUserID);
                         }
+                        if (isAdmin)
+                        {
+                            command.Parameters.AddWithValue("@CurrentDate", DateTime.Now.Date);
+                        }
 
                         OleDbDataAdapter adapter = new OleDbDataAdapter(command);
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
 
                         dataGridView_BorrowedBooks.DataSource = dataTable;
+
+                        // Configure the DataGridView columns for better display
+                        if (dataGridView_BorrowedBooks.Columns.Contains("RequestDate"))
+                        {
+                            dataGridView_BorrowedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
+                        if (dataGridView_BorrowedBooks.Columns.Contains("BorrowDate"))
+                        {
+                            dataGridView_BorrowedBooks.Columns["BorrowDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
+                        if (dataGridView_BorrowedBooks.Columns.Contains("ReturnDate"))
+                        {
+                            dataGridView_BorrowedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
 
                         // Add row highlighting after setting the data source
                         HighlightRows();
@@ -183,11 +202,20 @@ namespace Lib1
                     ? row.Cells["ProcessedBy"].Value.ToString()
                     : "Not processed";
 
-                // Enable/disable buttons based on status
+                // Enable/disable buttons based on status and request type
                 if (!isAdmin)
                 {
-                    btnReturn.Enabled = status.Equals("Approved", StringComparison.OrdinalIgnoreCase);
-                    btnCancelBorrowRequest.Enabled = status.Equals("Pending", StringComparison.OrdinalIgnoreCase);
+                    string requestType = row.Cells["RequestType"].Value.ToString();
+                    if (requestType.Equals("Borrow", StringComparison.OrdinalIgnoreCase))
+                    {
+                        btnReturn.Enabled = status.Equals("Approved", StringComparison.OrdinalIgnoreCase);
+                        btnCancelBorrowRequest.Enabled = status.Equals("Pending", StringComparison.OrdinalIgnoreCase);
+                    }
+                    else
+                    {
+                        btnReturn.Enabled = false;
+                        btnCancelBorrowRequest.Enabled = false;
+                    }
                 }
 
                 // Get UserID for the selected transaction
@@ -219,12 +247,13 @@ namespace Lib1
                     connection.Open();
 
                     string query = @"SELECT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, bt.ProcessedBy
+                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
+                                    bt.ProcessedBy, bt.RequestType
                                     FROM (((BookTransactions bt 
                                     INNER JOIN Books b ON bt.BookID = b.BookID)
                                     INNER JOIN Users u ON bt.UserID = u.UserID)
                                     INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.Status = 'Approved'";
+                                    WHERE bt.Status = 'Approved' AND bt.RequestType = 'Borrow'";
 
                     // If a specific user is selected (not "All Borrowers")
                     if (selectedUserID > 0)
@@ -261,18 +290,35 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    string query = @"SELECT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, bt.ProcessedBy
+                    string query = @"SELECT DISTINCT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
+                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
+                                    bt.ProcessedBy, bt.RequestType, bt.RequestDate
                                     FROM (((BookTransactions bt 
                                     INNER JOIN Books b ON bt.BookID = b.BookID)
                                     INNER JOIN Users u ON bt.UserID = u.UserID)
-                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)";
+                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)
+                                    WHERE bt.RequestType = 'Borrow'
+                                    ORDER BY bt.Status DESC, bt.RequestDate DESC";
 
                     OleDbDataAdapter adapter = new OleDbDataAdapter(query, connection);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
 
                     dataGridView_BorrowedBooks.DataSource = dataTable;
+
+                    // Configure the DataGridView columns for better display
+                    if (dataGridView_BorrowedBooks.Columns.Contains("RequestDate"))
+                    {
+                        dataGridView_BorrowedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                    }
+                    if (dataGridView_BorrowedBooks.Columns.Contains("BorrowDate"))
+                    {
+                        dataGridView_BorrowedBooks.Columns["BorrowDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                    }
+                    if (dataGridView_BorrowedBooks.Columns.Contains("ReturnDate"))
+                    {
+                        dataGridView_BorrowedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                    }
                 }
             }
             catch (Exception ex)
@@ -290,12 +336,14 @@ namespace Lib1
                     connection.Open();
 
                     string query = @"SELECT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, bt.ProcessedBy
+                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
+                                    bt.ProcessedBy, bt.RequestType
                                     FROM (((BookTransactions bt 
                                     INNER JOIN Books b ON bt.BookID = b.BookID)
                                     INNER JOIN Users u ON bt.UserID = u.UserID)
                                     INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.Status = 'Approved' AND bt.ReturnDate < @CurrentDate";
+                                    WHERE bt.Status = 'Approved' AND bt.ReturnDate < @CurrentDate 
+                                    AND bt.RequestType = 'Borrow'";
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
@@ -393,18 +441,37 @@ namespace Lib1
                 return;
             }
 
-            // Verify the status is "Pending" before proceeding
-            if (!textBoxStatus.Text.Equals("Pending", StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show("Only pending requests can be cancelled.", "Invalid Action", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
+            // Verify the status is "Pending" and RequestType is "Borrow" before proceeding
             try
             {
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
                     connection.Open();
+                    string checkQuery = "SELECT Status, RequestType FROM BookTransactions WHERE TransactionID = @TransactionID";
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, connection))
+                    {
+                        checkCmd.Parameters.AddWithValue("@TransactionID", selectedTransactionID);
+                        using (OleDbDataReader reader = checkCmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string status = reader["Status"].ToString();
+                                string requestType = reader["RequestType"].ToString();
+
+                                if (!status.Equals("Pending", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    MessageBox.Show("Only pending requests can be cancelled.", "Invalid Action", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+
+                                if (!requestType.Equals("Borrow", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    MessageBox.Show("This is not a borrow request.", "Invalid Action", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+                            }
+                        }
+                    }
 
                     // First get the book ID and current status
                     int bookID = 0;

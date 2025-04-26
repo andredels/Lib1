@@ -52,7 +52,6 @@ namespace Lib1
             // Get the selected row using the CurrentCell's row index
             DataGridViewRow row = dataGridView_BookBorrowRequests.Rows[dataGridView_BookBorrowRequests.CurrentCell.RowIndex];
 
-
             // Check that required columns exist and get values safely
             if (!dataGridView_BookBorrowRequests.Columns.Contains("TransactionID") ||
                 !dataGridView_BookBorrowRequests.Columns.Contains("BookID"))
@@ -85,13 +84,14 @@ namespace Lib1
 
                 try
                 {
-                    // Update transaction status to Approved and set all dates and ProcessedBy
+                    // Update transaction status to Approved and set all dates, ProcessedBy, and RequestType
                     string updateQuery = @"UPDATE BookTransactions 
                                         SET Status = 'Approved', 
                                             [ApprovalDate] = ?, 
                                             [BorrowDate] = ?, 
                                             [ReturnDate] = ?,
-                                            [ProcessedBy] = ? 
+                                            [ProcessedBy] = ?,
+                                            [RequestType] = 'Borrow'
                                         WHERE TransactionID = ?";
 
                     using (OleDbCommand cmd = new OleDbCommand(updateQuery, conn, transaction))

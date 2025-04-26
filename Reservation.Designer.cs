@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Reservation));
             panel1 = new Panel();
+            btnViewReservationRequests = new SiticoneNetCoreUI.SiticoneButton();
             label1 = new Label();
             comboBoxStudentNameSearch = new ComboBox();
             btnRefresh = new SiticoneNetCoreUI.SiticoneButton();
@@ -61,7 +62,6 @@
             siticoneLabel4 = new SiticoneNetCoreUI.SiticoneLabel();
             textBoxBookTitle = new TextBox();
             siticoneLabel8 = new SiticoneNetCoreUI.SiticoneLabel();
-            btnViewReservationRequests = new SiticoneNetCoreUI.SiticoneButton();
             btnLendBook = new SiticoneNetCoreUI.SiticoneButton();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_BorrowedBooks).BeginInit();
@@ -83,6 +83,82 @@
             panel1.Size = new Size(1098, 125);
             panel1.TabIndex = 3;
             // 
+            // btnViewReservationRequests
+            // 
+            btnViewReservationRequests.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnViewReservationRequests.AccessibleName = "View Requests";
+            btnViewReservationRequests.AutoSizeBasedOnText = false;
+            btnViewReservationRequests.BackColor = Color.Transparent;
+            btnViewReservationRequests.BadgeBackColor = Color.Red;
+            btnViewReservationRequests.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnViewReservationRequests.BadgeValue = 0;
+            btnViewReservationRequests.BadgeValueForeColor = Color.White;
+            btnViewReservationRequests.BorderColor = Color.Transparent;
+            btnViewReservationRequests.BorderWidth = 2;
+            btnViewReservationRequests.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            btnViewReservationRequests.ButtonImage = null;
+            btnViewReservationRequests.CanBeep = true;
+            btnViewReservationRequests.CanGlow = false;
+            btnViewReservationRequests.CanShake = true;
+            btnViewReservationRequests.ContextMenuStripEx = null;
+            btnViewReservationRequests.CornerRadiusBottomLeft = 8;
+            btnViewReservationRequests.CornerRadiusBottomRight = 8;
+            btnViewReservationRequests.CornerRadiusTopLeft = 8;
+            btnViewReservationRequests.CornerRadiusTopRight = 8;
+            btnViewReservationRequests.CustomCursor = Cursors.Default;
+            btnViewReservationRequests.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnViewReservationRequests.EnableLongPress = false;
+            btnViewReservationRequests.EnablePressAnimation = true;
+            btnViewReservationRequests.EnableRippleEffect = true;
+            btnViewReservationRequests.EnableShadow = false;
+            btnViewReservationRequests.EnableTextWrapping = false;
+            btnViewReservationRequests.Font = new Font("Segoe UI", 9F);
+            btnViewReservationRequests.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnViewReservationRequests.GlowIntensity = 100;
+            btnViewReservationRequests.GlowRadius = 20F;
+            btnViewReservationRequests.GradientBackground = false;
+            btnViewReservationRequests.GradientColor = Color.FromArgb(114, 168, 255);
+            btnViewReservationRequests.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnViewReservationRequests.HintText = null;
+            btnViewReservationRequests.HoverBackColor = Color.FromArgb(114, 168, 255);
+            btnViewReservationRequests.HoverFontStyle = FontStyle.Regular;
+            btnViewReservationRequests.HoverTextColor = Color.White;
+            btnViewReservationRequests.HoverTransitionDuration = 250;
+            btnViewReservationRequests.ImageAlign = ContentAlignment.MiddleLeft;
+            btnViewReservationRequests.ImagePadding = 5;
+            btnViewReservationRequests.ImageSize = new Size(16, 16);
+            btnViewReservationRequests.IsRadial = false;
+            btnViewReservationRequests.IsReadOnly = false;
+            btnViewReservationRequests.IsToggleButton = false;
+            btnViewReservationRequests.IsToggled = false;
+            btnViewReservationRequests.Location = new Point(937, 92);
+            btnViewReservationRequests.LongPressDurationMS = 1000;
+            btnViewReservationRequests.Name = "btnViewReservationRequests";
+            btnViewReservationRequests.NormalFontStyle = FontStyle.Regular;
+            btnViewReservationRequests.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnViewReservationRequests.ParticleCount = 15;
+            btnViewReservationRequests.PressAnimationScale = 0.97F;
+            btnViewReservationRequests.PressedBackColor = Color.FromArgb(74, 128, 235);
+            btnViewReservationRequests.PressedFontStyle = FontStyle.Regular;
+            btnViewReservationRequests.PressTransitionDuration = 150;
+            btnViewReservationRequests.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnViewReservationRequests.RippleColor = Color.FromArgb(255, 255, 255);
+            btnViewReservationRequests.RippleOpacity = 0.3F;
+            btnViewReservationRequests.RippleRadiusMultiplier = 0.6F;
+            btnViewReservationRequests.ShadowBlur = 5;
+            btnViewReservationRequests.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnViewReservationRequests.ShadowOffset = new Point(2, 2);
+            btnViewReservationRequests.ShakeDuration = 500;
+            btnViewReservationRequests.ShakeIntensity = 5;
+            btnViewReservationRequests.Size = new Size(158, 29);
+            btnViewReservationRequests.TabIndex = 17;
+            btnViewReservationRequests.Text = "View Requests";
+            btnViewReservationRequests.TextAlign = ContentAlignment.MiddleCenter;
+            btnViewReservationRequests.TextColor = Color.White;
+            btnViewReservationRequests.TooltipText = null;
+            btnViewReservationRequests.UseAdvancedRendering = true;
+            btnViewReservationRequests.UseParticles = false;
+            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -97,7 +173,7 @@
             comboBoxStudentNameSearch.FormattingEnabled = true;
             comboBoxStudentNameSearch.Location = new Point(689, 65);
             comboBoxStudentNameSearch.Name = "comboBoxStudentNameSearch";
-            comboBoxStudentNameSearch.Size = new Size(251, 28);
+            comboBoxStudentNameSearch.Size = new Size(186, 28);
             comboBoxStudentNameSearch.TabIndex = 13;
             // 
             // btnRefresh
@@ -192,7 +268,7 @@
             siticoneLabel1.Name = "siticoneLabel1";
             siticoneLabel1.Size = new Size(350, 46);
             siticoneLabel1.TabIndex = 5;
-            siticoneLabel1.Text = "Borrowed Books";
+            siticoneLabel1.Text = "Reservations";
             // 
             // siticonePictureBox1
             // 
@@ -585,82 +661,6 @@
             siticoneLabel8.Size = new Size(125, 29);
             siticoneLabel8.TabIndex = 88;
             siticoneLabel8.Text = "Book Title";
-            // 
-            // btnViewReservationRequests
-            // 
-            btnViewReservationRequests.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
-            btnViewReservationRequests.AccessibleName = "View Requests";
-            btnViewReservationRequests.AutoSizeBasedOnText = false;
-            btnViewReservationRequests.BackColor = Color.Transparent;
-            btnViewReservationRequests.BadgeBackColor = Color.Red;
-            btnViewReservationRequests.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
-            btnViewReservationRequests.BadgeValue = 0;
-            btnViewReservationRequests.BadgeValueForeColor = Color.White;
-            btnViewReservationRequests.BorderColor = Color.Transparent;
-            btnViewReservationRequests.BorderWidth = 2;
-            btnViewReservationRequests.ButtonBackColor = Color.FromArgb(255, 128, 0);
-            btnViewReservationRequests.ButtonImage = null;
-            btnViewReservationRequests.CanBeep = true;
-            btnViewReservationRequests.CanGlow = false;
-            btnViewReservationRequests.CanShake = true;
-            btnViewReservationRequests.ContextMenuStripEx = null;
-            btnViewReservationRequests.CornerRadiusBottomLeft = 8;
-            btnViewReservationRequests.CornerRadiusBottomRight = 8;
-            btnViewReservationRequests.CornerRadiusTopLeft = 8;
-            btnViewReservationRequests.CornerRadiusTopRight = 8;
-            btnViewReservationRequests.CustomCursor = Cursors.Default;
-            btnViewReservationRequests.DisabledTextColor = Color.FromArgb(150, 150, 150);
-            btnViewReservationRequests.EnableLongPress = false;
-            btnViewReservationRequests.EnablePressAnimation = true;
-            btnViewReservationRequests.EnableRippleEffect = true;
-            btnViewReservationRequests.EnableShadow = false;
-            btnViewReservationRequests.EnableTextWrapping = false;
-            btnViewReservationRequests.Font = new Font("Segoe UI", 9F);
-            btnViewReservationRequests.GlowColor = Color.FromArgb(100, 255, 255, 255);
-            btnViewReservationRequests.GlowIntensity = 100;
-            btnViewReservationRequests.GlowRadius = 20F;
-            btnViewReservationRequests.GradientBackground = false;
-            btnViewReservationRequests.GradientColor = Color.FromArgb(114, 168, 255);
-            btnViewReservationRequests.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            btnViewReservationRequests.HintText = null;
-            btnViewReservationRequests.HoverBackColor = Color.FromArgb(114, 168, 255);
-            btnViewReservationRequests.HoverFontStyle = FontStyle.Regular;
-            btnViewReservationRequests.HoverTextColor = Color.White;
-            btnViewReservationRequests.HoverTransitionDuration = 250;
-            btnViewReservationRequests.ImageAlign = ContentAlignment.MiddleLeft;
-            btnViewReservationRequests.ImagePadding = 5;
-            btnViewReservationRequests.ImageSize = new Size(16, 16);
-            btnViewReservationRequests.IsRadial = false;
-            btnViewReservationRequests.IsReadOnly = false;
-            btnViewReservationRequests.IsToggleButton = false;
-            btnViewReservationRequests.IsToggled = false;
-            btnViewReservationRequests.Location = new Point(937, 92);
-            btnViewReservationRequests.LongPressDurationMS = 1000;
-            btnViewReservationRequests.Name = "btnViewReservationRequests";
-            btnViewReservationRequests.NormalFontStyle = FontStyle.Regular;
-            btnViewReservationRequests.ParticleColor = Color.FromArgb(200, 200, 200);
-            btnViewReservationRequests.ParticleCount = 15;
-            btnViewReservationRequests.PressAnimationScale = 0.97F;
-            btnViewReservationRequests.PressedBackColor = Color.FromArgb(74, 128, 235);
-            btnViewReservationRequests.PressedFontStyle = FontStyle.Regular;
-            btnViewReservationRequests.PressTransitionDuration = 150;
-            btnViewReservationRequests.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
-            btnViewReservationRequests.RippleColor = Color.FromArgb(255, 255, 255);
-            btnViewReservationRequests.RippleOpacity = 0.3F;
-            btnViewReservationRequests.RippleRadiusMultiplier = 0.6F;
-            btnViewReservationRequests.ShadowBlur = 5;
-            btnViewReservationRequests.ShadowColor = Color.FromArgb(100, 0, 0, 0);
-            btnViewReservationRequests.ShadowOffset = new Point(2, 2);
-            btnViewReservationRequests.ShakeDuration = 500;
-            btnViewReservationRequests.ShakeIntensity = 5;
-            btnViewReservationRequests.Size = new Size(158, 29);
-            btnViewReservationRequests.TabIndex = 17;
-            btnViewReservationRequests.Text = "View Requests";
-            btnViewReservationRequests.TextAlign = ContentAlignment.MiddleCenter;
-            btnViewReservationRequests.TextColor = Color.White;
-            btnViewReservationRequests.TooltipText = null;
-            btnViewReservationRequests.UseAdvancedRendering = true;
-            btnViewReservationRequests.UseParticles = false;
             // 
             // btnLendBook
             // 
