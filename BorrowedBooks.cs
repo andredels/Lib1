@@ -533,6 +533,7 @@ namespace Lib1
                 MessageBox.Show("Error cancelling request: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void ClearSelection()
         {
             selectedTransactionID = 0;

@@ -37,14 +37,14 @@ namespace Lib1
                 btnUpdateVwBks.Visible = true;
                 btnDeleteVwBks.Visible = true;
                 btnBorrowVwBks.Visible = false;
-                btnReserveVwBks.Visible = false;
+                btnReserve.Visible = false;
             }
             else if (UserRole.ToLower() == "student")
             {
                 btnUpdateVwBks.Visible = false;
                 btnDeleteVwBks.Visible = false;
                 btnBorrowVwBks.Visible = true;
-                btnReserveVwBks.Visible = true;
+                btnReserve.Visible = true;
             }
         }
         private void LoadAllBooks()
@@ -388,11 +388,6 @@ namespace Lib1
             }
         }
 
-        private void btnReserveVwBks_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void comboBoxBookGenre_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -459,6 +454,99 @@ namespace Lib1
             {
                 MessageBox.Show("Error loading genres: " + ex.Message, "Database Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnReserve_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Check if a book is selected
+                if (datagridViewAllBooks.SelectedRows.Count == 0 && datagridViewAllBooks.SelectedCells.Count == 0)
+                {
+                    MessageBox.Show("Please select a book to reserve", "Selection Required",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // Get the selected book information
+                int rowIndex = datagridViewAllBooks.SelectedCells[0].RowIndex;
+                int bookId = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["BookID"].Value);
+                string bookTitle = datagridViewAllBooks.Rows[rowIndex].Cells["Title"].Value.ToString();
+
+                // Get the current user ID - this is now stored as a property
+                if (UserID <= 0)
+                {
+                    MessageBox.Show("User information is not available. Please login again.",
+                        "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // First check if user already has this book borrowed, reserved, or pending
+                    string checkExistingQuery = @"SELECT COUNT(*) FROM BookTransactions 
+                                         WHERE UserID = ? AND BookID = ? 
+                                         AND (Status = 'Pending' OR Status = 'Approved')
+                                         AND (RequestType = 'Borrow' OR RequestType = 'Reservation')";
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkExistingQuery, conn))
+                    {
+                        checkCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
+                        checkCmd.Parameters.Add("?", OleDbType.Integer).Value = bookId;
+
+                        int existingTransactions = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                        if (existingTransactions > 0)
+                        {
+                            MessageBox.Show("You already have this book borrowed or have a pending request/reservation for it.",
+                                "Duplicate Request", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                    }
+
+                    // Create transaction with current date as the request date
+                    DateTime requestDate = DateTime.Now;
+
+                    // Insert into BookTransactions with all necessary fields for a pending reservation
+                    string insertQuery = @"INSERT INTO BookTransactions 
+                        (BookID, UserID, Status, RequestDate, RequestType) 
+                        VALUES (?, ?, ?, ?, ?)";
+
+                    using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn))
+                    {
+                        insertCmd.Parameters.Add("?", OleDbType.Integer).Value = bookId;
+                        insertCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
+                        insertCmd.Parameters.Add("?", OleDbType.VarChar).Value = "Pending";
+                        insertCmd.Parameters.Add("?", OleDbType.Date).Value = requestDate;
+                        insertCmd.Parameters.Add("?", OleDbType.VarChar).Value = "Reservation";
+
+                        int result = insertCmd.ExecuteNonQuery();
+
+                        if (result > 0)
+                        {
+                            MessageBox.Show($"Reservation request for '{bookTitle}' has been submitted successfully. " +
+                                $"Your request is pending approval from an administrator.", "Request Submitted",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Clear selections and refresh the books view
+                            datagridViewAllBooks.ClearSelection();
+                            ClearTextBoxes();
+                            LoadAllBooks(); // Refresh the book list
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to submit reservation request.", "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error processing reservation request: {ex.Message}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

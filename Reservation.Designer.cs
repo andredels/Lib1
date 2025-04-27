@@ -37,34 +37,30 @@
             textBoxBorrowedBookSearch = new TextBox();
             siticoneLabel1 = new SiticoneNetCoreUI.SiticoneLabel();
             siticonePictureBox1 = new SiticoneNetCoreUI.SiticonePictureBox();
-            dataGridView_BorrowedBooks = new DataGridView();
-            textBoxReturnDate = new TextBox();
-            siticoneLabel3 = new SiticoneNetCoreUI.SiticoneLabel();
+            dataGridView_ReservedBooks = new DataGridView();
             textBoxStatus = new TextBox();
             siticoneLabel2 = new SiticoneNetCoreUI.SiticoneLabel();
             btnDecline = new SiticoneNetCoreUI.SiticoneButton();
             btnAccept = new SiticoneNetCoreUI.SiticoneButton();
-            textBoxGenre = new TextBox();
-            siticoneLabel15 = new SiticoneNetCoreUI.SiticoneLabel();
             textBoxISBN = new TextBox();
             siticoneLabel14 = new SiticoneNetCoreUI.SiticoneLabel();
-            textBoxBorrowDate = new TextBox();
-            siticoneLabel13 = new SiticoneNetCoreUI.SiticoneLabel();
             textBoxBookID = new TextBox();
             siticoneLabel11 = new SiticoneNetCoreUI.SiticoneLabel();
             textBoxFullName = new TextBox();
             labelFullName = new SiticoneNetCoreUI.SiticoneLabel();
             textBoxUserID = new TextBox();
             labelUserID = new SiticoneNetCoreUI.SiticoneLabel();
-            textBoxProcessedBy = new TextBox();
-            siticoneLabel5 = new SiticoneNetCoreUI.SiticoneLabel();
-            textBoxAuthor = new TextBox();
-            siticoneLabel4 = new SiticoneNetCoreUI.SiticoneLabel();
             textBoxBookTitle = new TextBox();
             siticoneLabel8 = new SiticoneNetCoreUI.SiticoneLabel();
             btnLendBook = new SiticoneNetCoreUI.SiticoneButton();
+            siticoneLabel13 = new SiticoneNetCoreUI.SiticoneLabel();
+            textBoxTotalCopies = new TextBox();
+            siticoneLabel3 = new SiticoneNetCoreUI.SiticoneLabel();
+            textBoxRequestDate = new TextBox();
+            textBoxAvailableCopies = new TextBox();
+            siticoneLabel4 = new SiticoneNetCoreUI.SiticoneLabel();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView_BorrowedBooks).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView_ReservedBooks).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -158,6 +154,7 @@
             btnViewReservationRequests.TooltipText = null;
             btnViewReservationRequests.UseAdvancedRendering = true;
             btnViewReservationRequests.UseParticles = false;
+            btnViewReservationRequests.Click += btnViewReservationRequests_Click;
             // 
             // label1
             // 
@@ -175,6 +172,7 @@
             comboBoxStudentNameSearch.Name = "comboBoxStudentNameSearch";
             comboBoxStudentNameSearch.Size = new Size(186, 28);
             comboBoxStudentNameSearch.TabIndex = 13;
+            comboBoxStudentNameSearch.SelectedIndexChanged += comboBoxStudentNameSearch_SelectedIndexChanged;
             // 
             // btnRefresh
             // 
@@ -251,6 +249,7 @@
             btnRefresh.TooltipText = null;
             btnRefresh.UseAdvancedRendering = true;
             btnRefresh.UseParticles = false;
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // textBoxBorrowedBookSearch
             // 
@@ -259,6 +258,7 @@
             textBoxBorrowedBookSearch.Name = "textBoxBorrowedBookSearch";
             textBoxBorrowedBookSearch.Size = new Size(251, 29);
             textBoxBorrowedBookSearch.TabIndex = 11;
+            textBoxBorrowedBookSearch.TextChanged += textBoxBorrowedBookSearch_TextChanged;
             // 
             // siticoneLabel1
             // 
@@ -312,46 +312,30 @@
             siticonePictureBox1.TabIndex = 4;
             siticonePictureBox1.Text = "siticonePictureBox1";
             // 
-            // dataGridView_BorrowedBooks
+            // dataGridView_ReservedBooks
             // 
-            dataGridView_BorrowedBooks.BackgroundColor = Color.BurlyWood;
-            dataGridView_BorrowedBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView_BorrowedBooks.Location = new Point(17, 146);
-            dataGridView_BorrowedBooks.Name = "dataGridView_BorrowedBooks";
-            dataGridView_BorrowedBooks.ReadOnly = true;
-            dataGridView_BorrowedBooks.RowHeadersWidth = 51;
-            dataGridView_BorrowedBooks.Size = new Size(1065, 252);
-            dataGridView_BorrowedBooks.TabIndex = 4;
-            // 
-            // textBoxReturnDate
-            // 
-            textBoxReturnDate.Location = new Point(225, 606);
-            textBoxReturnDate.Name = "textBoxReturnDate";
-            textBoxReturnDate.Size = new Size(244, 27);
-            textBoxReturnDate.TabIndex = 113;
-            // 
-            // siticoneLabel3
-            // 
-            siticoneLabel3.BackColor = Color.Transparent;
-            siticoneLabel3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel3.Location = new Point(27, 607);
-            siticoneLabel3.Name = "siticoneLabel3";
-            siticoneLabel3.Size = new Size(142, 29);
-            siticoneLabel3.TabIndex = 112;
-            siticoneLabel3.Text = "Return Date";
+            dataGridView_ReservedBooks.BackgroundColor = Color.BurlyWood;
+            dataGridView_ReservedBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView_ReservedBooks.Location = new Point(17, 146);
+            dataGridView_ReservedBooks.Name = "dataGridView_ReservedBooks";
+            dataGridView_ReservedBooks.ReadOnly = true;
+            dataGridView_ReservedBooks.RowHeadersWidth = 51;
+            dataGridView_ReservedBooks.Size = new Size(1065, 252);
+            dataGridView_ReservedBooks.TabIndex = 4;
+            dataGridView_ReservedBooks.CellContentClick += dataGridView_ReservedBooks_CellContentClick;
             // 
             // textBoxStatus
             // 
-            textBoxStatus.Location = new Point(778, 606);
+            textBoxStatus.Location = new Point(225, 595);
             textBoxStatus.Name = "textBoxStatus";
-            textBoxStatus.Size = new Size(256, 27);
+            textBoxStatus.Size = new Size(244, 27);
             textBoxStatus.TabIndex = 111;
             // 
             // siticoneLabel2
             // 
             siticoneLabel2.BackColor = Color.Transparent;
             siticoneLabel2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel2.Location = new Point(572, 607);
+            siticoneLabel2.Location = new Point(27, 596);
             siticoneLabel2.Name = "siticoneLabel2";
             siticoneLabel2.Size = new Size(142, 29);
             siticoneLabel2.TabIndex = 110;
@@ -432,6 +416,7 @@
             btnDecline.TooltipText = null;
             btnDecline.UseAdvancedRendering = true;
             btnDecline.UseParticles = false;
+            btnDecline.Click += btnDecline_Click;
             // 
             // btnAccept
             // 
@@ -508,61 +493,28 @@
             btnAccept.TooltipText = null;
             btnAccept.UseAdvancedRendering = true;
             btnAccept.UseParticles = false;
-            // 
-            // textBoxGenre
-            // 
-            textBoxGenre.Location = new Point(778, 562);
-            textBoxGenre.Name = "textBoxGenre";
-            textBoxGenre.Size = new Size(256, 27);
-            textBoxGenre.TabIndex = 105;
-            // 
-            // siticoneLabel15
-            // 
-            siticoneLabel15.BackColor = Color.Transparent;
-            siticoneLabel15.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel15.Location = new Point(572, 563);
-            siticoneLabel15.Name = "siticoneLabel15";
-            siticoneLabel15.Size = new Size(142, 29);
-            siticoneLabel15.TabIndex = 104;
-            siticoneLabel15.Text = "Book Genre";
+            btnAccept.Click += btnAccept_Click;
             // 
             // textBoxISBN
             // 
-            textBoxISBN.Location = new Point(778, 516);
+            textBoxISBN.Location = new Point(225, 542);
             textBoxISBN.Name = "textBoxISBN";
-            textBoxISBN.Size = new Size(256, 27);
+            textBoxISBN.Size = new Size(244, 27);
             textBoxISBN.TabIndex = 103;
             // 
             // siticoneLabel14
             // 
             siticoneLabel14.BackColor = Color.Transparent;
             siticoneLabel14.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel14.Location = new Point(572, 517);
+            siticoneLabel14.Location = new Point(27, 543);
             siticoneLabel14.Name = "siticoneLabel14";
             siticoneLabel14.Size = new Size(142, 29);
             siticoneLabel14.TabIndex = 102;
             siticoneLabel14.Text = "Book ISBN";
             // 
-            // textBoxBorrowDate
-            // 
-            textBoxBorrowDate.Location = new Point(225, 562);
-            textBoxBorrowDate.Name = "textBoxBorrowDate";
-            textBoxBorrowDate.Size = new Size(244, 27);
-            textBoxBorrowDate.TabIndex = 101;
-            // 
-            // siticoneLabel13
-            // 
-            siticoneLabel13.BackColor = Color.Transparent;
-            siticoneLabel13.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel13.Location = new Point(27, 563);
-            siticoneLabel13.Name = "siticoneLabel13";
-            siticoneLabel13.Size = new Size(142, 29);
-            siticoneLabel13.TabIndex = 100;
-            siticoneLabel13.Text = "Borrow Date";
-            // 
             // textBoxBookID
             // 
-            textBoxBookID.Location = new Point(225, 470);
+            textBoxBookID.Location = new Point(225, 484);
             textBoxBookID.Name = "textBoxBookID";
             textBoxBookID.Size = new Size(244, 27);
             textBoxBookID.TabIndex = 99;
@@ -571,7 +523,7 @@
             // 
             siticoneLabel11.BackColor = Color.Transparent;
             siticoneLabel11.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel11.Location = new Point(27, 470);
+            siticoneLabel11.Location = new Point(27, 484);
             siticoneLabel11.Name = "siticoneLabel11";
             siticoneLabel11.Size = new Size(125, 29);
             siticoneLabel11.TabIndex = 98;
@@ -611,43 +563,9 @@
             labelUserID.TabIndex = 94;
             labelUserID.Text = "UserID";
             // 
-            // textBoxProcessedBy
-            // 
-            textBoxProcessedBy.Location = new Point(225, 649);
-            textBoxProcessedBy.Name = "textBoxProcessedBy";
-            textBoxProcessedBy.Size = new Size(244, 27);
-            textBoxProcessedBy.TabIndex = 93;
-            // 
-            // siticoneLabel5
-            // 
-            siticoneLabel5.BackColor = Color.Transparent;
-            siticoneLabel5.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel5.Location = new Point(27, 650);
-            siticoneLabel5.Name = "siticoneLabel5";
-            siticoneLabel5.Size = new Size(186, 29);
-            siticoneLabel5.TabIndex = 92;
-            siticoneLabel5.Text = "Processed By";
-            // 
-            // textBoxAuthor
-            // 
-            textBoxAuthor.Location = new Point(225, 516);
-            textBoxAuthor.Name = "textBoxAuthor";
-            textBoxAuthor.Size = new Size(244, 27);
-            textBoxAuthor.TabIndex = 91;
-            // 
-            // siticoneLabel4
-            // 
-            siticoneLabel4.BackColor = Color.Transparent;
-            siticoneLabel4.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel4.Location = new Point(27, 517);
-            siticoneLabel4.Name = "siticoneLabel4";
-            siticoneLabel4.Size = new Size(166, 29);
-            siticoneLabel4.TabIndex = 90;
-            siticoneLabel4.Text = "Book Author Name";
-            // 
             // textBoxBookTitle
             // 
-            textBoxBookTitle.Location = new Point(778, 470);
+            textBoxBookTitle.Location = new Point(778, 483);
             textBoxBookTitle.Name = "textBoxBookTitle";
             textBoxBookTitle.Size = new Size(256, 27);
             textBoxBookTitle.TabIndex = 89;
@@ -656,7 +574,7 @@
             // 
             siticoneLabel8.BackColor = Color.Transparent;
             siticoneLabel8.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel8.Location = new Point(572, 471);
+            siticoneLabel8.Location = new Point(572, 484);
             siticoneLabel8.Name = "siticoneLabel8";
             siticoneLabel8.Size = new Size(125, 29);
             siticoneLabel8.TabIndex = 88;
@@ -737,23 +655,76 @@
             btnLendBook.TooltipText = null;
             btnLendBook.UseAdvancedRendering = true;
             btnLendBook.UseParticles = false;
+            btnLendBook.Click += btnLendBook_Click;
+            // 
+            // siticoneLabel13
+            // 
+            siticoneLabel13.BackColor = Color.Transparent;
+            siticoneLabel13.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel13.Location = new Point(27, 651);
+            siticoneLabel13.Name = "siticoneLabel13";
+            siticoneLabel13.Size = new Size(142, 29);
+            siticoneLabel13.TabIndex = 100;
+            siticoneLabel13.Text = "Request Date";
+            // 
+            // textBoxTotalCopies
+            // 
+            textBoxTotalCopies.Location = new Point(778, 595);
+            textBoxTotalCopies.Name = "textBoxTotalCopies";
+            textBoxTotalCopies.Size = new Size(256, 27);
+            textBoxTotalCopies.TabIndex = 113;
+            // 
+            // siticoneLabel3
+            // 
+            siticoneLabel3.BackColor = Color.Transparent;
+            siticoneLabel3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel3.Location = new Point(580, 596);
+            siticoneLabel3.Name = "siticoneLabel3";
+            siticoneLabel3.Size = new Size(146, 29);
+            siticoneLabel3.TabIndex = 112;
+            siticoneLabel3.Text = "Total Copies";
+            // 
+            // textBoxRequestDate
+            // 
+            textBoxRequestDate.Location = new Point(225, 650);
+            textBoxRequestDate.Name = "textBoxRequestDate";
+            textBoxRequestDate.Size = new Size(244, 27);
+            textBoxRequestDate.TabIndex = 101;
+            // 
+            // textBoxAvailableCopies
+            // 
+            textBoxAvailableCopies.Location = new Point(778, 542);
+            textBoxAvailableCopies.Name = "textBoxAvailableCopies";
+            textBoxAvailableCopies.Size = new Size(256, 27);
+            textBoxAvailableCopies.TabIndex = 116;
+            // 
+            // siticoneLabel4
+            // 
+            siticoneLabel4.BackColor = Color.Transparent;
+            siticoneLabel4.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel4.Location = new Point(572, 543);
+            siticoneLabel4.Name = "siticoneLabel4";
+            siticoneLabel4.Size = new Size(142, 29);
+            siticoneLabel4.TabIndex = 115;
+            siticoneLabel4.Text = "Available Copies";
             // 
             // Reservation
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Bisque;
-            Controls.Add(textBoxReturnDate);
+            Controls.Add(textBoxAvailableCopies);
+            Controls.Add(siticoneLabel4);
+            Controls.Add(btnLendBook);
+            Controls.Add(textBoxTotalCopies);
             Controls.Add(siticoneLabel3);
             Controls.Add(textBoxStatus);
             Controls.Add(siticoneLabel2);
             Controls.Add(btnDecline);
             Controls.Add(btnAccept);
-            Controls.Add(textBoxGenre);
-            Controls.Add(siticoneLabel15);
             Controls.Add(textBoxISBN);
             Controls.Add(siticoneLabel14);
-            Controls.Add(textBoxBorrowDate);
+            Controls.Add(textBoxRequestDate);
             Controls.Add(siticoneLabel13);
             Controls.Add(textBoxBookID);
             Controls.Add(siticoneLabel11);
@@ -761,20 +732,15 @@
             Controls.Add(labelFullName);
             Controls.Add(textBoxUserID);
             Controls.Add(labelUserID);
-            Controls.Add(textBoxProcessedBy);
-            Controls.Add(siticoneLabel5);
-            Controls.Add(textBoxAuthor);
-            Controls.Add(siticoneLabel4);
             Controls.Add(textBoxBookTitle);
             Controls.Add(siticoneLabel8);
-            Controls.Add(dataGridView_BorrowedBooks);
+            Controls.Add(dataGridView_ReservedBooks);
             Controls.Add(panel1);
-            Controls.Add(btnLendBook);
             Name = "Reservation";
             Size = new Size(1098, 721);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView_BorrowedBooks).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView_ReservedBooks).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -788,32 +754,28 @@
         private TextBox textBoxBorrowedBookSearch;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel1;
         private SiticoneNetCoreUI.SiticonePictureBox siticonePictureBox1;
-        private DataGridView dataGridView_BorrowedBooks;
-        private TextBox textBoxReturnDate;
-        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel3;
+        private DataGridView dataGridView_ReservedBooks;
         private TextBox textBoxStatus;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel2;
         private SiticoneNetCoreUI.SiticoneButton btnDecline;
         private SiticoneNetCoreUI.SiticoneButton btnAccept;
-        private TextBox textBoxGenre;
-        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel15;
         private TextBox textBoxISBN;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel14;
-        private TextBox textBoxBorrowDate;
-        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel13;
         private TextBox textBoxBookID;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel11;
         private TextBox textBoxFullName;
         private SiticoneNetCoreUI.SiticoneLabel labelFullName;
         private TextBox textBoxUserID;
         private SiticoneNetCoreUI.SiticoneLabel labelUserID;
-        private TextBox textBoxProcessedBy;
-        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel5;
-        private TextBox textBoxAuthor;
-        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel4;
         private TextBox textBoxBookTitle;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel8;
         private SiticoneNetCoreUI.SiticoneButton btnViewReservationRequests;
         private SiticoneNetCoreUI.SiticoneButton btnLendBook;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel13;
+        private TextBox textBoxTotalCopies;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel3;
+        private TextBox textBoxRequestDate;
+        private TextBox textBoxAvailableCopies;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel4;
     }
 }

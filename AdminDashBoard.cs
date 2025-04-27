@@ -80,7 +80,7 @@ namespace Lib1
         private void adminReservation_Click(object sender, EventArgs e)
         {
             userControlpanel.Controls.Clear();
-            Reservation reservationUC = new Reservation();
+            Reservation reservationUC = new Reservation(true, this.userId); // true for admin, pass the current user ID
             reservationUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(reservationUC);
         }
