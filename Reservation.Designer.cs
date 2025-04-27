@@ -59,6 +59,12 @@
             textBoxRequestDate = new TextBox();
             textBoxAvailableCopies = new TextBox();
             siticoneLabel4 = new SiticoneNetCoreUI.SiticoneLabel();
+            textBoxApprovalDate = new TextBox();
+            siticoneLabel5 = new SiticoneNetCoreUI.SiticoneLabel();
+            textBoxRequestType = new TextBox();
+            siticoneLabel6 = new SiticoneNetCoreUI.SiticoneLabel();
+            textBoxProcessedBy = new TextBox();
+            siticoneLabel7 = new SiticoneNetCoreUI.SiticoneLabel();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_ReservedBooks).BeginInit();
             SuspendLayout();
@@ -326,7 +332,7 @@
             // 
             // textBoxStatus
             // 
-            textBoxStatus.Location = new Point(225, 595);
+            textBoxStatus.Location = new Point(225, 554);
             textBoxStatus.Name = "textBoxStatus";
             textBoxStatus.Size = new Size(244, 27);
             textBoxStatus.TabIndex = 111;
@@ -335,7 +341,7 @@
             // 
             siticoneLabel2.BackColor = Color.Transparent;
             siticoneLabel2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel2.Location = new Point(27, 596);
+            siticoneLabel2.Location = new Point(27, 555);
             siticoneLabel2.Name = "siticoneLabel2";
             siticoneLabel2.Size = new Size(142, 29);
             siticoneLabel2.TabIndex = 110;
@@ -497,7 +503,7 @@
             // 
             // textBoxISBN
             // 
-            textBoxISBN.Location = new Point(225, 542);
+            textBoxISBN.Location = new Point(225, 510);
             textBoxISBN.Name = "textBoxISBN";
             textBoxISBN.Size = new Size(244, 27);
             textBoxISBN.TabIndex = 103;
@@ -506,7 +512,7 @@
             // 
             siticoneLabel14.BackColor = Color.Transparent;
             siticoneLabel14.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel14.Location = new Point(27, 543);
+            siticoneLabel14.Location = new Point(27, 511);
             siticoneLabel14.Name = "siticoneLabel14";
             siticoneLabel14.Size = new Size(142, 29);
             siticoneLabel14.TabIndex = 102;
@@ -514,7 +520,7 @@
             // 
             // textBoxBookID
             // 
-            textBoxBookID.Location = new Point(225, 484);
+            textBoxBookID.Location = new Point(225, 468);
             textBoxBookID.Name = "textBoxBookID";
             textBoxBookID.Size = new Size(244, 27);
             textBoxBookID.TabIndex = 99;
@@ -523,7 +529,7 @@
             // 
             siticoneLabel11.BackColor = Color.Transparent;
             siticoneLabel11.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel11.Location = new Point(27, 484);
+            siticoneLabel11.Location = new Point(27, 468);
             siticoneLabel11.Name = "siticoneLabel11";
             siticoneLabel11.Size = new Size(125, 29);
             siticoneLabel11.TabIndex = 98;
@@ -565,7 +571,7 @@
             // 
             // textBoxBookTitle
             // 
-            textBoxBookTitle.Location = new Point(778, 483);
+            textBoxBookTitle.Location = new Point(778, 467);
             textBoxBookTitle.Name = "textBoxBookTitle";
             textBoxBookTitle.Size = new Size(256, 27);
             textBoxBookTitle.TabIndex = 89;
@@ -574,7 +580,7 @@
             // 
             siticoneLabel8.BackColor = Color.Transparent;
             siticoneLabel8.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel8.Location = new Point(572, 484);
+            siticoneLabel8.Location = new Point(572, 468);
             siticoneLabel8.Name = "siticoneLabel8";
             siticoneLabel8.Size = new Size(125, 29);
             siticoneLabel8.TabIndex = 88;
@@ -661,7 +667,7 @@
             // 
             siticoneLabel13.BackColor = Color.Transparent;
             siticoneLabel13.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel13.Location = new Point(27, 651);
+            siticoneLabel13.Location = new Point(27, 596);
             siticoneLabel13.Name = "siticoneLabel13";
             siticoneLabel13.Size = new Size(142, 29);
             siticoneLabel13.TabIndex = 100;
@@ -669,7 +675,7 @@
             // 
             // textBoxTotalCopies
             // 
-            textBoxTotalCopies.Location = new Point(778, 595);
+            textBoxTotalCopies.Location = new Point(778, 554);
             textBoxTotalCopies.Name = "textBoxTotalCopies";
             textBoxTotalCopies.Size = new Size(256, 27);
             textBoxTotalCopies.TabIndex = 113;
@@ -678,7 +684,7 @@
             // 
             siticoneLabel3.BackColor = Color.Transparent;
             siticoneLabel3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel3.Location = new Point(580, 596);
+            siticoneLabel3.Location = new Point(572, 552);
             siticoneLabel3.Name = "siticoneLabel3";
             siticoneLabel3.Size = new Size(146, 29);
             siticoneLabel3.TabIndex = 112;
@@ -686,14 +692,14 @@
             // 
             // textBoxRequestDate
             // 
-            textBoxRequestDate.Location = new Point(225, 650);
+            textBoxRequestDate.Location = new Point(225, 595);
             textBoxRequestDate.Name = "textBoxRequestDate";
             textBoxRequestDate.Size = new Size(244, 27);
             textBoxRequestDate.TabIndex = 101;
             // 
             // textBoxAvailableCopies
             // 
-            textBoxAvailableCopies.Location = new Point(778, 542);
+            textBoxAvailableCopies.Location = new Point(778, 510);
             textBoxAvailableCopies.Name = "textBoxAvailableCopies";
             textBoxAvailableCopies.Size = new Size(256, 27);
             textBoxAvailableCopies.TabIndex = 116;
@@ -702,17 +708,74 @@
             // 
             siticoneLabel4.BackColor = Color.Transparent;
             siticoneLabel4.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            siticoneLabel4.Location = new Point(572, 543);
+            siticoneLabel4.Location = new Point(572, 511);
             siticoneLabel4.Name = "siticoneLabel4";
             siticoneLabel4.Size = new Size(142, 29);
             siticoneLabel4.TabIndex = 115;
             siticoneLabel4.Text = "Available Copies";
+            // 
+            // textBoxApprovalDate
+            // 
+            textBoxApprovalDate.Location = new Point(225, 635);
+            textBoxApprovalDate.Name = "textBoxApprovalDate";
+            textBoxApprovalDate.Size = new Size(244, 27);
+            textBoxApprovalDate.TabIndex = 118;
+            // 
+            // siticoneLabel5
+            // 
+            siticoneLabel5.BackColor = Color.Transparent;
+            siticoneLabel5.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel5.Location = new Point(27, 636);
+            siticoneLabel5.Name = "siticoneLabel5";
+            siticoneLabel5.Size = new Size(142, 29);
+            siticoneLabel5.TabIndex = 117;
+            siticoneLabel5.Text = "Approval Date";
+            // 
+            // textBoxRequestType
+            // 
+            textBoxRequestType.Location = new Point(225, 673);
+            textBoxRequestType.Name = "textBoxRequestType";
+            textBoxRequestType.Size = new Size(244, 27);
+            textBoxRequestType.TabIndex = 120;
+            // 
+            // siticoneLabel6
+            // 
+            siticoneLabel6.BackColor = Color.Transparent;
+            siticoneLabel6.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel6.Location = new Point(27, 674);
+            siticoneLabel6.Name = "siticoneLabel6";
+            siticoneLabel6.Size = new Size(142, 29);
+            siticoneLabel6.TabIndex = 119;
+            siticoneLabel6.Text = "Request Type";
+            // 
+            // textBoxProcessedBy
+            // 
+            textBoxProcessedBy.Location = new Point(778, 595);
+            textBoxProcessedBy.Name = "textBoxProcessedBy";
+            textBoxProcessedBy.Size = new Size(256, 27);
+            textBoxProcessedBy.TabIndex = 122;
+            // 
+            // siticoneLabel7
+            // 
+            siticoneLabel7.BackColor = Color.Transparent;
+            siticoneLabel7.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            siticoneLabel7.Location = new Point(572, 595);
+            siticoneLabel7.Name = "siticoneLabel7";
+            siticoneLabel7.Size = new Size(142, 29);
+            siticoneLabel7.TabIndex = 121;
+            siticoneLabel7.Text = "Processed By";
             // 
             // Reservation
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Bisque;
+            Controls.Add(textBoxProcessedBy);
+            Controls.Add(siticoneLabel7);
+            Controls.Add(textBoxRequestType);
+            Controls.Add(siticoneLabel6);
+            Controls.Add(textBoxApprovalDate);
+            Controls.Add(siticoneLabel5);
             Controls.Add(textBoxAvailableCopies);
             Controls.Add(siticoneLabel4);
             Controls.Add(btnLendBook);
@@ -777,5 +840,11 @@
         private TextBox textBoxRequestDate;
         private TextBox textBoxAvailableCopies;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel4;
+        private TextBox textBoxApprovalDate;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel5;
+        private TextBox textBoxRequestType;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel6;
+        private TextBox textBoxProcessedBy;
+        private SiticoneNetCoreUI.SiticoneLabel siticoneLabel7;
     }
 }

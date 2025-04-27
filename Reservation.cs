@@ -23,7 +23,8 @@ namespace Lib1
             InitializeComponent();
             isAdmin = isAdminUser;
             currentUserID = userID;
-            
+            dataGridView_ReservedBooks.AutoGenerateColumns = true;
+
             // Get the admin's full name from the database
             if (isAdmin)
             {
@@ -49,7 +50,7 @@ namespace Lib1
                     MessageBox.Show("Error getting admin name: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            
+
             SetupUIBasedOnUserType();
             LoadReservedBooks();
             if (isAdmin)
@@ -101,31 +102,49 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    // Use the ReservedBooks query directly
-                    string query = "SELECT * FROM ReservedBooks";
+                    string query = @"SELECT bt.TransactionID, bt.UserID, b.BookID, b.Title, b.ISBN, 
+                                   b.AvailableCopies, b.TotalCopies, bt.RequestDate, bt.ApprovalDate,
+                                   bt.Status, bt.ProcessedBy, bt.RequestType, u.FullName
+                                   FROM ((BookTransactions bt 
+                                   INNER JOIN Books b ON bt.BookID = b.BookID)
+                                   INNER JOIN Users u ON bt.UserID = u.UserID)
+                                   WHERE bt.RequestType = 'Reservation'";
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
-                        OleDbDataAdapter adapter = new OleDbDataAdapter(command);
-                        DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);
-
-                        dataGridView_ReservedBooks.DataSource = dataTable;
-
-                        // Configure date formatting for display
-                        foreach (string dateColumn in new[] { "RequestDate", "ApprovalDate" })
+                        using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
                         {
-                            if (dataGridView_ReservedBooks.Columns.Contains(dateColumn))
+                            DataTable dataTable = new DataTable();
+                            adapter.Fill(dataTable);
+
+                            dataGridView_ReservedBooks.DataSource = null;
+                            dataGridView_ReservedBooks.DataSource = dataTable;
+
+                            // Format date columns
+                            if (dataGridView_ReservedBooks.Columns.Contains("RequestDate"))
                             {
-                                dataGridView_ReservedBooks.Columns[dateColumn].DefaultCellStyle.Format = "MM/dd/yyyy";
+                                dataGridView_ReservedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                             }
+                            if (dataGridView_ReservedBooks.Columns.Contains("ApprovalDate"))
+                            {
+                                dataGridView_ReservedBooks.Columns["ApprovalDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                            }
+
+                            // Hide unnecessary columns
+                            if (dataGridView_ReservedBooks.Columns.Contains("BorrowDate"))
+                                dataGridView_ReservedBooks.Columns["BorrowDate"].Visible = false;
+                            if (dataGridView_ReservedBooks.Columns.Contains("ReturnDate"))
+                                dataGridView_ReservedBooks.Columns["ReturnDate"].Visible = false;
+
+                            dataGridView_ReservedBooks.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading reserved books: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading reserved books: {ex.Message}\nStack trace: {ex.StackTrace}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -180,7 +199,7 @@ namespace Lib1
                     string query = @"SELECT DISTINCT u.UserID, u.FullName
                                     FROM (Users u 
                                     INNER JOIN BookTransactions bt ON u.UserID = bt.UserID)
-                                    WHERE bt.RequestType = 'Reserve'
+                                    WHERE bt.RequestType = 'Reservation'
                                     ORDER BY u.FullName";
 
                     OleDbDataAdapter adapter = new OleDbDataAdapter(query, connection);
@@ -218,13 +237,15 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    // Update status and approval date in a single query without field names
-                    string updateQuery = "UPDATE BookTransactions SET Status = 'Approved', ApprovalDate = @ApprovalDate, ProcessedBy = @ProcessedBy WHERE TransactionID = @TransactionID";
+                    string updateQuery = "UPDATE BookTransactions " +
+                                         "SET Status = 'Approved', ApprovalDate = @ApprovalDate, ProcessedBy = @ProcessedBy " +
+                                         "WHERE TransactionID = @TransactionID";
+
                     using (OleDbCommand command = new OleDbCommand(updateQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@TransactionID", selectedTransactionID);
-                        command.Parameters.AddWithValue("@ApprovalDate", DateTime.Now.Date); // Use just the date portion
-                        command.Parameters.AddWithValue("@ProcessedBy", adminFullName);
+                        command.Parameters.Add("@ApprovalDate", OleDbType.Date).Value = DateTime.Now;
+                        command.Parameters.Add("@ProcessedBy", OleDbType.VarWChar).Value = adminFullName;
+                        command.Parameters.Add("@TransactionID", OleDbType.Integer).Value = selectedTransactionID;
 
                         int rowsAffected = command.ExecuteNonQuery();
 
@@ -234,19 +255,18 @@ namespace Lib1
                         }
                         else
                         {
-                            MessageBox.Show($"Update failed.\nTransaction ID: {selectedTransactionID}\nAdmin Name: {adminFullName}",
+                            MessageBox.Show($"Update failed.\nTransaction ID: {selectedTransactionID}",
                                 "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
 
-                    // Refresh the view regardless of outcome
                     LoadPendingReservationRequests();
                     ClearSelection();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error approving reservation:\n{ex.Message}\n\nTransaction ID: {selectedTransactionID}",
+                MessageBox.Show($"Error approving reservation:\n{ex.Message}\n\nTransaction ID: {selectedTransactionID}\nStack Trace: {ex.StackTrace}",
                     "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -297,68 +317,88 @@ namespace Lib1
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
                     connection.Open();
+                    OleDbTransaction transaction = connection.BeginTransaction();
 
-                    // Check available copies
-                    string checkCopiesQuery = @"SELECT AvailableCopies, BookID FROM Books 
-                                              WHERE BookID = (SELECT BookID FROM BookTransactions 
-                                                            WHERE TransactionID = @TransactionID)";
-
-                    int availableCopies = 0;
-                    int bookID = 0;
-
-                    using (OleDbCommand command = new OleDbCommand(checkCopiesQuery, connection))
+                    try
                     {
-                        command.Parameters.AddWithValue("@TransactionID", selectedTransactionID);
-                        using (OleDbDataReader reader = command.ExecuteReader())
+                        // First get the book ID and check available copies
+                        int bookID = 0;
+                        int availableCopies = 0;
+                        string checkQuery = @"SELECT b.BookID, b.AvailableCopies 
+                                            FROM Books b 
+                                            INNER JOIN BookTransactions bt ON b.BookID = bt.BookID 
+                                            WHERE bt.TransactionID = @TransactionID";
+
+                        using (OleDbCommand command = new OleDbCommand(checkQuery, connection, transaction))
                         {
-                            if (reader.Read())
+                            command.Parameters.AddWithValue("@TransactionID", selectedTransactionID);
+                            using (OleDbDataReader reader = command.ExecuteReader())
                             {
-                                availableCopies = Convert.ToInt32(reader["AvailableCopies"]);
-                                bookID = Convert.ToInt32(reader["BookID"]);
+                                if (reader.Read())
+                                {
+                                    bookID = Convert.ToInt32(reader["BookID"]);
+                                    availableCopies = Convert.ToInt32(reader["AvailableCopies"]);
+                                }
                             }
                         }
-                    }
 
-                    if (availableCopies <= 0)
+                        if (availableCopies <= 0)
+                        {
+                            MessageBox.Show("This book has no available copies left.", "No Copies Available", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        DateTime currentDate = DateTime.Now;
+                        DateTime returnDate = currentDate.AddDays(7); // Return date is 1 week later
+
+                        // Update transaction status to Approved and set all dates, ProcessedBy, and RequestType
+                        string updateQuery = @"UPDATE BookTransactions 
+                                            SET Status = 'Approved', 
+                                                ApprovalDate = ?, 
+                                                BorrowDate = ?, 
+                                                ReturnDate = ?,
+                                                ProcessedBy = ?,
+                                                RequestType = 'Borrow'
+                                            WHERE TransactionID = ?";
+
+                        using (OleDbCommand cmd = new OleDbCommand(updateQuery, connection, transaction))
+                        {
+                            cmd.Parameters.Add("?", OleDbType.Date).Value = currentDate;
+                            cmd.Parameters.Add("?", OleDbType.Date).Value = currentDate;
+                            cmd.Parameters.Add("?", OleDbType.Date).Value = returnDate;
+                            cmd.Parameters.Add("?", OleDbType.VarChar).Value = adminFullName;
+                            cmd.Parameters.Add("?", OleDbType.Integer).Value = selectedTransactionID;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Reduce AvailableCopies in Books table
+                        string updateBookQuery = "UPDATE Books SET AvailableCopies = AvailableCopies - 1 WHERE BookID = ?";
+                        using (OleDbCommand cmd = new OleDbCommand(updateBookQuery, connection, transaction))
+                        {
+                            cmd.Parameters.Add("?", OleDbType.Integer).Value = bookID;
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Commit the transaction if everything is successful
+                        transaction.Commit();
+
+                        MessageBox.Show("Book has been successfully lent! The book is now marked as borrowed and will be due in one week.",
+                            "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadReservedBooks();
+                        ClearSelection();
+                    }
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("No copies available for lending.", "No Copies", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        // If any operation fails, roll back all changes
+                        transaction.Rollback();
+                        throw; // Re-throw to be caught by outer catch block
                     }
-
-                    // Update the transaction to a borrow
-                    string updateTransactionQuery = @"UPDATE BookTransactions 
-                                                    SET Status = 'Approved', 
-                                                        RequestType = 'Borrow',
-                                                        BorrowDate = @BorrowDate,
-                                                        ReturnDate = @ReturnDate
-                                                    WHERE TransactionID = @TransactionID";
-
-                    using (OleDbCommand command = new OleDbCommand(updateTransactionQuery, connection))
-                    {
-                        command.Parameters.AddWithValue("@TransactionID", selectedTransactionID);
-                        command.Parameters.AddWithValue("@BorrowDate", DateTime.Now.Date);
-                        command.Parameters.AddWithValue("@ReturnDate", DateTime.Now.Date.AddDays(7)); // 7-day loan period
-                        command.ExecuteNonQuery();
-                    }
-
-                    // Update available copies
-                    string updateCopiesQuery = "UPDATE Books SET AvailableCopies = AvailableCopies - 1 WHERE BookID = @BookID";
-                    using (OleDbCommand command = new OleDbCommand(updateCopiesQuery, connection))
-                    {
-                        command.Parameters.AddWithValue("@BookID", bookID);
-                        command.ExecuteNonQuery();
-                    }
-
-                    MessageBox.Show("Book has been successfully lent!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadReservedBooks();
-                    ClearSelection();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error lending book: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void btnViewReservationRequests_Click(object sender, EventArgs e)
@@ -390,7 +430,7 @@ namespace Lib1
                                     INNER JOIN Books b ON bt.BookID = b.BookID)
                                     INNER JOIN Users u ON bt.UserID = u.UserID)
                                     INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.RequestType = 'Reserve'";
+                                    WHERE bt.RequestType = 'Reservation'";
 
                     if (selectedUserID > 0)
                     {
@@ -445,7 +485,7 @@ namespace Lib1
                                     INNER JOIN Books b ON bt.BookID = b.BookID)
                                     INNER JOIN Users u ON bt.UserID = u.UserID)
                                     INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.RequestType = 'Reserve' AND 
+                                    WHERE bt.RequestType = 'Reservation' AND 
                                     (b.Title LIKE @SearchText OR 
                                      b.Author LIKE @SearchText OR 
                                      b.ISBN LIKE @SearchText OR 
@@ -508,26 +548,55 @@ namespace Lib1
             {
                 DataGridViewRow row = dataGridView_ReservedBooks.Rows[e.RowIndex];
 
-                // Store the selected transaction ID
                 selectedTransactionID = Convert.ToInt32(row.Cells["TransactionID"].Value);
 
-                // Fill text boxes with the selected row data
-                textBoxUserID.Text = row.Cells["UserID"].Value.ToString();
-                textBoxFullName.Text = row.Cells["FullName"].Value.ToString();
-                textBoxBookID.Text = row.Cells["BookID"].Value.ToString();
-                textBoxBookTitle.Text = row.Cells["Title"].Value.ToString();
-                textBoxISBN.Text = row.Cells["ISBN"].Value.ToString();
-                textBoxAvailableCopies.Text = row.Cells["AvailableCopies"].Value.ToString();
-                textBoxTotalCopies.Text = row.Cells["TotalCopies"].Value.ToString();
-                textBoxStatus.Text = row.Cells["Status"].Value.ToString();
-                
-                textBoxRequestDate.Text = row.Cells["RequestDate"].Value != DBNull.Value
-                    ? Convert.ToDateTime(row.Cells["RequestDate"].Value).ToShortDateString()
-                    : "Not set";
+                // Check if column exists before filling textboxes
+                if (row.DataGridView.Columns.Contains("UserID"))
+                    textBoxUserID.Text = row.Cells["UserID"].Value.ToString();
 
-                string status = row.Cells["Status"].Value.ToString();
+                if (row.DataGridView.Columns.Contains("FullName"))
+                    textBoxFullName.Text = row.Cells["FullName"].Value.ToString();
 
-                // Enable buttons based on current view and status
+                if (row.DataGridView.Columns.Contains("BookID"))
+                    textBoxBookID.Text = row.Cells["BookID"].Value.ToString();
+
+                if (row.DataGridView.Columns.Contains("Title"))
+                    textBoxBookTitle.Text = row.Cells["Title"].Value.ToString();
+
+                if (row.DataGridView.Columns.Contains("ISBN"))
+                    textBoxISBN.Text = row.Cells["ISBN"].Value.ToString();
+
+                if (row.DataGridView.Columns.Contains("AvailableCopies"))
+                    textBoxAvailableCopies.Text = row.Cells["AvailableCopies"].Value.ToString();
+
+                if (row.DataGridView.Columns.Contains("TotalCopies"))
+                    textBoxTotalCopies.Text = row.Cells["TotalCopies"].Value.ToString();
+
+                if (row.DataGridView.Columns.Contains("Status"))
+                    textBoxStatus.Text = row.Cells["Status"].Value.ToString();
+
+                if (row.DataGridView.Columns.Contains("RequestDate"))
+                {
+                    var requestDate = row.Cells["RequestDate"].Value;
+                    textBoxRequestDate.Text = requestDate != DBNull.Value
+                        ? Convert.ToDateTime(requestDate).ToShortDateString()
+                        : "Not set";
+                }
+
+                if (row.DataGridView.Columns.Contains("ApprovalDate"))
+                {
+                    var approvalDate = row.Cells["ApprovalDate"].Value;
+                    textBoxApprovalDate.Text = approvalDate != DBNull.Value
+                        ? Convert.ToDateTime(approvalDate).ToShortDateString()
+                        : "Not set";
+                }
+
+                if (row.DataGridView.Columns.Contains("RequestType"))
+                    textBoxRequestType.Text = row.Cells["RequestType"].Value.ToString();
+
+                string status = row.DataGridView.Columns.Contains("Status") ? row.Cells["Status"].Value.ToString() : "";
+
+                // Enable buttons based on view
                 if (btnLendBook.Visible)
                 {
                     btnLendBook.Enabled = status.Equals("Approved", StringComparison.OrdinalIgnoreCase);
@@ -551,6 +620,8 @@ namespace Lib1
             textBoxTotalCopies.Text = string.Empty;
             textBoxStatus.Text = string.Empty;
             textBoxRequestDate.Text = string.Empty;
+            textBoxApprovalDate.Text = string.Empty;
+            textBoxRequestType.Text = string.Empty;
 
             btnLendBook.Enabled = false;
             btnAccept.Enabled = false;
