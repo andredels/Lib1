@@ -34,8 +34,9 @@
             siticoneLabel1 = new SiticoneNetCoreUI.SiticoneLabel();
             siticonePictureBox1 = new SiticoneNetCoreUI.SiticonePictureBox();
             panel1 = new Panel();
+            ShowPassword = new CheckBox();
+            btnStudentLogin = new SiticoneNetCoreUI.SiticoneButton();
             siticoneLabel3 = new SiticoneNetCoreUI.SiticoneLabel();
-            siticoneCloseButton1 = new SiticoneNetCoreUI.SiticoneCloseButton();
             areyouStudent = new SiticoneNetCoreUI.SiticoneLinkedLabel();
             btnLoginAdmin = new SiticoneNetCoreUI.SiticoneButton();
             btnSignupAdmin = new SiticoneNetCoreUI.SiticoneButton();
@@ -112,7 +113,7 @@
             siticoneAdvancedPanel1.ShadowDepth = 5;
             siticoneAdvancedPanel1.ShadowOffset = new Point(2, 2);
             siticoneAdvancedPanel1.ShadowOpacity = 0.3F;
-            siticoneAdvancedPanel1.Size = new Size(257, 450);
+            siticoneAdvancedPanel1.Size = new Size(257, 508);
             siticoneAdvancedPanel1.SlideDirection = new Point(0, -30);
             siticoneAdvancedPanel1.TabIndex = 18;
             siticoneAdvancedPanel1.TopLeftRadius = 5;
@@ -187,8 +188,9 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(255, 224, 192);
+            panel1.Controls.Add(ShowPassword);
+            panel1.Controls.Add(btnStudentLogin);
             panel1.Controls.Add(siticoneLabel3);
-            panel1.Controls.Add(siticoneCloseButton1);
             panel1.Controls.Add(areyouStudent);
             panel1.Controls.Add(btnLoginAdmin);
             panel1.Controls.Add(btnSignupAdmin);
@@ -198,11 +200,100 @@
             panel1.Controls.Add(txtboxUsernameAdmin);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(txtboxPasswordAdmin);
-            panel1.Dock = DockStyle.Right;
-            panel1.Location = new Point(252, 0);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(257, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(340, 450);
+            panel1.Size = new Size(335, 508);
             panel1.TabIndex = 19;
+            // 
+            // ShowPassword
+            // 
+            ShowPassword.AutoSize = true;
+            ShowPassword.Font = new Font("Calibri", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ShowPassword.Location = new Point(150, 309);
+            ShowPassword.Name = "ShowPassword";
+            ShowPassword.Size = new Size(126, 22);
+            ShowPassword.TabIndex = 26;
+            ShowPassword.Text = "Show Password";
+            ShowPassword.UseVisualStyleBackColor = true;
+            ShowPassword.CheckedChanged += ShowPassword_CheckedChanged;
+            // 
+            // btnStudentLogin
+            // 
+            btnStudentLogin.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnStudentLogin.AccessibleName = "STUDENT LOGIN";
+            btnStudentLogin.AutoSizeBasedOnText = false;
+            btnStudentLogin.BackColor = Color.Transparent;
+            btnStudentLogin.BadgeBackColor = Color.Red;
+            btnStudentLogin.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnStudentLogin.BadgeValue = 0;
+            btnStudentLogin.BadgeValueForeColor = Color.White;
+            btnStudentLogin.BorderColor = Color.Transparent;
+            btnStudentLogin.BorderWidth = 2;
+            btnStudentLogin.ButtonBackColor = Color.FromArgb(192, 192, 255);
+            btnStudentLogin.ButtonImage = null;
+            btnStudentLogin.CanBeep = true;
+            btnStudentLogin.CanGlow = false;
+            btnStudentLogin.CanShake = true;
+            btnStudentLogin.ContextMenuStripEx = null;
+            btnStudentLogin.CornerRadiusBottomLeft = 8;
+            btnStudentLogin.CornerRadiusBottomRight = 8;
+            btnStudentLogin.CornerRadiusTopLeft = 8;
+            btnStudentLogin.CornerRadiusTopRight = 8;
+            btnStudentLogin.CustomCursor = Cursors.Default;
+            btnStudentLogin.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnStudentLogin.EnableLongPress = false;
+            btnStudentLogin.EnablePressAnimation = true;
+            btnStudentLogin.EnableRippleEffect = true;
+            btnStudentLogin.EnableShadow = false;
+            btnStudentLogin.EnableTextWrapping = false;
+            btnStudentLogin.Font = new Font("Calibri", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnStudentLogin.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnStudentLogin.GlowIntensity = 100;
+            btnStudentLogin.GlowRadius = 20F;
+            btnStudentLogin.GradientBackground = true;
+            btnStudentLogin.GradientColor = Color.Blue;
+            btnStudentLogin.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnStudentLogin.HintText = null;
+            btnStudentLogin.HoverBackColor = Color.FromArgb(114, 168, 255);
+            btnStudentLogin.HoverFontStyle = FontStyle.Regular;
+            btnStudentLogin.HoverTextColor = Color.Black;
+            btnStudentLogin.HoverTransitionDuration = 250;
+            btnStudentLogin.ImageAlign = ContentAlignment.MiddleLeft;
+            btnStudentLogin.ImagePadding = 5;
+            btnStudentLogin.ImageSize = new Size(16, 16);
+            btnStudentLogin.IsRadial = false;
+            btnStudentLogin.IsReadOnly = false;
+            btnStudentLogin.IsToggleButton = false;
+            btnStudentLogin.IsToggled = false;
+            btnStudentLogin.Location = new Point(59, 425);
+            btnStudentLogin.LongPressDurationMS = 1000;
+            btnStudentLogin.Name = "btnStudentLogin";
+            btnStudentLogin.NormalFontStyle = FontStyle.Regular;
+            btnStudentLogin.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnStudentLogin.ParticleCount = 15;
+            btnStudentLogin.PressAnimationScale = 0.97F;
+            btnStudentLogin.PressedBackColor = Color.FromArgb(74, 128, 235);
+            btnStudentLogin.PressedFontStyle = FontStyle.Regular;
+            btnStudentLogin.PressTransitionDuration = 150;
+            btnStudentLogin.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnStudentLogin.RippleColor = Color.FromArgb(255, 255, 255);
+            btnStudentLogin.RippleOpacity = 0.3F;
+            btnStudentLogin.RippleRadiusMultiplier = 0.6F;
+            btnStudentLogin.ShadowBlur = 5;
+            btnStudentLogin.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnStudentLogin.ShadowOffset = new Point(2, 2);
+            btnStudentLogin.ShakeDuration = 500;
+            btnStudentLogin.ShakeIntensity = 5;
+            btnStudentLogin.Size = new Size(217, 33);
+            btnStudentLogin.TabIndex = 25;
+            btnStudentLogin.Text = "STUDENT LOGIN";
+            btnStudentLogin.TextAlign = ContentAlignment.MiddleCenter;
+            btnStudentLogin.TextColor = Color.Black;
+            btnStudentLogin.TooltipText = null;
+            btnStudentLogin.UseAdvancedRendering = true;
+            btnStudentLogin.UseParticles = false;
+            btnStudentLogin.Click += btnStudentLogin_Click;
             // 
             // siticoneLabel3
             // 
@@ -216,31 +307,16 @@
             siticoneLabel3.Text = "Admin Login";
             siticoneLabel3.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // siticoneCloseButton1
-            // 
-            siticoneCloseButton1.BackColor = Color.Transparent;
-            siticoneCloseButton1.CountdownFont = new Font("Segoe UI", 9F);
-            siticoneCloseButton1.Cursor = Cursors.Default;
-            siticoneCloseButton1.EnableSound = false;
-            siticoneCloseButton1.IconAnimation = SiticoneNetCoreUI.SiticoneCloseButton.CloseIconAnimation.Scale;
-            siticoneCloseButton1.IconColor = Color.Black;
-            siticoneCloseButton1.Location = new Point(294, 3);
-            siticoneCloseButton1.Name = "siticoneCloseButton1";
-            siticoneCloseButton1.Size = new Size(40, 40);
-            siticoneCloseButton1.TabIndex = 21;
-            siticoneCloseButton1.Text = "siticoneCloseButton1";
-            siticoneCloseButton1.TooltipText = "Close button";
-            // 
             // areyouStudent
             // 
             areyouStudent.BackColor = Color.Transparent;
             areyouStudent.Font = new Font("Segoe UI", 10F);
-            areyouStudent.Location = new Point(44, 412);
+            areyouStudent.Location = new Point(50, 470);
             areyouStudent.Name = "areyouStudent";
             areyouStudent.Size = new Size(251, 29);
             areyouStudent.TabIndex = 20;
             areyouStudent.TabStop = true;
-            areyouStudent.Text = "Are you a student? Click here.";
+            areyouStudent.Text = "Forgot Password? Click here.";
             areyouStudent.LinkClicked += areyouStudent_LinkClicked;
             // 
             // btnLoginAdmin
@@ -291,7 +367,7 @@
             btnLoginAdmin.IsReadOnly = false;
             btnLoginAdmin.IsToggleButton = false;
             btnLoginAdmin.IsToggled = false;
-            btnLoginAdmin.Location = new Point(59, 329);
+            btnLoginAdmin.Location = new Point(59, 337);
             btnLoginAdmin.LongPressDurationMS = 1000;
             btnLoginAdmin.Name = "btnLoginAdmin";
             btnLoginAdmin.NormalFontStyle = FontStyle.Regular;
@@ -368,7 +444,7 @@
             btnSignupAdmin.IsReadOnly = false;
             btnSignupAdmin.IsToggleButton = false;
             btnSignupAdmin.IsToggled = false;
-            btnSignupAdmin.Location = new Point(59, 368);
+            btnSignupAdmin.Location = new Point(59, 376);
             btnSignupAdmin.LongPressDurationMS = 1000;
             btnSignupAdmin.Name = "btnSignupAdmin";
             btnSignupAdmin.NormalFontStyle = FontStyle.Regular;
@@ -449,6 +525,7 @@
             // 
             // txtboxPasswordAdmin
             // 
+            txtboxPasswordAdmin.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtboxPasswordAdmin.Location = new Point(100, 281);
             txtboxPasswordAdmin.Name = "txtboxPasswordAdmin";
             txtboxPasswordAdmin.Size = new Size(176, 27);
@@ -458,10 +535,10 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(592, 450);
+            ClientSize = new Size(592, 508);
             Controls.Add(panel1);
             Controls.Add(siticoneAdvancedPanel1);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "AdminLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminLogin";
@@ -481,7 +558,6 @@
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel1;
         private SiticoneNetCoreUI.SiticonePictureBox siticonePictureBox1;
         private Panel panel1;
-        private SiticoneNetCoreUI.SiticoneCloseButton siticoneCloseButton1;
         private SiticoneNetCoreUI.SiticoneLinkedLabel areyouStudent;
         private SiticoneNetCoreUI.SiticoneButton btnLoginAdmin;
         private SiticoneNetCoreUI.SiticoneButton btnSignupAdmin;
@@ -492,5 +568,7 @@
         private Label label1;
         private TextBox txtboxPasswordAdmin;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel3;
+        private SiticoneNetCoreUI.SiticoneButton btnStudentLogin;
+        private CheckBox ShowPassword;
     }
 }

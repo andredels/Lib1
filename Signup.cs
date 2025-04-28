@@ -16,6 +16,7 @@ namespace Lib1
         public Signup()
         {
             InitializeComponent();
+            Password.PasswordChar = '*';
         }
 
         private void btnSignUpSIGNUP_Click(object sender, EventArgs e)
@@ -69,7 +70,7 @@ namespace Lib1
                 MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-    
+
 
         private void lblLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -116,6 +117,12 @@ namespace Lib1
         private void Password_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void chckbxShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            bool show = chckbxShowPassword.Checked;
+            Password.PasswordChar = show ? '\0' : '*';
         }
     }
 }

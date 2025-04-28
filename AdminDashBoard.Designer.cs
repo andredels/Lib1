@@ -67,7 +67,7 @@
             // 
             // flowLayoutPanelSideBar
             // 
-            flowLayoutPanelSideBar.BackColor = Color.Peru;
+            flowLayoutPanelSideBar.BackColor = Color.BurlyWood;
             flowLayoutPanelSideBar.Controls.Add(panel10);
             flowLayoutPanelSideBar.Controls.Add(panel1);
             flowLayoutPanelSideBar.Controls.Add(panel2);
@@ -134,6 +134,7 @@
             adminAddBookbtnbtn.CornerRadiusTopRight = 2;
             adminAddBookbtnbtn.CustomCursor = Cursors.Default;
             adminAddBookbtnbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            adminAddBookbtnbtn.Dock = DockStyle.Fill;
             adminAddBookbtnbtn.EnableLongPress = false;
             adminAddBookbtnbtn.EnablePressAnimation = true;
             adminAddBookbtnbtn.EnableRippleEffect = true;
@@ -143,11 +144,11 @@
             adminAddBookbtnbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             adminAddBookbtnbtn.GlowIntensity = 100;
             adminAddBookbtnbtn.GlowRadius = 20F;
-            adminAddBookbtnbtn.GradientBackground = false;
-            adminAddBookbtnbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            adminAddBookbtnbtn.GradientBackground = true;
+            adminAddBookbtnbtn.GradientColor = Color.FromArgb(128, 64, 0);
             adminAddBookbtnbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             adminAddBookbtnbtn.HintText = null;
-            adminAddBookbtnbtn.HoverBackColor = Color.SandyBrown;
+            adminAddBookbtnbtn.HoverBackColor = Color.Bisque;
             adminAddBookbtnbtn.HoverFontStyle = FontStyle.Regular;
             adminAddBookbtnbtn.HoverTextColor = Color.White;
             adminAddBookbtnbtn.HoverTransitionDuration = 250;
@@ -158,7 +159,7 @@
             adminAddBookbtnbtn.IsReadOnly = false;
             adminAddBookbtnbtn.IsToggleButton = false;
             adminAddBookbtnbtn.IsToggled = false;
-            adminAddBookbtnbtn.Location = new Point(52, 12);
+            adminAddBookbtnbtn.Location = new Point(0, 0);
             adminAddBookbtnbtn.LongPressDurationMS = 1000;
             adminAddBookbtnbtn.Name = "adminAddBookbtnbtn";
             adminAddBookbtnbtn.NormalFontStyle = FontStyle.Regular;
@@ -177,7 +178,7 @@
             adminAddBookbtnbtn.ShadowOffset = new Point(2, 2);
             adminAddBookbtnbtn.ShakeDuration = 500;
             adminAddBookbtnbtn.ShakeIntensity = 5;
-            adminAddBookbtnbtn.Size = new Size(149, 29);
+            adminAddBookbtnbtn.Size = new Size(247, 53);
             adminAddBookbtnbtn.TabIndex = 1;
             adminAddBookbtnbtn.Text = "Add Book";
             adminAddBookbtnbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -219,6 +220,7 @@
             adminViewBooksbtn.CornerRadiusTopRight = 2;
             adminViewBooksbtn.CustomCursor = Cursors.Default;
             adminViewBooksbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            adminViewBooksbtn.Dock = DockStyle.Fill;
             adminViewBooksbtn.EnableLongPress = false;
             adminViewBooksbtn.EnablePressAnimation = true;
             adminViewBooksbtn.EnableRippleEffect = true;
@@ -228,8 +230,8 @@
             adminViewBooksbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             adminViewBooksbtn.GlowIntensity = 100;
             adminViewBooksbtn.GlowRadius = 20F;
-            adminViewBooksbtn.GradientBackground = false;
-            adminViewBooksbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            adminViewBooksbtn.GradientBackground = true;
+            adminViewBooksbtn.GradientColor = Color.FromArgb(128, 64, 0);
             adminViewBooksbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             adminViewBooksbtn.HintText = null;
             adminViewBooksbtn.HoverBackColor = Color.SandyBrown;
@@ -243,7 +245,7 @@
             adminViewBooksbtn.IsReadOnly = false;
             adminViewBooksbtn.IsToggleButton = false;
             adminViewBooksbtn.IsToggled = false;
-            adminViewBooksbtn.Location = new Point(52, 12);
+            adminViewBooksbtn.Location = new Point(0, 0);
             adminViewBooksbtn.LongPressDurationMS = 1000;
             adminViewBooksbtn.Name = "adminViewBooksbtn";
             adminViewBooksbtn.NormalFontStyle = FontStyle.Regular;
@@ -262,7 +264,7 @@
             adminViewBooksbtn.ShadowOffset = new Point(2, 2);
             adminViewBooksbtn.ShakeDuration = 500;
             adminViewBooksbtn.ShakeIntensity = 5;
-            adminViewBooksbtn.Size = new Size(149, 29);
+            adminViewBooksbtn.Size = new Size(247, 53);
             adminViewBooksbtn.TabIndex = 1;
             adminViewBooksbtn.Text = "View Books";
             adminViewBooksbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -304,6 +306,7 @@
             adminBookBorrowRequestbtn.CornerRadiusTopRight = 2;
             adminBookBorrowRequestbtn.CustomCursor = Cursors.Default;
             adminBookBorrowRequestbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            adminBookBorrowRequestbtn.Dock = DockStyle.Fill;
             adminBookBorrowRequestbtn.EnableLongPress = false;
             adminBookBorrowRequestbtn.EnablePressAnimation = true;
             adminBookBorrowRequestbtn.EnableRippleEffect = true;
@@ -313,8 +316,8 @@
             adminBookBorrowRequestbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             adminBookBorrowRequestbtn.GlowIntensity = 100;
             adminBookBorrowRequestbtn.GlowRadius = 20F;
-            adminBookBorrowRequestbtn.GradientBackground = false;
-            adminBookBorrowRequestbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            adminBookBorrowRequestbtn.GradientBackground = true;
+            adminBookBorrowRequestbtn.GradientColor = Color.FromArgb(128, 64, 0);
             adminBookBorrowRequestbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             adminBookBorrowRequestbtn.HintText = null;
             adminBookBorrowRequestbtn.HoverBackColor = Color.SandyBrown;
@@ -328,7 +331,7 @@
             adminBookBorrowRequestbtn.IsReadOnly = false;
             adminBookBorrowRequestbtn.IsToggleButton = false;
             adminBookBorrowRequestbtn.IsToggled = false;
-            adminBookBorrowRequestbtn.Location = new Point(52, 12);
+            adminBookBorrowRequestbtn.Location = new Point(0, 0);
             adminBookBorrowRequestbtn.LongPressDurationMS = 1000;
             adminBookBorrowRequestbtn.Name = "adminBookBorrowRequestbtn";
             adminBookBorrowRequestbtn.NormalFontStyle = FontStyle.Regular;
@@ -347,7 +350,7 @@
             adminBookBorrowRequestbtn.ShadowOffset = new Point(2, 2);
             adminBookBorrowRequestbtn.ShakeDuration = 500;
             adminBookBorrowRequestbtn.ShakeIntensity = 5;
-            adminBookBorrowRequestbtn.Size = new Size(149, 29);
+            adminBookBorrowRequestbtn.Size = new Size(247, 53);
             adminBookBorrowRequestbtn.TabIndex = 1;
             adminBookBorrowRequestbtn.Text = "Book Borrow Request";
             adminBookBorrowRequestbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -389,6 +392,7 @@
             adminBorrowedBooksbtn.CornerRadiusTopRight = 2;
             adminBorrowedBooksbtn.CustomCursor = Cursors.Default;
             adminBorrowedBooksbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            adminBorrowedBooksbtn.Dock = DockStyle.Fill;
             adminBorrowedBooksbtn.EnableLongPress = false;
             adminBorrowedBooksbtn.EnablePressAnimation = true;
             adminBorrowedBooksbtn.EnableRippleEffect = true;
@@ -398,8 +402,8 @@
             adminBorrowedBooksbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             adminBorrowedBooksbtn.GlowIntensity = 100;
             adminBorrowedBooksbtn.GlowRadius = 20F;
-            adminBorrowedBooksbtn.GradientBackground = false;
-            adminBorrowedBooksbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            adminBorrowedBooksbtn.GradientBackground = true;
+            adminBorrowedBooksbtn.GradientColor = Color.FromArgb(128, 64, 0);
             adminBorrowedBooksbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             adminBorrowedBooksbtn.HintText = null;
             adminBorrowedBooksbtn.HoverBackColor = Color.SandyBrown;
@@ -413,7 +417,7 @@
             adminBorrowedBooksbtn.IsReadOnly = false;
             adminBorrowedBooksbtn.IsToggleButton = false;
             adminBorrowedBooksbtn.IsToggled = false;
-            adminBorrowedBooksbtn.Location = new Point(52, 12);
+            adminBorrowedBooksbtn.Location = new Point(0, 0);
             adminBorrowedBooksbtn.LongPressDurationMS = 1000;
             adminBorrowedBooksbtn.Name = "adminBorrowedBooksbtn";
             adminBorrowedBooksbtn.NormalFontStyle = FontStyle.Regular;
@@ -432,7 +436,7 @@
             adminBorrowedBooksbtn.ShadowOffset = new Point(2, 2);
             adminBorrowedBooksbtn.ShakeDuration = 500;
             adminBorrowedBooksbtn.ShakeIntensity = 5;
-            adminBorrowedBooksbtn.Size = new Size(149, 29);
+            adminBorrowedBooksbtn.Size = new Size(247, 53);
             adminBorrowedBooksbtn.TabIndex = 1;
             adminBorrowedBooksbtn.Text = "Borrowed Books";
             adminBorrowedBooksbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -474,6 +478,7 @@
             adminReservation.CornerRadiusTopRight = 2;
             adminReservation.CustomCursor = Cursors.Default;
             adminReservation.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            adminReservation.Dock = DockStyle.Fill;
             adminReservation.EnableLongPress = false;
             adminReservation.EnablePressAnimation = true;
             adminReservation.EnableRippleEffect = true;
@@ -483,8 +488,8 @@
             adminReservation.GlowColor = Color.FromArgb(100, 255, 255, 255);
             adminReservation.GlowIntensity = 100;
             adminReservation.GlowRadius = 20F;
-            adminReservation.GradientBackground = false;
-            adminReservation.GradientColor = Color.FromArgb(114, 168, 255);
+            adminReservation.GradientBackground = true;
+            adminReservation.GradientColor = Color.FromArgb(128, 64, 0);
             adminReservation.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             adminReservation.HintText = null;
             adminReservation.HoverBackColor = Color.SandyBrown;
@@ -498,7 +503,7 @@
             adminReservation.IsReadOnly = false;
             adminReservation.IsToggleButton = false;
             adminReservation.IsToggled = false;
-            adminReservation.Location = new Point(52, 12);
+            adminReservation.Location = new Point(0, 0);
             adminReservation.LongPressDurationMS = 1000;
             adminReservation.Name = "adminReservation";
             adminReservation.NormalFontStyle = FontStyle.Regular;
@@ -517,7 +522,7 @@
             adminReservation.ShadowOffset = new Point(2, 2);
             adminReservation.ShakeDuration = 500;
             adminReservation.ShakeIntensity = 5;
-            adminReservation.Size = new Size(149, 29);
+            adminReservation.Size = new Size(247, 53);
             adminReservation.TabIndex = 1;
             adminReservation.Text = "Reservation";
             adminReservation.TextAlign = ContentAlignment.MiddleCenter;
@@ -559,6 +564,7 @@
             adminUsersInfobtn.CornerRadiusTopRight = 2;
             adminUsersInfobtn.CustomCursor = Cursors.Default;
             adminUsersInfobtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            adminUsersInfobtn.Dock = DockStyle.Fill;
             adminUsersInfobtn.EnableLongPress = false;
             adminUsersInfobtn.EnablePressAnimation = true;
             adminUsersInfobtn.EnableRippleEffect = true;
@@ -568,8 +574,8 @@
             adminUsersInfobtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             adminUsersInfobtn.GlowIntensity = 100;
             adminUsersInfobtn.GlowRadius = 20F;
-            adminUsersInfobtn.GradientBackground = false;
-            adminUsersInfobtn.GradientColor = Color.FromArgb(114, 168, 255);
+            adminUsersInfobtn.GradientBackground = true;
+            adminUsersInfobtn.GradientColor = Color.FromArgb(128, 64, 0);
             adminUsersInfobtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             adminUsersInfobtn.HintText = null;
             adminUsersInfobtn.HoverBackColor = Color.SandyBrown;
@@ -583,7 +589,7 @@
             adminUsersInfobtn.IsReadOnly = false;
             adminUsersInfobtn.IsToggleButton = false;
             adminUsersInfobtn.IsToggled = false;
-            adminUsersInfobtn.Location = new Point(52, 12);
+            adminUsersInfobtn.Location = new Point(0, 0);
             adminUsersInfobtn.LongPressDurationMS = 1000;
             adminUsersInfobtn.Name = "adminUsersInfobtn";
             adminUsersInfobtn.NormalFontStyle = FontStyle.Regular;
@@ -602,7 +608,7 @@
             adminUsersInfobtn.ShadowOffset = new Point(2, 2);
             adminUsersInfobtn.ShakeDuration = 500;
             adminUsersInfobtn.ShakeIntensity = 5;
-            adminUsersInfobtn.Size = new Size(149, 29);
+            adminUsersInfobtn.Size = new Size(247, 53);
             adminUsersInfobtn.TabIndex = 1;
             adminUsersInfobtn.Text = "Users Info";
             adminUsersInfobtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -610,6 +616,7 @@
             adminUsersInfobtn.TooltipText = null;
             adminUsersInfobtn.UseAdvancedRendering = true;
             adminUsersInfobtn.UseParticles = false;
+            adminUsersInfobtn.Click += adminUsersInfobtn_Click;
             // 
             // panel9
             // 
@@ -643,6 +650,7 @@
             siticoneButton1.CornerRadiusTopRight = 2;
             siticoneButton1.CustomCursor = Cursors.Default;
             siticoneButton1.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            siticoneButton1.Dock = DockStyle.Fill;
             siticoneButton1.EnableLongPress = false;
             siticoneButton1.EnablePressAnimation = true;
             siticoneButton1.EnableRippleEffect = true;
@@ -652,8 +660,8 @@
             siticoneButton1.GlowColor = Color.FromArgb(100, 255, 255, 255);
             siticoneButton1.GlowIntensity = 100;
             siticoneButton1.GlowRadius = 20F;
-            siticoneButton1.GradientBackground = false;
-            siticoneButton1.GradientColor = Color.FromArgb(114, 168, 255);
+            siticoneButton1.GradientBackground = true;
+            siticoneButton1.GradientColor = Color.FromArgb(128, 64, 0);
             siticoneButton1.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             siticoneButton1.HintText = null;
             siticoneButton1.HoverBackColor = Color.SandyBrown;
@@ -667,7 +675,7 @@
             siticoneButton1.IsReadOnly = false;
             siticoneButton1.IsToggleButton = false;
             siticoneButton1.IsToggled = false;
-            siticoneButton1.Location = new Point(52, 12);
+            siticoneButton1.Location = new Point(0, 0);
             siticoneButton1.LongPressDurationMS = 1000;
             siticoneButton1.Name = "siticoneButton1";
             siticoneButton1.NormalFontStyle = FontStyle.Regular;
@@ -686,7 +694,7 @@
             siticoneButton1.ShadowOffset = new Point(2, 2);
             siticoneButton1.ShakeDuration = 500;
             siticoneButton1.ShakeIntensity = 5;
-            siticoneButton1.Size = new Size(149, 29);
+            siticoneButton1.Size = new Size(247, 53);
             siticoneButton1.TabIndex = 1;
             siticoneButton1.Text = "User Registrants";
             siticoneButton1.TextAlign = ContentAlignment.MiddleCenter;
@@ -728,6 +736,7 @@
             adminAccountSettingsbtn.CornerRadiusTopRight = 2;
             adminAccountSettingsbtn.CustomCursor = Cursors.Default;
             adminAccountSettingsbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            adminAccountSettingsbtn.Dock = DockStyle.Fill;
             adminAccountSettingsbtn.EnableLongPress = false;
             adminAccountSettingsbtn.EnablePressAnimation = true;
             adminAccountSettingsbtn.EnableRippleEffect = true;
@@ -737,8 +746,8 @@
             adminAccountSettingsbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             adminAccountSettingsbtn.GlowIntensity = 100;
             adminAccountSettingsbtn.GlowRadius = 20F;
-            adminAccountSettingsbtn.GradientBackground = false;
-            adminAccountSettingsbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            adminAccountSettingsbtn.GradientBackground = true;
+            adminAccountSettingsbtn.GradientColor = Color.FromArgb(128, 64, 0);
             adminAccountSettingsbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             adminAccountSettingsbtn.HintText = null;
             adminAccountSettingsbtn.HoverBackColor = Color.SandyBrown;
@@ -752,7 +761,7 @@
             adminAccountSettingsbtn.IsReadOnly = false;
             adminAccountSettingsbtn.IsToggleButton = false;
             adminAccountSettingsbtn.IsToggled = false;
-            adminAccountSettingsbtn.Location = new Point(52, 12);
+            adminAccountSettingsbtn.Location = new Point(0, 0);
             adminAccountSettingsbtn.LongPressDurationMS = 1000;
             adminAccountSettingsbtn.Name = "adminAccountSettingsbtn";
             adminAccountSettingsbtn.NormalFontStyle = FontStyle.Regular;
@@ -771,7 +780,7 @@
             adminAccountSettingsbtn.ShadowOffset = new Point(2, 2);
             adminAccountSettingsbtn.ShakeDuration = 500;
             adminAccountSettingsbtn.ShakeIntensity = 5;
-            adminAccountSettingsbtn.Size = new Size(149, 29);
+            adminAccountSettingsbtn.Size = new Size(247, 53);
             adminAccountSettingsbtn.TabIndex = 1;
             adminAccountSettingsbtn.Text = "Account Settings";
             adminAccountSettingsbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -779,6 +788,7 @@
             adminAccountSettingsbtn.TooltipText = null;
             adminAccountSettingsbtn.UseAdvancedRendering = true;
             adminAccountSettingsbtn.UseParticles = false;
+            adminAccountSettingsbtn.Click += adminAccountSettingsbtn_Click;
             // 
             // panel8
             // 
@@ -812,6 +822,7 @@
             adminLogoutbtn.CornerRadiusTopRight = 2;
             adminLogoutbtn.CustomCursor = Cursors.Default;
             adminLogoutbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            adminLogoutbtn.Dock = DockStyle.Fill;
             adminLogoutbtn.EnableLongPress = false;
             adminLogoutbtn.EnablePressAnimation = true;
             adminLogoutbtn.EnableRippleEffect = true;
@@ -821,8 +832,8 @@
             adminLogoutbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             adminLogoutbtn.GlowIntensity = 100;
             adminLogoutbtn.GlowRadius = 20F;
-            adminLogoutbtn.GradientBackground = false;
-            adminLogoutbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            adminLogoutbtn.GradientBackground = true;
+            adminLogoutbtn.GradientColor = Color.FromArgb(128, 64, 0);
             adminLogoutbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             adminLogoutbtn.HintText = null;
             adminLogoutbtn.HoverBackColor = Color.SandyBrown;
@@ -836,7 +847,7 @@
             adminLogoutbtn.IsReadOnly = false;
             adminLogoutbtn.IsToggleButton = false;
             adminLogoutbtn.IsToggled = false;
-            adminLogoutbtn.Location = new Point(52, 12);
+            adminLogoutbtn.Location = new Point(0, 0);
             adminLogoutbtn.LongPressDurationMS = 1000;
             adminLogoutbtn.Name = "adminLogoutbtn";
             adminLogoutbtn.NormalFontStyle = FontStyle.Regular;
@@ -855,7 +866,7 @@
             adminLogoutbtn.ShadowOffset = new Point(2, 2);
             adminLogoutbtn.ShakeDuration = 500;
             adminLogoutbtn.ShakeIntensity = 5;
-            adminLogoutbtn.Size = new Size(149, 29);
+            adminLogoutbtn.Size = new Size(247, 53);
             adminLogoutbtn.TabIndex = 1;
             adminLogoutbtn.Text = "Logout";
             adminLogoutbtn.TextAlign = ContentAlignment.MiddleCenter;

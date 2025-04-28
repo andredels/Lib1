@@ -37,7 +37,6 @@
             textBoxBorrowedBookSearch = new TextBox();
             siticoneLabel1 = new SiticoneNetCoreUI.SiticoneLabel();
             siticonePictureBox1 = new SiticoneNetCoreUI.SiticonePictureBox();
-            dataGridView_ReservedBooks = new DataGridView();
             textBoxStatus = new TextBox();
             siticoneLabel2 = new SiticoneNetCoreUI.SiticoneLabel();
             btnDecline = new SiticoneNetCoreUI.SiticoneButton();
@@ -65,8 +64,9 @@
             siticoneLabel6 = new SiticoneNetCoreUI.SiticoneLabel();
             textBoxProcessedBy = new TextBox();
             siticoneLabel7 = new SiticoneNetCoreUI.SiticoneLabel();
+            ReservedBooks = new DataGridView();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView_ReservedBooks).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ReservedBooks).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -317,18 +317,6 @@
             siticonePictureBox1.SizeMode = SiticoneNetCoreUI.SiticonePictureBoxSizeMode.StretchImage;
             siticonePictureBox1.TabIndex = 4;
             siticonePictureBox1.Text = "siticonePictureBox1";
-            // 
-            // dataGridView_ReservedBooks
-            // 
-            dataGridView_ReservedBooks.BackgroundColor = Color.BurlyWood;
-            dataGridView_ReservedBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView_ReservedBooks.Location = new Point(17, 146);
-            dataGridView_ReservedBooks.Name = "dataGridView_ReservedBooks";
-            dataGridView_ReservedBooks.ReadOnly = true;
-            dataGridView_ReservedBooks.RowHeadersWidth = 51;
-            dataGridView_ReservedBooks.Size = new Size(1065, 252);
-            dataGridView_ReservedBooks.TabIndex = 4;
-            dataGridView_ReservedBooks.CellContentClick += dataGridView_ReservedBooks_CellContentClick;
             // 
             // textBoxStatus
             // 
@@ -765,11 +753,23 @@
             siticoneLabel7.TabIndex = 121;
             siticoneLabel7.Text = "Processed By";
             // 
+            // ReservedBooks
+            // 
+            ReservedBooks.BackgroundColor = Color.BurlyWood;
+            ReservedBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            ReservedBooks.Location = new Point(27, 150);
+            ReservedBooks.Name = "ReservedBooks";
+            ReservedBooks.RowHeadersWidth = 51;
+            ReservedBooks.Size = new Size(1049, 216);
+            ReservedBooks.TabIndex = 123;
+            ReservedBooks.CellContentClick += ReservedBooks_CellContentClick;
+            // 
             // Reservation
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Bisque;
+            Controls.Add(ReservedBooks);
             Controls.Add(textBoxProcessedBy);
             Controls.Add(siticoneLabel7);
             Controls.Add(textBoxRequestType);
@@ -797,13 +797,13 @@
             Controls.Add(labelUserID);
             Controls.Add(textBoxBookTitle);
             Controls.Add(siticoneLabel8);
-            Controls.Add(dataGridView_ReservedBooks);
             Controls.Add(panel1);
             Name = "Reservation";
             Size = new Size(1098, 721);
+            Load += Reservation_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView_ReservedBooks).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ReservedBooks).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -817,7 +817,6 @@
         private TextBox textBoxBorrowedBookSearch;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel1;
         private SiticoneNetCoreUI.SiticonePictureBox siticonePictureBox1;
-        private DataGridView dataGridView_ReservedBooks;
         private TextBox textBoxStatus;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel2;
         private SiticoneNetCoreUI.SiticoneButton btnDecline;
@@ -846,5 +845,6 @@
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel6;
         private TextBox textBoxProcessedBy;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel7;
+        private DataGridView ReservedBooks;
     }
 }

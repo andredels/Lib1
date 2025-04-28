@@ -18,11 +18,30 @@ namespace Lib1
         {
             InitializeComponent();
             this.Load += UserApplicant_Load;
+            StyleDataGridView();
         }
+
+        private void StyleDataGridView()
+        {
+            dataGridView_UserApplicants.EnableHeadersVisualStyles = false;
+            dataGridView_UserApplicants.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(255, 128, 0);
+            dataGridView_UserApplicants.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView_UserApplicants.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridView_UserApplicants.RowHeadersVisible = false;
+            dataGridView_UserApplicants.BorderStyle = BorderStyle.None;
+            dataGridView_UserApplicants.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridView_UserApplicants.GridColor = Color.FromArgb(224, 224, 224);
+            dataGridView_UserApplicants.RowTemplate.Height = 35;
+            dataGridView_UserApplicants.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+            dataGridView_UserApplicants.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 128, 0);
+            dataGridView_UserApplicants.DefaultCellStyle.SelectionForeColor = Color.White;
+        }
+
         private void UserApplicant_Load(object sender, EventArgs e)
         {
             LoadPendingRegistrants();
         }
+
         private void LoadPendingRegistrants()
         {
             try
@@ -45,6 +64,7 @@ namespace Lib1
                 MessageBox.Show("Error loading registrants: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void siticoneButtonstdntrgstrnts_Accept_Click(object sender, EventArgs e)
         {
             UpdateUserApprovalStatus("Approved");
@@ -63,6 +83,7 @@ namespace Lib1
                 txtboxstdntrgstrnts_Usertype.Text = row.Cells["UserType"].Value.ToString();
             }
         }
+
         private void UpdateUserApprovalStatus(string status)
         {
             if (string.IsNullOrEmpty(txtboxstdntrgstrnts_UserId.Text))

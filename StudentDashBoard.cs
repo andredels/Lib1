@@ -45,7 +45,10 @@ namespace Lib1
 
         private void studentAccountSettingsbtn_Click(object sender, EventArgs e)
         {
-
+            userControlpanel.Controls.Clear();
+            AccountSettings accountSettingsUC = new AccountSettings(this.userId);
+            accountSettingsUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(accountSettingsUC);
         }
 
         private void studentLogoutbtn_Click(object sender, EventArgs e)

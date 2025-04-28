@@ -24,9 +24,9 @@ namespace Lib1
 
         private void areyouStudent_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Form1 form1 = new Form1();
-            form1.Show();
-            this.Close();
+            ForgotPassword forgotPassword = new ForgotPassword();
+            forgotPassword.Show();
+            this.Hide();
         }
 
         private void btnLoginAdmin_Click(object sender, EventArgs e)
@@ -83,6 +83,19 @@ namespace Lib1
                 MessageBox.Show("An error occurred: " + ex.Message, "Database Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnStudentLogin_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Close();
+        }
+
+        private void ShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            bool show = ShowPassword.Checked;
+            txtboxPasswordAdmin.PasswordChar = show ? '\0' : '*';
         }
     }
 }

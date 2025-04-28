@@ -52,7 +52,7 @@
             // 
             // flowLayoutPanelSideBar
             // 
-            flowLayoutPanelSideBar.BackColor = Color.Peru;
+            flowLayoutPanelSideBar.BackColor = Color.BurlyWood;
             flowLayoutPanelSideBar.Controls.Add(panel3);
             flowLayoutPanelSideBar.Controls.Add(panel2);
             flowLayoutPanelSideBar.Controls.Add(panel4);
@@ -114,6 +114,7 @@
             studentViewBooksbtn.CornerRadiusTopRight = 2;
             studentViewBooksbtn.CustomCursor = Cursors.Default;
             studentViewBooksbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            studentViewBooksbtn.Dock = DockStyle.Fill;
             studentViewBooksbtn.EnableLongPress = false;
             studentViewBooksbtn.EnablePressAnimation = true;
             studentViewBooksbtn.EnableRippleEffect = true;
@@ -123,8 +124,8 @@
             studentViewBooksbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             studentViewBooksbtn.GlowIntensity = 100;
             studentViewBooksbtn.GlowRadius = 20F;
-            studentViewBooksbtn.GradientBackground = false;
-            studentViewBooksbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            studentViewBooksbtn.GradientBackground = true;
+            studentViewBooksbtn.GradientColor = Color.FromArgb(128, 64, 0);
             studentViewBooksbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             studentViewBooksbtn.HintText = null;
             studentViewBooksbtn.HoverBackColor = Color.SandyBrown;
@@ -138,7 +139,7 @@
             studentViewBooksbtn.IsReadOnly = false;
             studentViewBooksbtn.IsToggleButton = false;
             studentViewBooksbtn.IsToggled = false;
-            studentViewBooksbtn.Location = new Point(52, 12);
+            studentViewBooksbtn.Location = new Point(0, 0);
             studentViewBooksbtn.LongPressDurationMS = 1000;
             studentViewBooksbtn.Name = "studentViewBooksbtn";
             studentViewBooksbtn.NormalFontStyle = FontStyle.Regular;
@@ -157,7 +158,7 @@
             studentViewBooksbtn.ShadowOffset = new Point(2, 2);
             studentViewBooksbtn.ShakeDuration = 500;
             studentViewBooksbtn.ShakeIntensity = 5;
-            studentViewBooksbtn.Size = new Size(149, 29);
+            studentViewBooksbtn.Size = new Size(247, 53);
             studentViewBooksbtn.TabIndex = 1;
             studentViewBooksbtn.Text = "View Books";
             studentViewBooksbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -199,6 +200,7 @@
             studentBorrowedBooksbtn.CornerRadiusTopRight = 2;
             studentBorrowedBooksbtn.CustomCursor = Cursors.Default;
             studentBorrowedBooksbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            studentBorrowedBooksbtn.Dock = DockStyle.Fill;
             studentBorrowedBooksbtn.EnableLongPress = false;
             studentBorrowedBooksbtn.EnablePressAnimation = true;
             studentBorrowedBooksbtn.EnableRippleEffect = true;
@@ -208,8 +210,8 @@
             studentBorrowedBooksbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             studentBorrowedBooksbtn.GlowIntensity = 100;
             studentBorrowedBooksbtn.GlowRadius = 20F;
-            studentBorrowedBooksbtn.GradientBackground = false;
-            studentBorrowedBooksbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            studentBorrowedBooksbtn.GradientBackground = true;
+            studentBorrowedBooksbtn.GradientColor = Color.FromArgb(128, 64, 0);
             studentBorrowedBooksbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             studentBorrowedBooksbtn.HintText = null;
             studentBorrowedBooksbtn.HoverBackColor = Color.SandyBrown;
@@ -223,7 +225,7 @@
             studentBorrowedBooksbtn.IsReadOnly = false;
             studentBorrowedBooksbtn.IsToggleButton = false;
             studentBorrowedBooksbtn.IsToggled = false;
-            studentBorrowedBooksbtn.Location = new Point(52, 12);
+            studentBorrowedBooksbtn.Location = new Point(0, 0);
             studentBorrowedBooksbtn.LongPressDurationMS = 1000;
             studentBorrowedBooksbtn.Name = "studentBorrowedBooksbtn";
             studentBorrowedBooksbtn.NormalFontStyle = FontStyle.Regular;
@@ -242,7 +244,7 @@
             studentBorrowedBooksbtn.ShadowOffset = new Point(2, 2);
             studentBorrowedBooksbtn.ShakeDuration = 500;
             studentBorrowedBooksbtn.ShakeIntensity = 5;
-            studentBorrowedBooksbtn.Size = new Size(149, 29);
+            studentBorrowedBooksbtn.Size = new Size(247, 53);
             studentBorrowedBooksbtn.TabIndex = 1;
             studentBorrowedBooksbtn.Text = "Borrowed Books";
             studentBorrowedBooksbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -284,6 +286,7 @@
             studentAccountSettingsbtn.CornerRadiusTopRight = 2;
             studentAccountSettingsbtn.CustomCursor = Cursors.Default;
             studentAccountSettingsbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            studentAccountSettingsbtn.Dock = DockStyle.Fill;
             studentAccountSettingsbtn.EnableLongPress = false;
             studentAccountSettingsbtn.EnablePressAnimation = true;
             studentAccountSettingsbtn.EnableRippleEffect = true;
@@ -293,8 +296,8 @@
             studentAccountSettingsbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             studentAccountSettingsbtn.GlowIntensity = 100;
             studentAccountSettingsbtn.GlowRadius = 20F;
-            studentAccountSettingsbtn.GradientBackground = false;
-            studentAccountSettingsbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            studentAccountSettingsbtn.GradientBackground = true;
+            studentAccountSettingsbtn.GradientColor = Color.FromArgb(128, 64, 0);
             studentAccountSettingsbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             studentAccountSettingsbtn.HintText = null;
             studentAccountSettingsbtn.HoverBackColor = Color.SandyBrown;
@@ -308,7 +311,7 @@
             studentAccountSettingsbtn.IsReadOnly = false;
             studentAccountSettingsbtn.IsToggleButton = false;
             studentAccountSettingsbtn.IsToggled = false;
-            studentAccountSettingsbtn.Location = new Point(52, 12);
+            studentAccountSettingsbtn.Location = new Point(0, 0);
             studentAccountSettingsbtn.LongPressDurationMS = 1000;
             studentAccountSettingsbtn.Name = "studentAccountSettingsbtn";
             studentAccountSettingsbtn.NormalFontStyle = FontStyle.Regular;
@@ -327,7 +330,7 @@
             studentAccountSettingsbtn.ShadowOffset = new Point(2, 2);
             studentAccountSettingsbtn.ShakeDuration = 500;
             studentAccountSettingsbtn.ShakeIntensity = 5;
-            studentAccountSettingsbtn.Size = new Size(149, 29);
+            studentAccountSettingsbtn.Size = new Size(247, 53);
             studentAccountSettingsbtn.TabIndex = 1;
             studentAccountSettingsbtn.Text = "Account Settings";
             studentAccountSettingsbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -369,6 +372,7 @@
             studentLogoutbtn.CornerRadiusTopRight = 2;
             studentLogoutbtn.CustomCursor = Cursors.Default;
             studentLogoutbtn.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            studentLogoutbtn.Dock = DockStyle.Fill;
             studentLogoutbtn.EnableLongPress = false;
             studentLogoutbtn.EnablePressAnimation = true;
             studentLogoutbtn.EnableRippleEffect = true;
@@ -378,8 +382,8 @@
             studentLogoutbtn.GlowColor = Color.FromArgb(100, 255, 255, 255);
             studentLogoutbtn.GlowIntensity = 100;
             studentLogoutbtn.GlowRadius = 20F;
-            studentLogoutbtn.GradientBackground = false;
-            studentLogoutbtn.GradientColor = Color.FromArgb(114, 168, 255);
+            studentLogoutbtn.GradientBackground = true;
+            studentLogoutbtn.GradientColor = Color.FromArgb(128, 64, 0);
             studentLogoutbtn.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             studentLogoutbtn.HintText = null;
             studentLogoutbtn.HoverBackColor = Color.SandyBrown;
@@ -393,7 +397,7 @@
             studentLogoutbtn.IsReadOnly = false;
             studentLogoutbtn.IsToggleButton = false;
             studentLogoutbtn.IsToggled = false;
-            studentLogoutbtn.Location = new Point(52, 12);
+            studentLogoutbtn.Location = new Point(0, 0);
             studentLogoutbtn.LongPressDurationMS = 1000;
             studentLogoutbtn.Name = "studentLogoutbtn";
             studentLogoutbtn.NormalFontStyle = FontStyle.Regular;
@@ -412,7 +416,7 @@
             studentLogoutbtn.ShadowOffset = new Point(2, 2);
             studentLogoutbtn.ShakeDuration = 500;
             studentLogoutbtn.ShakeIntensity = 5;
-            studentLogoutbtn.Size = new Size(149, 29);
+            studentLogoutbtn.Size = new Size(247, 53);
             studentLogoutbtn.TabIndex = 1;
             studentLogoutbtn.Text = "Logout";
             studentLogoutbtn.TextAlign = ContentAlignment.MiddleCenter;

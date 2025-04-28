@@ -45,14 +45,16 @@
             groupBox1 = new GroupBox();
             Password = new TextBox();
             label5 = new Label();
-            siticoneCloseButton1 = new SiticoneNetCoreUI.SiticoneCloseButton();
+            panel1 = new Panel();
+            chckbxShowPassword = new CheckBox();
             groupBox1.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 23);
+            label1.Location = new Point(22, 14);
             label1.Name = "label1";
             label1.Size = new Size(80, 20);
             label1.TabIndex = 0;
@@ -60,7 +62,7 @@
             // 
             // txtbxSignupFirstName
             // 
-            txtbxSignupFirstName.Location = new Point(12, 46);
+            txtbxSignupFirstName.Location = new Point(22, 37);
             txtbxSignupFirstName.Name = "txtbxSignupFirstName";
             txtbxSignupFirstName.Size = new Size(375, 27);
             txtbxSignupFirstName.TabIndex = 1;
@@ -69,7 +71,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 88);
+            label2.Location = new Point(22, 79);
             label2.Name = "label2";
             label2.Size = new Size(79, 20);
             label2.TabIndex = 2;
@@ -77,7 +79,7 @@
             // 
             // txtbxSignupLastName
             // 
-            txtbxSignupLastName.Location = new Point(12, 111);
+            txtbxSignupLastName.Location = new Point(22, 102);
             txtbxSignupLastName.Name = "txtbxSignupLastName";
             txtbxSignupLastName.Size = new Size(375, 27);
             txtbxSignupLastName.TabIndex = 3;
@@ -86,7 +88,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 153);
+            label3.Location = new Point(22, 141);
             label3.Name = "label3";
             label3.Size = new Size(95, 20);
             label3.TabIndex = 4;
@@ -94,7 +96,7 @@
             // 
             // txtbxSignupEmail
             // 
-            txtbxSignupEmail.Location = new Point(12, 176);
+            txtbxSignupEmail.Location = new Point(22, 164);
             txtbxSignupEmail.Name = "txtbxSignupEmail";
             txtbxSignupEmail.Size = new Size(375, 27);
             txtbxSignupEmail.TabIndex = 5;
@@ -103,7 +105,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(12, 216);
+            label4.Location = new Point(22, 203);
             label4.Name = "label4";
             label4.Size = new Size(75, 20);
             label4.TabIndex = 6;
@@ -111,7 +113,7 @@
             // 
             // txtbxSignupUsername
             // 
-            txtbxSignupUsername.Location = new Point(12, 239);
+            txtbxSignupUsername.Location = new Point(22, 226);
             txtbxSignupUsername.Name = "txtbxSignupUsername";
             txtbxSignupUsername.Size = new Size(375, 27);
             txtbxSignupUsername.TabIndex = 7;
@@ -121,7 +123,7 @@
             // 
             siticoneLabel1.BackColor = Color.Transparent;
             siticoneLabel1.Font = new Font("Calibri", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            siticoneLabel1.Location = new Point(12, 442);
+            siticoneLabel1.Location = new Point(22, 473);
             siticoneLabel1.Name = "siticoneLabel1";
             siticoneLabel1.Size = new Size(375, 36);
             siticoneLabel1.TabIndex = 11;
@@ -177,7 +179,7 @@
             btnSignUpSIGNUP.IsReadOnly = false;
             btnSignUpSIGNUP.IsToggleButton = false;
             btnSignUpSIGNUP.IsToggled = false;
-            btnSignUpSIGNUP.Location = new Point(12, 407);
+            btnSignUpSIGNUP.Location = new Point(22, 438);
             btnSignUpSIGNUP.LongPressDurationMS = 1000;
             btnSignUpSIGNUP.Name = "btnSignUpSIGNUP";
             btnSignUpSIGNUP.NormalFontStyle = FontStyle.Regular;
@@ -210,7 +212,7 @@
             // 
             siticoneLabel2.BackColor = Color.Transparent;
             siticoneLabel2.Font = new Font("Calibri", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            siticoneLabel2.Location = new Point(90, 487);
+            siticoneLabel2.Location = new Point(100, 518);
             siticoneLabel2.Name = "siticoneLabel2";
             siticoneLabel2.Size = new Size(154, 16);
             siticoneLabel2.TabIndex = 14;
@@ -221,7 +223,7 @@
             // 
             lblLogin.BackColor = Color.Transparent;
             lblLogin.Font = new Font("Calibri", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblLogin.Location = new Point(240, 487);
+            lblLogin.Location = new Point(250, 518);
             lblLogin.Name = "lblLogin";
             lblLogin.Size = new Size(101, 16);
             lblLogin.TabIndex = 15;
@@ -232,7 +234,7 @@
             // radiobtnStudent
             // 
             radiobtnStudent.AutoSize = true;
-            radiobtnStudent.Location = new Point(78, 25);
+            radiobtnStudent.Location = new Point(67, 16);
             radiobtnStudent.Name = "radiobtnStudent";
             radiobtnStudent.Size = new Size(81, 24);
             radiobtnStudent.TabIndex = 16;
@@ -244,7 +246,7 @@
             // radiobtnAdmin
             // 
             radiobtnAdmin.AutoSize = true;
-            radiobtnAdmin.Location = new Point(235, 26);
+            radiobtnAdmin.Location = new Point(243, 16);
             radiobtnAdmin.Name = "radiobtnAdmin";
             radiobtnAdmin.Size = new Size(74, 24);
             radiobtnAdmin.TabIndex = 17;
@@ -257,15 +259,15 @@
             // 
             groupBox1.Controls.Add(radiobtnStudent);
             groupBox1.Controls.Add(radiobtnAdmin);
-            groupBox1.Location = new Point(12, 334);
+            groupBox1.Location = new Point(22, 351);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(375, 55);
+            groupBox1.Size = new Size(375, 46);
             groupBox1.TabIndex = 18;
             groupBox1.TabStop = false;
             // 
             // Password
             // 
-            Password.Location = new Point(12, 301);
+            Password.Location = new Point(22, 288);
             Password.Name = "Password";
             Password.Size = new Size(375, 27);
             Password.TabIndex = 20;
@@ -274,49 +276,54 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(12, 278);
+            label5.Location = new Point(22, 265);
             label5.Name = "label5";
             label5.Size = new Size(70, 20);
             label5.TabIndex = 19;
             label5.Text = "Password";
             // 
-            // siticoneCloseButton1
+            // panel1
             // 
-            siticoneCloseButton1.BackColor = Color.Transparent;
-            siticoneCloseButton1.CountdownFont = new Font("Segoe UI", 9F);
-            siticoneCloseButton1.Cursor = Cursors.Default;
-            siticoneCloseButton1.EnableSound = false;
-            siticoneCloseButton1.IconAnimation = SiticoneNetCoreUI.SiticoneCloseButton.CloseIconAnimation.Scale;
-            siticoneCloseButton1.IconColor = Color.Black;
-            siticoneCloseButton1.Location = new Point(368, 3);
-            siticoneCloseButton1.Name = "siticoneCloseButton1";
-            siticoneCloseButton1.Size = new Size(28, 28);
-            siticoneCloseButton1.TabIndex = 21;
-            siticoneCloseButton1.Text = "siticoneCloseButton1";
-            siticoneCloseButton1.TooltipText = "Close button";
+            panel1.BackColor = Color.FromArgb(255, 224, 192);
+            panel1.Controls.Add(groupBox1);
+            panel1.Controls.Add(lblLogin);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(siticoneLabel2);
+            panel1.Controls.Add(txtbxSignupUsername);
+            panel1.Controls.Add(btnSignUpSIGNUP);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(siticoneLabel1);
+            panel1.Controls.Add(txtbxSignupEmail);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(Password);
+            panel1.Controls.Add(txtbxSignupLastName);
+            panel1.Controls.Add(label5);
+            panel1.Controls.Add(txtbxSignupFirstName);
+            panel1.Controls.Add(chckbxShowPassword);
+            panel1.Location = new Point(12, 12);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(428, 558);
+            panel1.TabIndex = 22;
+            // 
+            // chckbxShowPassword
+            // 
+            chckbxShowPassword.AutoSize = true;
+            chckbxShowPassword.Location = new Point(265, 321);
+            chckbxShowPassword.Name = "chckbxShowPassword";
+            chckbxShowPassword.Size = new Size(132, 24);
+            chckbxShowPassword.TabIndex = 21;
+            chckbxShowPassword.Text = "Show Password";
+            chckbxShowPassword.UseVisualStyleBackColor = true;
+            chckbxShowPassword.CheckedChanged += chckbxShowPassword_CheckedChanged;
             // 
             // Signup
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(255, 224, 192);
-            ClientSize = new Size(399, 531);
-            Controls.Add(siticoneCloseButton1);
-            Controls.Add(Password);
-            Controls.Add(label5);
-            Controls.Add(groupBox1);
-            Controls.Add(lblLogin);
-            Controls.Add(siticoneLabel2);
-            Controls.Add(btnSignUpSIGNUP);
-            Controls.Add(siticoneLabel1);
-            Controls.Add(txtbxSignupUsername);
-            Controls.Add(label4);
-            Controls.Add(txtbxSignupEmail);
-            Controls.Add(label3);
-            Controls.Add(txtbxSignupLastName);
-            Controls.Add(label2);
-            Controls.Add(txtbxSignupFirstName);
-            Controls.Add(label1);
+            BackColor = Color.FromArgb(128, 64, 0);
+            ClientSize = new Size(450, 581);
+            Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Signup";
             StartPosition = FormStartPosition.CenterScreen;
@@ -324,8 +331,9 @@
             Load += Signup_Load;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -347,6 +355,7 @@
         private GroupBox groupBox1;
         private TextBox Password;
         private Label label5;
-        private SiticoneNetCoreUI.SiticoneCloseButton siticoneCloseButton1;
+        private Panel panel1;
+        private CheckBox chckbxShowPassword;
     }
 }

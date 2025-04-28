@@ -15,85 +15,57 @@ namespace Lib1
     {
         private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb";
         private int selectedTransactionID = 0;
-        private bool isAdmin = false;
-        private int currentUserID = 0;
-        private string adminFullName;  // Add field for admin name
-        public Reservation(bool isAdminUser, int userID)
+        private string adminFullName;
+
+        public Reservation(int userID)
         {
             InitializeComponent();
-            isAdmin = isAdminUser;
-            currentUserID = userID;
-            dataGridView_ReservedBooks.AutoGenerateColumns = true;
 
-            // Get the admin's full name from the database
-            if (isAdmin)
+            //Get the admin's full name from the database
+            try
             {
-                try
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
-                    using (OleDbConnection connection = new OleDbConnection(connectionString))
+                    connection.Open();
+                    string query = "SELECT FullName FROM Users WHERE UserID = @UserID";
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
-                        connection.Open();
-                        string query = "SELECT FullName FROM Users WHERE UserID = @UserID";
-                        using (OleDbCommand command = new OleDbCommand(query, connection))
+                        command.Parameters.AddWithValue("@UserID", userID);
+                        object result = command.ExecuteScalar();
+                        if (result != null)
                         {
-                            command.Parameters.AddWithValue("@UserID", userID);
-                            object result = command.ExecuteScalar();
-                            if (result != null)
-                            {
-                                adminFullName = result.ToString();
-                            }
+                            adminFullName = result.ToString();
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error getting admin name: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
-
-            SetupUIBasedOnUserType();
-            LoadReservedBooks();
-            if (isAdmin)
+            catch (Exception ex)
             {
-                LoadStudentNames();
+                MessageBox.Show("Error getting admin name: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void SetupUIBasedOnUserType()
+
+        private void Reservation_Load(object sender, EventArgs e)
         {
-            // Show/hide buttons based on user type
+
+            SetupUI();
+            LoadReservedBooks();
+
+        }
+
+        private void SetupUI()
+        {
+            // Initially hide approval buttons
             btnAccept.Visible = false;
             btnDecline.Visible = false;
             btnLendBook.Visible = true;
-            btnViewReservationRequests.Visible = isAdmin;
 
             // Initially disable action buttons until a row is selected
             btnLendBook.Enabled = false;
             btnAccept.Enabled = false;
             btnDecline.Enabled = false;
-
-            // Show/hide student filter for admin, hide for students
-            comboBoxStudentNameSearch.Visible = isAdmin;
-            if (comboBoxStudentNameSearch.Parent is Label lblStudentName)
-            {
-                lblStudentName.Visible = isAdmin;
-            }
-
-            // Hide UserID and Full Name fields for students
-            if (!isAdmin)
-            {
-                if (textBoxUserID != null && textBoxUserID.Parent is Label lblUserID)
-                {
-                    lblUserID.Visible = false;
-                }
-                textBoxUserID.Visible = false;
-
-                if (textBoxFullName != null && textBoxFullName.Parent is Label lblFullName)
-                {
-                    lblFullName.Visible = false;
-                }
-                textBoxFullName.Visible = false;
-            }
         }
+
         private void LoadReservedBooks()
         {
             try
@@ -102,42 +74,34 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    string query = @"SELECT bt.TransactionID, bt.UserID, b.BookID, b.Title, b.ISBN, 
-                                   b.AvailableCopies, b.TotalCopies, bt.RequestDate, bt.ApprovalDate,
-                                   bt.Status, bt.ProcessedBy, bt.RequestType, u.FullName
-                                   FROM ((BookTransactions bt 
-                                   INNER JOIN Books b ON bt.BookID = b.BookID)
-                                   INNER JOIN Users u ON bt.UserID = u.UserID)
-                                   WHERE bt.RequestType = 'Reservation'";
+                    // Build your own JOIN DO NOT USE ReservedBooks
+                    string query = "SELECT * FROM [ReservedBooks]";
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
-                        using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+                        OleDbDataAdapter adapter = new OleDbDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        ReservedBooks.DataSource = null;
+                        ReservedBooks.DataSource = dataTable;
+
+                        // Configure the DataGridView columns for better display
+                        if (ReservedBooks.Columns.Contains("RequestDate"))
                         {
-                            DataTable dataTable = new DataTable();
-                            adapter.Fill(dataTable);
-
-                            dataGridView_ReservedBooks.DataSource = null;
-                            dataGridView_ReservedBooks.DataSource = dataTable;
-
-                            // Format date columns
-                            if (dataGridView_ReservedBooks.Columns.Contains("RequestDate"))
-                            {
-                                dataGridView_ReservedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
-                            }
-                            if (dataGridView_ReservedBooks.Columns.Contains("ApprovalDate"))
-                            {
-                                dataGridView_ReservedBooks.Columns["ApprovalDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
-                            }
-
-                            // Hide unnecessary columns
-                            if (dataGridView_ReservedBooks.Columns.Contains("BorrowDate"))
-                                dataGridView_ReservedBooks.Columns["BorrowDate"].Visible = false;
-                            if (dataGridView_ReservedBooks.Columns.Contains("ReturnDate"))
-                                dataGridView_ReservedBooks.Columns["ReturnDate"].Visible = false;
-
-                            dataGridView_ReservedBooks.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+                            ReservedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
+                        if (ReservedBooks.Columns.Contains("BorrowDate"))
+                        {
+                            ReservedBooks.Columns["BorrowDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
+                        if (ReservedBooks.Columns.Contains("ReturnDate"))
+                        {
+                            ReservedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
+
+                        // Apply professional styling
+                        StyleDataGridView();
                     }
                 }
             }
@@ -146,6 +110,59 @@ namespace Lib1
                 MessageBox.Show($"Error loading reserved books: {ex.Message}\nStack trace: {ex.StackTrace}",
                     "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void StyleDataGridView()
+        {
+            // Basic styling
+            ReservedBooks.BorderStyle = BorderStyle.None;
+            ReservedBooks.BackgroundColor = Color.White;
+            ReservedBooks.EnableHeadersVisualStyles = false;
+            ReservedBooks.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            ReservedBooks.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            ReservedBooks.GridColor = Color.FromArgb(224, 224, 224);
+
+            // Header styling
+            ReservedBooks.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(255, 128, 0);
+            ReservedBooks.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            ReservedBooks.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            ReservedBooks.ColumnHeadersHeight = 40;
+            ReservedBooks.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Row styling
+            ReservedBooks.RowTemplate.Height = 35;
+            ReservedBooks.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 128, 0);
+            ReservedBooks.DefaultCellStyle.SelectionForeColor = Color.White;
+            ReservedBooks.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+            ReservedBooks.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            ReservedBooks.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            ReservedBooks.DefaultCellStyle.Padding = new Padding(5, 0, 5, 0);
+
+            // Selection mode
+            ReservedBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            ReservedBooks.MultiSelect = false;
+
+            // Column sizing and scrolling
+            ReservedBooks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            ReservedBooks.AllowUserToResizeColumns = true;
+            ReservedBooks.AllowUserToResizeRows = false;
+            ReservedBooks.ScrollBars = ScrollBars.Both;
+            ReservedBooks.Dock = DockStyle.None;
+            ReservedBooks.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+
+            // Set minimum column widths
+            foreach (DataGridViewColumn column in ReservedBooks.Columns)
+            {
+                column.MinimumWidth = 100;
+                column.Width = 150;
+                column.SortMode = DataGridViewColumnSortMode.Automatic;
+            }
+
+            // Disable row headers
+            ReservedBooks.RowHeadersVisible = false;
+
+            // Add some padding
+            ReservedBooks.Padding = new Padding(10);
         }
 
         private void LoadPendingReservationRequests()
@@ -165,20 +182,20 @@ namespace Lib1
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
 
-                        dataGridView_ReservedBooks.DataSource = dataTable;
+                        ReservedBooks.DataSource = dataTable;
 
                         // Configure the DataGridView columns for better display
-                        if (dataGridView_ReservedBooks.Columns.Contains("RequestDate"))
+                        if (ReservedBooks.Columns.Contains("RequestDate"))
                         {
-                            dataGridView_ReservedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                            ReservedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
-                        if (dataGridView_ReservedBooks.Columns.Contains("BorrowDate"))
+                        if (ReservedBooks.Columns.Contains("BorrowDate"))
                         {
-                            dataGridView_ReservedBooks.Columns["BorrowDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                            ReservedBooks.Columns["BorrowDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
-                        if (dataGridView_ReservedBooks.Columns.Contains("ReturnDate"))
+                        if (ReservedBooks.Columns.Contains("ReturnDate"))
                         {
-                            dataGridView_ReservedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                            ReservedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
                     }
                 }
@@ -188,39 +205,10 @@ namespace Lib1
                 MessageBox.Show("Error loading pending reservation requests: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void LoadStudentNames()
         {
-            try
-            {
-                using (OleDbConnection connection = new OleDbConnection(connectionString))
-                {
-                    connection.Open();
 
-                    string query = @"SELECT DISTINCT u.UserID, u.FullName
-                                    FROM (Users u 
-                                    INNER JOIN BookTransactions bt ON u.UserID = bt.UserID)
-                                    WHERE bt.RequestType = 'Reservation'
-                                    ORDER BY u.FullName";
-
-                    OleDbDataAdapter adapter = new OleDbDataAdapter(query, connection);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    // Add an "All Students" option
-                    DataRow allRow = dataTable.NewRow();
-                    allRow["UserID"] = 0;
-                    allRow["FullName"] = "All Students";
-                    dataTable.Rows.InsertAt(allRow, 0);
-
-                    comboBoxStudentNameSearch.DataSource = dataTable;
-                    comboBoxStudentNameSearch.DisplayMember = "FullName";
-                    comboBoxStudentNameSearch.ValueMember = "UserID";
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading student names: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
@@ -301,7 +289,6 @@ namespace Lib1
             {
                 MessageBox.Show("Error declining reservation: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void btnLendBook_Click(object sender, EventArgs e)
@@ -406,65 +393,22 @@ namespace Lib1
             btnAccept.Visible = true;
             btnDecline.Visible = true;
             btnLendBook.Visible = false;
+
+            // Hide approval date, request type, and processed by fields
+            siticoneLabel5.Visible = false;
+            textBoxApprovalDate.Visible = false;
+            siticoneLabel6.Visible = false;
+            textBoxRequestType.Visible = false;
+            siticoneLabel7.Visible = false;
+            textBoxProcessedBy.Visible = false;
+            
             LoadPendingReservationRequests();
             ClearSelection();
         }
 
         private void comboBoxStudentNameSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                DataRowView drv = comboBoxStudentNameSearch.SelectedItem as DataRowView;
-                if (drv == null) return;
-
-                int selectedUserID = Convert.ToInt32(drv["UserID"]);
-
-                using (OleDbConnection connection = new OleDbConnection(connectionString))
-                {
-                    connection.Open();
-
-                    string query = @"SELECT bt.TransactionID, b.BookID, b.Title, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
-                                    bt.ProcessedBy, bt.RequestType
-                                    FROM (((BookTransactions bt 
-                                    INNER JOIN Books b ON bt.BookID = b.BookID)
-                                    INNER JOIN Users u ON bt.UserID = u.UserID)
-                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.RequestType = 'Reservation'";
-
-                    if (selectedUserID > 0)
-                    {
-                        query += " AND bt.UserID = @UserID";
-                    }
-
-                    if (btnLendBook.Visible)
-                    {
-                        query += " AND bt.Status = 'Approved'";
-                    }
-                    else
-                    {
-                        query += " AND bt.Status = 'Pending'";
-                    }
-
-                    using (OleDbCommand command = new OleDbCommand(query, connection))
-                    {
-                        if (selectedUserID > 0)
-                        {
-                            command.Parameters.AddWithValue("@UserID", selectedUserID);
-                        }
-
-                        OleDbDataAdapter adapter = new OleDbDataAdapter(command);
-                        DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);
-
-                        dataGridView_ReservedBooks.DataSource = dataTable;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error filtering by student: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+           
         }
 
         private void textBoxBorrowedBookSearch_TextChanged(object sender, EventArgs e)
@@ -500,24 +444,15 @@ namespace Lib1
                         query += " AND bt.Status = 'Pending'";
                     }
 
-                    if (!isAdmin)
-                    {
-                        query += " AND bt.UserID = @UserID";
-                    }
-
                     using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
-                        if (!isAdmin)
-                        {
-                            command.Parameters.AddWithValue("@UserID", currentUserID);
-                        }
 
                         OleDbDataAdapter adapter = new OleDbDataAdapter(command);
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
 
-                        dataGridView_ReservedBooks.DataSource = dataTable;
+                        ReservedBooks.DataSource = dataTable;
                     }
                 }
             }
@@ -525,28 +460,52 @@ namespace Lib1
             {
                 MessageBox.Show("Error searching: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadReservedBooks();
-            if (isAdmin)
-            {
-                LoadStudentNames();
-            }
             ClearSelection();
             btnAccept.Visible = false;
             btnDecline.Visible = false;
             btnLendBook.Visible = true;
 
+            // Show approval date, request type, and processed by fields
+            siticoneLabel5.Visible = true;
+            textBoxApprovalDate.Visible = true;
+            siticoneLabel6.Visible = true;
+            textBoxRequestType.Visible = true;
+            siticoneLabel7.Visible = true;
+            textBoxProcessedBy.Visible = true;
         }
 
-        private void dataGridView_ReservedBooks_CellContentClick(object sender, DataGridViewCellEventArgs e)
+
+        private void ClearSelection()
+        {
+            selectedTransactionID = 0;
+            textBoxUserID.Text = string.Empty;
+            textBoxFullName.Text = string.Empty;
+            textBoxBookID.Text = string.Empty;
+            textBoxBookTitle.Text = string.Empty;
+            textBoxISBN.Text = string.Empty;
+            textBoxAvailableCopies.Text = string.Empty;
+            textBoxTotalCopies.Text = string.Empty;
+            textBoxStatus.Text = string.Empty;
+            textBoxRequestDate.Text = string.Empty;
+            textBoxApprovalDate.Text = string.Empty;
+            textBoxRequestType.Text = string.Empty;
+            textBoxProcessedBy.Text = string.Empty;
+
+            btnLendBook.Enabled = false;
+            btnAccept.Enabled = false;
+            btnDecline.Enabled = false;
+        }
+
+        private void ReservedBooks_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dataGridView_ReservedBooks.Rows[e.RowIndex];
+                DataGridViewRow row = ReservedBooks.Rows[e.RowIndex];
 
                 selectedTransactionID = Convert.ToInt32(row.Cells["TransactionID"].Value);
 
@@ -592,7 +551,14 @@ namespace Lib1
                 }
 
                 if (row.DataGridView.Columns.Contains("RequestType"))
-                    textBoxRequestType.Text = row.Cells["RequestType"].Value.ToString();
+                {
+                    textBoxRequestType.Text = row.Cells["RequestType"].Value?.ToString() ?? "Not set";
+                }
+
+                if (row.DataGridView.Columns.Contains("ProcessedBy"))
+                {
+                    textBoxProcessedBy.Text = row.Cells["ProcessedBy"].Value?.ToString() ?? "Not set";
+                }
 
                 string status = row.DataGridView.Columns.Contains("Status") ? row.Cells["Status"].Value.ToString() : "";
 
@@ -608,25 +574,5 @@ namespace Lib1
                 }
             }
         }
-        private void ClearSelection()
-        {
-            selectedTransactionID = 0;
-            textBoxUserID.Text = string.Empty;
-            textBoxFullName.Text = string.Empty;
-            textBoxBookID.Text = string.Empty;
-            textBoxBookTitle.Text = string.Empty;
-            textBoxISBN.Text = string.Empty;
-            textBoxAvailableCopies.Text = string.Empty;
-            textBoxTotalCopies.Text = string.Empty;
-            textBoxStatus.Text = string.Empty;
-            textBoxRequestDate.Text = string.Empty;
-            textBoxApprovalDate.Text = string.Empty;
-            textBoxRequestType.Text = string.Empty;
-
-            btnLendBook.Enabled = false;
-            btnAccept.Enabled = false;
-            btnDecline.Enabled = false;
-        }
-
     }
 }

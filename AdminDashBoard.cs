@@ -80,9 +80,25 @@ namespace Lib1
         private void adminReservation_Click(object sender, EventArgs e)
         {
             userControlpanel.Controls.Clear();
-            Reservation reservationUC = new Reservation(true, this.userId); // true for admin, pass the current user ID
+            Reservation reservationUC = new Reservation(this.userId);
             reservationUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(reservationUC);
+        }
+
+        private void adminUsersInfobtn_Click(object sender, EventArgs e)
+        {
+            userControlpanel.Controls.Clear();
+            UsersInfo usersInfoUC = new UsersInfo();
+            usersInfoUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(usersInfoUC);
+        }
+
+        private void adminAccountSettingsbtn_Click(object sender, EventArgs e)
+        {
+            userControlpanel.Controls.Clear();
+            AccountSettings accountSettingsUC = new AccountSettings(this.userId);
+            accountSettingsUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(accountSettingsUC);
         }
     }
 }

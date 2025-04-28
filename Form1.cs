@@ -77,9 +77,22 @@ namespace Lib1
 
         private void siticoneLinkedLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            ForgotPassword forgotPassword = new ForgotPassword();
+            forgotPassword.Show();
+            this.Hide();
+        }
+
+        private void btnAdminLogin_Click(object sender, EventArgs e)
+        {
             AdminLogin adminlogin = new AdminLogin();
             adminlogin.Show();
             this.Hide();
+        }
+
+        private void ShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            bool show = ShowPassword.Checked;
+            txtboxPasswordStudent.PasswordChar = show ? '\0' : '*';
         }
     }
 }

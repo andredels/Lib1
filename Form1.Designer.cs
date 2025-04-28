@@ -35,8 +35,9 @@
             pictureBox3 = new PictureBox();
             pictureBox5 = new PictureBox();
             panel1 = new Panel();
+            ShowPassword = new CheckBox();
+            btnAdminLogin = new SiticoneNetCoreUI.SiticoneButton();
             siticoneLabel3 = new SiticoneNetCoreUI.SiticoneLabel();
-            siticoneCloseButton1 = new SiticoneNetCoreUI.SiticoneCloseButton();
             siticoneLinkedLabel1 = new SiticoneNetCoreUI.SiticoneLinkedLabel();
             btnLogin = new SiticoneNetCoreUI.SiticoneButton();
             btnSignup = new SiticoneNetCoreUI.SiticoneButton();
@@ -65,16 +66,18 @@
             // 
             // txtboxUsernameStudent
             // 
+            txtboxUsernameStudent.Font = new Font("Segoe UI", 9F);
             txtboxUsernameStudent.Location = new Point(102, 233);
             txtboxUsernameStudent.Name = "txtboxUsernameStudent";
-            txtboxUsernameStudent.Size = new Size(176, 26);
+            txtboxUsernameStudent.Size = new Size(176, 27);
             txtboxUsernameStudent.TabIndex = 12;
             // 
             // txtboxPasswordStudent
             // 
+            txtboxPasswordStudent.Font = new Font("Segoe UI", 9F);
             txtboxPasswordStudent.Location = new Point(102, 275);
             txtboxPasswordStudent.Name = "txtboxPasswordStudent";
-            txtboxPasswordStudent.Size = new Size(176, 26);
+            txtboxPasswordStudent.Size = new Size(176, 27);
             txtboxPasswordStudent.TabIndex = 13;
             // 
             // pictureBox3
@@ -102,8 +105,9 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(255, 224, 192);
+            panel1.Controls.Add(ShowPassword);
+            panel1.Controls.Add(btnAdminLogin);
             panel1.Controls.Add(siticoneLabel3);
-            panel1.Controls.Add(siticoneCloseButton1);
             panel1.Controls.Add(siticoneLinkedLabel1);
             panel1.Controls.Add(btnLogin);
             panel1.Controls.Add(btnSignup);
@@ -113,11 +117,101 @@
             panel1.Controls.Add(txtboxUsernameStudent);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(txtboxPasswordStudent);
-            panel1.Dock = DockStyle.Right;
-            panel1.Location = new Point(252, 0);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(257, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(340, 450);
+            panel1.Size = new Size(335, 508);
             panel1.TabIndex = 16;
+            // 
+            // ShowPassword
+            // 
+            ShowPassword.AutoSize = true;
+            ShowPassword.Font = new Font("Calibri", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ShowPassword.ForeColor = Color.Black;
+            ShowPassword.Location = new Point(156, 308);
+            ShowPassword.Name = "ShowPassword";
+            ShowPassword.Size = new Size(126, 22);
+            ShowPassword.TabIndex = 27;
+            ShowPassword.Text = "Show Password";
+            ShowPassword.UseVisualStyleBackColor = true;
+            ShowPassword.CheckedChanged += ShowPassword_CheckedChanged;
+            // 
+            // btnAdminLogin
+            // 
+            btnAdminLogin.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnAdminLogin.AccessibleName = "ADMIN LOGIN";
+            btnAdminLogin.AutoSizeBasedOnText = false;
+            btnAdminLogin.BackColor = Color.Transparent;
+            btnAdminLogin.BadgeBackColor = Color.Red;
+            btnAdminLogin.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnAdminLogin.BadgeValue = 0;
+            btnAdminLogin.BadgeValueForeColor = Color.White;
+            btnAdminLogin.BorderColor = Color.Transparent;
+            btnAdminLogin.BorderWidth = 2;
+            btnAdminLogin.ButtonBackColor = Color.Red;
+            btnAdminLogin.ButtonImage = null;
+            btnAdminLogin.CanBeep = true;
+            btnAdminLogin.CanGlow = false;
+            btnAdminLogin.CanShake = true;
+            btnAdminLogin.ContextMenuStripEx = null;
+            btnAdminLogin.CornerRadiusBottomLeft = 8;
+            btnAdminLogin.CornerRadiusBottomRight = 8;
+            btnAdminLogin.CornerRadiusTopLeft = 8;
+            btnAdminLogin.CornerRadiusTopRight = 8;
+            btnAdminLogin.CustomCursor = Cursors.Default;
+            btnAdminLogin.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnAdminLogin.EnableLongPress = false;
+            btnAdminLogin.EnablePressAnimation = true;
+            btnAdminLogin.EnableRippleEffect = true;
+            btnAdminLogin.EnableShadow = false;
+            btnAdminLogin.EnableTextWrapping = false;
+            btnAdminLogin.Font = new Font("Calibri", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAdminLogin.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnAdminLogin.GlowIntensity = 100;
+            btnAdminLogin.GlowRadius = 20F;
+            btnAdminLogin.GradientBackground = true;
+            btnAdminLogin.GradientColor = Color.Maroon;
+            btnAdminLogin.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnAdminLogin.HintText = null;
+            btnAdminLogin.HoverBackColor = Color.FromArgb(114, 168, 255);
+            btnAdminLogin.HoverFontStyle = FontStyle.Regular;
+            btnAdminLogin.HoverTextColor = Color.Black;
+            btnAdminLogin.HoverTransitionDuration = 250;
+            btnAdminLogin.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAdminLogin.ImagePadding = 5;
+            btnAdminLogin.ImageSize = new Size(16, 16);
+            btnAdminLogin.IsRadial = false;
+            btnAdminLogin.IsReadOnly = false;
+            btnAdminLogin.IsToggleButton = false;
+            btnAdminLogin.IsToggled = false;
+            btnAdminLogin.Location = new Point(61, 424);
+            btnAdminLogin.LongPressDurationMS = 1000;
+            btnAdminLogin.Name = "btnAdminLogin";
+            btnAdminLogin.NormalFontStyle = FontStyle.Regular;
+            btnAdminLogin.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnAdminLogin.ParticleCount = 15;
+            btnAdminLogin.PressAnimationScale = 0.97F;
+            btnAdminLogin.PressedBackColor = Color.FromArgb(74, 128, 235);
+            btnAdminLogin.PressedFontStyle = FontStyle.Regular;
+            btnAdminLogin.PressTransitionDuration = 150;
+            btnAdminLogin.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnAdminLogin.RippleColor = Color.FromArgb(255, 255, 255);
+            btnAdminLogin.RippleOpacity = 0.3F;
+            btnAdminLogin.RippleRadiusMultiplier = 0.6F;
+            btnAdminLogin.ShadowBlur = 5;
+            btnAdminLogin.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnAdminLogin.ShadowOffset = new Point(2, 2);
+            btnAdminLogin.ShakeDuration = 500;
+            btnAdminLogin.ShakeIntensity = 5;
+            btnAdminLogin.Size = new Size(217, 33);
+            btnAdminLogin.TabIndex = 24;
+            btnAdminLogin.Text = "ADMIN LOGIN";
+            btnAdminLogin.TextAlign = ContentAlignment.MiddleCenter;
+            btnAdminLogin.TextColor = Color.Black;
+            btnAdminLogin.TooltipText = null;
+            btnAdminLogin.UseAdvancedRendering = true;
+            btnAdminLogin.UseParticles = false;
+            btnAdminLogin.Click += btnAdminLogin_Click;
             // 
             // siticoneLabel3
             // 
@@ -131,31 +225,16 @@
             siticoneLabel3.Text = "Student Login";
             siticoneLabel3.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // siticoneCloseButton1
-            // 
-            siticoneCloseButton1.BackColor = Color.Transparent;
-            siticoneCloseButton1.CountdownFont = new Font("Segoe UI", 9F);
-            siticoneCloseButton1.Cursor = Cursors.Default;
-            siticoneCloseButton1.EnableSound = false;
-            siticoneCloseButton1.IconAnimation = SiticoneNetCoreUI.SiticoneCloseButton.CloseIconAnimation.Scale;
-            siticoneCloseButton1.IconColor = Color.Black;
-            siticoneCloseButton1.Location = new Point(294, 3);
-            siticoneCloseButton1.Name = "siticoneCloseButton1";
-            siticoneCloseButton1.Size = new Size(40, 40);
-            siticoneCloseButton1.TabIndex = 21;
-            siticoneCloseButton1.Text = "siticoneCloseButton1";
-            siticoneCloseButton1.TooltipText = "Close button";
-            // 
             // siticoneLinkedLabel1
             // 
             siticoneLinkedLabel1.BackColor = Color.Transparent;
             siticoneLinkedLabel1.Font = new Font("Segoe UI", 10F);
-            siticoneLinkedLabel1.Location = new Point(42, 412);
+            siticoneLinkedLabel1.Location = new Point(52, 470);
             siticoneLinkedLabel1.Name = "siticoneLinkedLabel1";
             siticoneLinkedLabel1.Size = new Size(251, 29);
             siticoneLinkedLabel1.TabIndex = 20;
             siticoneLinkedLabel1.TabStop = true;
-            siticoneLinkedLabel1.Text = "Are you an admin? Click here.";
+            siticoneLinkedLabel1.Text = "Forgot Password? CLick here.";
             siticoneLinkedLabel1.LinkClicked += siticoneLinkedLabel1_LinkClicked;
             // 
             // btnLogin
@@ -206,7 +285,7 @@
             btnLogin.IsReadOnly = false;
             btnLogin.IsToggleButton = false;
             btnLogin.IsToggled = false;
-            btnLogin.Location = new Point(61, 321);
+            btnLogin.Location = new Point(61, 337);
             btnLogin.LongPressDurationMS = 1000;
             btnLogin.Name = "btnLogin";
             btnLogin.NormalFontStyle = FontStyle.Regular;
@@ -283,7 +362,7 @@
             btnSignup.IsReadOnly = false;
             btnSignup.IsToggleButton = false;
             btnSignup.IsToggled = false;
-            btnSignup.Location = new Point(61, 360);
+            btnSignup.Location = new Point(61, 376);
             btnSignup.LongPressDurationMS = 1000;
             btnSignup.Name = "btnSignup";
             btnSignup.NormalFontStyle = FontStyle.Regular;
@@ -383,7 +462,7 @@
             siticoneAdvancedPanel1.ShadowDepth = 5;
             siticoneAdvancedPanel1.ShadowOffset = new Point(2, 2);
             siticoneAdvancedPanel1.ShadowOpacity = 0.3F;
-            siticoneAdvancedPanel1.Size = new Size(257, 450);
+            siticoneAdvancedPanel1.Size = new Size(257, 508);
             siticoneAdvancedPanel1.SlideDirection = new Point(0, -30);
             siticoneAdvancedPanel1.TabIndex = 17;
             siticoneAdvancedPanel1.TopLeftRadius = 5;
@@ -460,12 +539,12 @@
             AutoScaleDimensions = new SizeF(8F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(255, 224, 192);
-            ClientSize = new Size(592, 450);
+            ClientSize = new Size(592, 508);
             Controls.Add(panel1);
             Controls.Add(siticoneAdvancedPanel1);
             Font = new Font("Calibri", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             ForeColor = Color.Red;
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
@@ -493,7 +572,8 @@
         private SiticoneNetCoreUI.SiticoneButton btnSignup;
         private SiticoneNetCoreUI.SiticoneButton btnLogin;
         private SiticoneNetCoreUI.SiticoneLinkedLabel siticoneLinkedLabel1;
-        private SiticoneNetCoreUI.SiticoneCloseButton siticoneCloseButton1;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel3;
+        private SiticoneNetCoreUI.SiticoneButton btnAdminLogin;
+        private CheckBox ShowPassword;
     }
 }
