@@ -97,6 +97,13 @@ namespace Lib1
             bool show = ShowPassword.Checked;
             txtboxPasswordAdmin.PasswordChar = show ? '\0' : '*';
         }
+
+        private void btnSignupAdmin_Click(object sender, EventArgs e)
+        {
+            Signup signup = new Signup();
+            signup.Show();
+            this.Hide();
+        }
     }
 }
 

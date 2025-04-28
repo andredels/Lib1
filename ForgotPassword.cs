@@ -17,16 +17,18 @@ namespace Lib1
     public partial class ForgotPassword : Form
     {
         private bool isVerified = false;
+        private string generatedCode;
+        private string userEmail;
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb;";
+
         public ForgotPassword()
         {
             InitializeComponent();
         }
-        private string generatedCode;
-        private string userEmail;
 
         private void btnSendCode_Click(object sender, EventArgs e)
         {
-            /*userEmail = txtbxEmail.TextValue.Trim();
+            userEmail = txtbxEmail.Text.Trim();
 
             if (string.IsNullOrEmpty(userEmail))
             {
@@ -34,20 +36,24 @@ namespace Lib1
                 return;
             }
 
-            // Check if email exists in the database
-            string query = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
-            OleDbParameter[] parameters = { new OleDbParameter("@Email", userEmail) };
-
-            using (OleDbDataReader reader = DatabaseHelper.ExecuteQuery(query, parameters))
+            // Check if email exists in the database and is approved
+            bool emailExistsAndApproved = false;
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
-                reader.Read();
-                int count = Convert.ToInt32(reader[0]);
-
-                if (count == 0)
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM Users WHERE Email = ? AND ApprovalStatus = 'Approved'";
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
                 {
-                    MessageBox.Show("Email not found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    cmd.Parameters.AddWithValue("?", userEmail);
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    emailExistsAndApproved = count > 0;
                 }
+            }
+
+            if (!emailExistsAndApproved)
+            {
+                MessageBox.Show("Email not found or account not approved!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             // Generate a 6-digit verification code
@@ -58,7 +64,7 @@ namespace Lib1
             {
                 // Configure the SMTP client (Use your Gmail, Outlook, or SMTP provider)
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-                smtp.Credentials = new NetworkCredential("dredels1@gmail.com", "hubi okyc ohdx dmtc"); // Use an app password!
+                smtp.Credentials = new NetworkCredential("dredels1@gmail.com", "hubi okyc ohdx dmtc"); // Use your app password!
                 smtp.EnableSsl = true;
                 smtp.UseDefaultCredentials = false;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -78,13 +84,12 @@ namespace Lib1
             catch (Exception ex)
             {
                 MessageBox.Show("Error sending email: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }*/
-
+            }
         }
 
         private void btnVerifyCode_Click(object sender, EventArgs e)
         {
-            /*if (txtbxVerificationCode.TextValue.Trim() == generatedCode)
+            if (txtbxVerificationCode.Text.Trim() == generatedCode)
             {
                 isVerified = true;
                 MessageBox.Show("Verification successful! You can now reset your password.", "Verified", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -92,20 +97,19 @@ namespace Lib1
             else
             {
                 MessageBox.Show("Incorrect verification code!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }*/
-
+            }
         }
 
         private void btnResetPassword_Click(object sender, EventArgs e)
         {
-            /*if (!isVerified)
+            if (!isVerified)
             {
                 MessageBox.Show("Please verify your email first by entering the correct verification code!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string newPassword = tbxNewPassword.TextValue.Trim();
-            string confirmPassword = tbxConfirmPassword.TextValue.Trim();
+            string newPassword = txtbxNewPassword.Text.Trim();
+            string confirmPassword = txtbxVerifyNewPassword.Text.Trim();
 
             if (newPassword != confirmPassword)
             {
@@ -113,28 +117,31 @@ namespace Lib1
                 return;
             }
 
-            // Encrypt the new password before saving
-            string encryptedPassword = SecurityHelper.EncryptPassword(newPassword);
+            // Hash the new password before saving
+            string hashedPassword = SecurityHelper.HashPassword(newPassword);
 
-            string query = "UPDATE [Users Table] SET [Password] = @Password WHERE Email = @Email";
-            OleDbParameter[] parameters = {
-        new OleDbParameter("@Password", encryptedPassword),
-        new OleDbParameter("@Email", userEmail)
-    };
-
-            if (DatabaseHelper.ExecuteNonQuery(query, parameters))
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
-                MessageBox.Show("Password successfully reset! You can now log in.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                conn.Open();
+                string query = "UPDATE Users SET [Password] = ? WHERE Email = ?";
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("?", hashedPassword);
+                    cmd.Parameters.AddWithValue("?", userEmail);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Password successfully reset! You can now log in.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.Close();
+                        Form1 form1 = new Form1();
+                        form1.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to reset password!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
-            else
-            {
-                MessageBox.Show("Failed to reset password!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            Form1 form1 = new Form1();
-            form1.Show();
-            this.Hide();*/
         }
 
         private void btnBack_Click(object sender, EventArgs e)

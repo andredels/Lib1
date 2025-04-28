@@ -471,6 +471,7 @@
             btnSignupAdmin.TooltipText = null;
             btnSignupAdmin.UseAdvancedRendering = true;
             btnSignupAdmin.UseParticles = false;
+            btnSignupAdmin.Click += btnSignupAdmin_Click;
             // 
             // pictureBox2
             // 
