@@ -29,6 +29,7 @@ namespace Lib1
             {
                 LoadStudentNames();
             }
+            InitializeSearchControls();
         }
         private void SetupUIBasedOnUserType()
         {
@@ -44,6 +45,7 @@ namespace Lib1
 
             // Show/hide student filter for admin, hide for students
             comboBoxStudentNameSearch.Visible = isAdmin;
+            comboBoxBookSearch.Visible = isAdmin;
             if (comboBoxStudentNameSearch.Parent is Label lblStudentName)
             {
                 lblStudentName.Visible = isAdmin;
@@ -52,6 +54,8 @@ namespace Lib1
             // Hide UserID and Full Name fields for students
             if (!isAdmin)
             {
+                label1.Visible = false;
+                label2.Visible = false;
                 if (textBoxUserID != null && textBoxUserID.Parent is Label lblUserID)
                 {
                     lblUserID.Visible = false;
@@ -186,19 +190,19 @@ namespace Lib1
                 textBoxISBN.Text = row.Cells["ISBN"].Value.ToString();
                 textBoxGenre.Text = row.Cells["GenreName"].Value.ToString();
                 textBoxFullName.Text = row.Cells["FullName"].Value.ToString();
-                
+
                 // Handle potentially null dates
-                textBoxBorrowDate.Text = row.Cells["BorrowDate"].Value != DBNull.Value 
+                textBoxBorrowDate.Text = row.Cells["BorrowDate"].Value != DBNull.Value
                     ? Convert.ToDateTime(row.Cells["BorrowDate"].Value).ToShortDateString()
                     : "Not borrowed yet";
-                    
-                textBoxReturnDate.Text = row.Cells["ReturnDate"].Value != DBNull.Value 
+
+                textBoxReturnDate.Text = row.Cells["ReturnDate"].Value != DBNull.Value
                     ? Convert.ToDateTime(row.Cells["ReturnDate"].Value).ToShortDateString()
                     : "Not set";
-                    
+
                 string status = row.Cells["Status"].Value.ToString();
                 textBoxStatus.Text = status;
-                textBoxProcessedBy.Text = row.Cells["ProcessedBy"].Value != DBNull.Value 
+                textBoxProcessedBy.Text = row.Cells["ProcessedBy"].Value != DBNull.Value
                     ? row.Cells["ProcessedBy"].Value.ToString()
                     : "Not processed";
 
@@ -236,24 +240,31 @@ namespace Lib1
         {
             try
             {
-                // Fixed: Get the selected value correctly using DataRowView
+                // Don't proceed if triggered during initialization or if nothing is selected
+                if (comboBoxStudentNameSearch.SelectedIndex == -1)
+                    return;
+
+                // Get the selected value correctly using DataRowView
                 DataRowView drv = comboBoxStudentNameSearch.SelectedItem as DataRowView;
                 if (drv == null) return;
 
                 int selectedUserID = Convert.ToInt32(drv["UserID"]);
+
+                // Debug information
+                Console.WriteLine($"Selected UserID: {selectedUserID}");
 
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
                     connection.Open();
 
                     string query = @"SELECT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
-                                    bt.ProcessedBy, bt.RequestType
-                                    FROM (((BookTransactions bt 
-                                    INNER JOIN Books b ON bt.BookID = b.BookID)
-                                    INNER JOIN Users u ON bt.UserID = u.UserID)
-                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.Status = 'Approved' AND bt.RequestType = 'Borrow'";
+                            g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
+                            bt.ProcessedBy, bt.RequestType
+                            FROM (((BookTransactions bt 
+                            INNER JOIN Books b ON bt.BookID = b.BookID)
+                            INNER JOIN Users u ON bt.UserID = u.UserID)
+                            INNER JOIN Genres g ON b.GenreID = g.GenreID)
+                            WHERE bt.Status = 'Approved' AND bt.RequestType = 'Borrow'";
 
                     // If a specific user is selected (not "All Borrowers")
                     if (selectedUserID > 0)
@@ -272,7 +283,25 @@ namespace Lib1
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
 
+                        // Set data source
+                        dataGridView_BorrowedBooks.DataSource = null; // Clear first to force refresh
                         dataGridView_BorrowedBooks.DataSource = dataTable;
+
+                        // Report on number of rows for debugging
+                        Console.WriteLine($"Query returned {dataTable.Rows.Count} rows");
+
+                        // Re-apply formatting
+                        if (dataGridView_BorrowedBooks.Columns.Contains("BorrowDate"))
+                        {
+                            dataGridView_BorrowedBooks.Columns["BorrowDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
+                        if (dataGridView_BorrowedBooks.Columns.Contains("ReturnDate"))
+                        {
+                            dataGridView_BorrowedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
+
+                        // Re-apply row highlighting
+                        HighlightRows();
                     }
                 }
             }
@@ -291,14 +320,14 @@ namespace Lib1
                     connection.Open();
 
                     string query = @"SELECT DISTINCT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
-                                    bt.ProcessedBy, bt.RequestType, bt.RequestDate
-                                    FROM (((BookTransactions bt 
-                                    INNER JOIN Books b ON bt.BookID = b.BookID)
-                                    INNER JOIN Users u ON bt.UserID = u.UserID)
-                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.RequestType = 'Borrow'
-                                    ORDER BY bt.Status DESC, bt.RequestDate DESC";
+                            g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
+                            bt.ProcessedBy, bt.RequestType, bt.RequestDate
+                            FROM (((BookTransactions bt 
+                            INNER JOIN Books b ON bt.BookID = b.BookID)
+                            INNER JOIN Users u ON bt.UserID = u.UserID)
+                            INNER JOIN Genres g ON b.GenreID = g.GenreID)
+                            WHERE bt.RequestType = 'Borrow'
+                            ORDER BY bt.Status DESC, bt.RequestDate DESC";
 
                     OleDbDataAdapter adapter = new OleDbDataAdapter(query, connection);
                     DataTable dataTable = new DataTable();
@@ -319,6 +348,15 @@ namespace Lib1
                     {
                         dataGridView_BorrowedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                     }
+
+                    // Re-initialize search controls for the new data
+                    LoadBookNamesIntoComboBox();
+
+                    // Clear any existing search
+                    textBoxBorrowedBookSearch.Text = string.Empty;
+
+                    // Re-apply row highlighting
+                    HighlightRows();
                 }
             }
             catch (Exception ex)
@@ -336,14 +374,14 @@ namespace Lib1
                     connection.Open();
 
                     string query = @"SELECT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
-                                    bt.ProcessedBy, bt.RequestType
-                                    FROM (((BookTransactions bt 
-                                    INNER JOIN Books b ON bt.BookID = b.BookID)
-                                    INNER JOIN Users u ON bt.UserID = u.UserID)
-                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.Status = 'Approved' AND bt.ReturnDate < @CurrentDate 
-                                    AND bt.RequestType = 'Borrow'";
+                            g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
+                            bt.ProcessedBy, bt.RequestType
+                            FROM (((BookTransactions bt 
+                            INNER JOIN Books b ON bt.BookID = b.BookID)
+                            INNER JOIN Users u ON bt.UserID = u.UserID)
+                            INNER JOIN Genres g ON b.GenreID = g.GenreID)
+                            WHERE bt.Status = 'Approved' AND bt.ReturnDate < @CurrentDate 
+                            AND bt.RequestType = 'Borrow'";
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
@@ -354,6 +392,15 @@ namespace Lib1
                         adapter.Fill(dataTable);
 
                         dataGridView_BorrowedBooks.DataSource = dataTable;
+
+                        // Re-initialize search controls for the new data
+                        LoadBookNamesIntoComboBox();
+
+                        // Clear any existing search
+                        textBoxBorrowedBookSearch.Text = string.Empty;
+
+                        // Re-apply row highlighting
+                        HighlightRows();
                     }
                 }
             }
@@ -363,7 +410,7 @@ namespace Lib1
             }
         }
 
-        private void btnReturn_Click(object sender, EventArgs e)
+            private void btnReturn_Click(object sender, EventArgs e)
         {
             if (selectedTransactionID == 0)
             {
@@ -560,7 +607,12 @@ namespace Lib1
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadBorrowedBooks();
-            LoadStudentNames();
+            if (isAdmin)
+            {
+                LoadStudentNames();
+            }
+            LoadBookNamesIntoComboBox(); // Re-initialize book search
+            textBoxBorrowedBookSearch.Text = string.Empty; // Clear search box
             ClearSelection();
         }
 
@@ -594,6 +646,219 @@ namespace Lib1
                         row.DefaultCellStyle.BackColor = Color.Yellow;
                     }
                 }
+            }
+        }
+
+        private void LoadBookNamesIntoComboBox()
+        {
+            try
+            {
+                // Clear existing items
+                comboBoxBookSearch.Items.Clear();
+
+                // Add "All Books" option
+                comboBoxBookSearch.Items.Add("All Books");
+
+                // Get the DataTable from the DataGridView
+                DataTable dt = null;
+
+                if (dataGridView_BorrowedBooks.DataSource is DataTable)
+                {
+                    dt = (DataTable)dataGridView_BorrowedBooks.DataSource;
+                }
+                else if (dataGridView_BorrowedBooks.DataSource is DataView)
+                {
+                    dt = ((DataView)dataGridView_BorrowedBooks.DataSource).Table;
+                }
+
+                // Check if DataSource is valid
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    // Create a HashSet to avoid duplicate book titles
+                    HashSet<string> bookTitles = new HashSet<string>();
+
+                    // Make sure the Title column exists
+                    if (dt.Columns.Contains("Title"))
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            if (row["Title"] != DBNull.Value)
+                            {
+                                string title = row["Title"].ToString();
+                                if (!string.IsNullOrEmpty(title) && !bookTitles.Contains(title))
+                                {
+                                    bookTitles.Add(title);
+                                    comboBoxBookSearch.Items.Add(title);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Select "All Books" by default
+                if (comboBoxBookSearch.Items.Count > 0)
+                {
+                    comboBoxBookSearch.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error loading book titles: " + ex.Message);
+                // Don't show an error dialog as this might be called frequently
+            }
+        }
+
+        private void comboBoxBookSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Don't proceed if triggered during initialization or if nothing is selected
+                if (comboBoxBookSearch.SelectedIndex == -1)
+                    return;
+
+                // Get the selected book
+                string selectedBook = comboBoxBookSearch.SelectedItem.ToString();
+
+                // Get the DataTable from the DataGridView
+                if (dataGridView_BorrowedBooks.DataSource == null)
+                    return;
+
+                DataTable dt = (dataGridView_BorrowedBooks.DataSource as DataTable) ??
+                               ((dataGridView_BorrowedBooks.DataSource as DataView)?.Table);
+
+                if (dt == null)
+                    return;
+
+                // Create a new DataView from the DataTable
+                DataView dv = new DataView(dt);
+
+                // If "All Books" is selected, show all books
+                if (selectedBook == "All Books")
+                {
+                    dv.RowFilter = string.Empty; // Clear any filter
+                }
+                else
+                {
+                    // Filter the DataView to show only the selected book
+                    // Use "Title" instead of "BookName"
+                    dv.RowFilter = $"Title = '{selectedBook.Replace("'", "''")}'";
+                }
+
+                // Apply the filtered DataView to the DataGridView
+                dataGridView_BorrowedBooks.DataSource = dv;
+
+                // Re-apply row highlighting after filtering
+                HighlightRows();
+
+                // Debug message to verify the event fired
+                Console.WriteLine($"Book filter applied: {selectedBook}, Rows: {dv.Count}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error filtering books: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void textBoxBorrowedBookSearch_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string searchText = textBoxBorrowedBookSearch.Text.Trim();
+
+                // Get the DataTable from the DataGridView
+                if (dataGridView_BorrowedBooks.DataSource == null)
+                    return;
+
+                DataTable dt = (dataGridView_BorrowedBooks.DataSource as DataTable) ??
+                               ((dataGridView_BorrowedBooks.DataSource as DataView)?.Table);
+
+                if (dt == null)
+                    return;
+
+                // Create a new DataView from the DataTable (create a fresh one each time)
+                DataView dv = new DataView(dt);
+
+                if (string.IsNullOrEmpty(searchText))
+                {
+                    dv.RowFilter = string.Empty; // Show all if search is empty
+                }
+                else
+                {
+                    // Escape single quotes in the search text to prevent SQL injection
+                    searchText = searchText.Replace("'", "''");
+
+                    // Build a filter string that searches across multiple columns
+                    // Using the actual column names from your SQL query
+                    string filterString = $"Title LIKE '%{searchText}%' OR " +
+                                          $"Author LIKE '%{searchText}%' OR " +
+                                          $"ISBN LIKE '%{searchText}%' OR " +
+                                          $"FullName LIKE '%{searchText}%' OR " +
+                                          $"GenreName LIKE '%{searchText}%'";
+
+                    // Apply the filter
+                    dv.RowFilter = filterString;
+                }
+
+                // Debug info
+                Console.WriteLine($"Search filter applied: '{searchText}', Rows: {dv.Count}");
+
+                // Apply the filtered DataView to the DataGridView - force refresh
+                dataGridView_BorrowedBooks.DataSource = null;
+                dataGridView_BorrowedBooks.DataSource = dv;
+
+                // Re-apply row highlighting after filtering
+                HighlightRows();
+            }
+            catch (Exception ex)
+            {
+                // Some filtering expressions might fail, don't show errors for every keystroke
+                Console.WriteLine("Error searching books: " + ex.Message);
+                // Reset the filter if there's an error
+                try
+                {
+                    if (dataGridView_BorrowedBooks.DataSource is DataView originalView)
+                    {
+                        originalView.RowFilter = string.Empty;
+                    }
+                }
+                catch { }
+            }
+        }
+        private void InitializeSearchControls()
+        {
+            try
+            {
+                // Load book names into combobox
+                LoadBookNamesIntoComboBox();
+
+                // Set the ComboBoxes to read-only mode
+                comboBoxBookSearch.DropDownStyle = ComboBoxStyle.DropDownList;
+                comboBoxStudentNameSearch.DropDownStyle = ComboBoxStyle.DropDownList;
+
+                // Remove any existing event handlers to prevent duplicates
+                comboBoxBookSearch.SelectedIndexChanged -= comboBoxBookSearch_SelectedIndexChanged;
+                comboBoxStudentNameSearch.SelectedIndexChanged -= comboBoxStudentNameSearch_SelectedIndexChanged;
+                textBoxBorrowedBookSearch.TextChanged -= textBoxBorrowedBookSearch_TextChanged;
+
+                // Re-add event handlers
+                comboBoxBookSearch.SelectedIndexChanged += comboBoxBookSearch_SelectedIndexChanged;
+                comboBoxStudentNameSearch.SelectedIndexChanged += comboBoxStudentNameSearch_SelectedIndexChanged;
+                textBoxBorrowedBookSearch.TextChanged += textBoxBorrowedBookSearch_TextChanged;
+
+                // Force the initial selection if needed
+                if (comboBoxBookSearch.Items.Count > 0 && comboBoxBookSearch.SelectedIndex == -1)
+                {
+                    comboBoxBookSearch.SelectedIndex = 0;
+                }
+
+                if (comboBoxStudentNameSearch.Items.Count > 0 && comboBoxStudentNameSearch.SelectedIndex == -1)
+                {
+                    comboBoxStudentNameSearch.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error initializing search controls: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

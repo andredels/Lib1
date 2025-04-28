@@ -30,11 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BorrowedBooks));
             panel1 = new Panel();
-            label3 = new Label();
             label2 = new Label();
+            comboBoxBookSearch = new ComboBox();
             label1 = new Label();
-            textBoxEndYearSearch = new TextBox();
-            textBoxStartYearSearch = new TextBox();
             comboBoxStudentNameSearch = new ComboBox();
             btnRefresh = new SiticoneNetCoreUI.SiticoneButton();
             textBoxBorrowedBookSearch = new TextBox();
@@ -74,11 +72,9 @@
             // panel1
             // 
             panel1.BackColor = Color.BurlyWood;
-            panel1.Controls.Add(label3);
             panel1.Controls.Add(label2);
+            panel1.Controls.Add(comboBoxBookSearch);
             panel1.Controls.Add(label1);
-            panel1.Controls.Add(textBoxEndYearSearch);
-            panel1.Controls.Add(textBoxStartYearSearch);
             panel1.Controls.Add(comboBoxStudentNameSearch);
             panel1.Controls.Add(btnRefresh);
             panel1.Controls.Add(textBoxBorrowedBookSearch);
@@ -90,23 +86,24 @@
             panel1.Size = new Size(1098, 125);
             panel1.TabIndex = 2;
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(950, 96);
-            label3.Name = "label3";
-            label3.Size = new Size(76, 20);
-            label3.TabIndex = 18;
-            label3.Text = "Year (End)";
-            // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Location = new Point(820, 96);
             label2.Name = "label2";
-            label2.Size = new Size(82, 20);
-            label2.TabIndex = 17;
-            label2.Text = "Year (Start)";
+            label2.Size = new Size(76, 20);
+            label2.TabIndex = 18;
+            label2.Text = "Book Title";
+            // 
+            // comboBoxBookSearch
+            // 
+            comboBoxBookSearch.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxBookSearch.FormattingEnabled = true;
+            comboBoxBookSearch.Location = new Point(820, 65);
+            comboBoxBookSearch.Name = "comboBoxBookSearch";
+            comboBoxBookSearch.Size = new Size(125, 28);
+            comboBoxBookSearch.TabIndex = 17;
+            comboBoxBookSearch.SelectedIndexChanged += comboBoxBookSearch_SelectedIndexChanged;
             // 
             // label1
             // 
@@ -117,24 +114,9 @@
             label1.TabIndex = 16;
             label1.Text = "Student Name";
             // 
-            // textBoxEndYearSearch
-            // 
-            textBoxEndYearSearch.Location = new Point(950, 65);
-            textBoxEndYearSearch.Multiline = true;
-            textBoxEndYearSearch.Name = "textBoxEndYearSearch";
-            textBoxEndYearSearch.Size = new Size(125, 27);
-            textBoxEndYearSearch.TabIndex = 15;
-            // 
-            // textBoxStartYearSearch
-            // 
-            textBoxStartYearSearch.Location = new Point(820, 65);
-            textBoxStartYearSearch.Multiline = true;
-            textBoxStartYearSearch.Name = "textBoxStartYearSearch";
-            textBoxStartYearSearch.Size = new Size(125, 27);
-            textBoxStartYearSearch.TabIndex = 14;
-            // 
             // comboBoxStudentNameSearch
             // 
+            comboBoxStudentNameSearch.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxStudentNameSearch.FormattingEnabled = true;
             comboBoxStudentNameSearch.Location = new Point(689, 65);
             comboBoxStudentNameSearch.Name = "comboBoxStudentNameSearch";
@@ -190,7 +172,7 @@
             btnRefresh.IsReadOnly = false;
             btnRefresh.IsToggleButton = false;
             btnRefresh.IsToggled = false;
-            btnRefresh.Location = new Point(950, 30);
+            btnRefresh.Location = new Point(956, 30);
             btnRefresh.LongPressDurationMS = 1000;
             btnRefresh.Name = "btnRefresh";
             btnRefresh.NormalFontStyle = FontStyle.Regular;
@@ -224,8 +206,9 @@
             textBoxBorrowedBookSearch.Location = new Point(689, 30);
             textBoxBorrowedBookSearch.Multiline = true;
             textBoxBorrowedBookSearch.Name = "textBoxBorrowedBookSearch";
-            textBoxBorrowedBookSearch.Size = new Size(251, 29);
+            textBoxBorrowedBookSearch.Size = new Size(256, 29);
             textBoxBorrowedBookSearch.TabIndex = 11;
+            textBoxBorrowedBookSearch.TextChanged += textBoxBorrowedBookSearch_TextChanged;
             // 
             // siticoneLabel1
             // 
@@ -854,11 +837,7 @@
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel4;
         private TextBox textBoxBookTitle;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel8;
-        private Label label3;
-        private Label label2;
         private Label label1;
-        private TextBox textBoxEndYearSearch;
-        private TextBox textBoxStartYearSearch;
         private ComboBox comboBoxStudentNameSearch;
         private SiticoneNetCoreUI.SiticoneButton btnRefresh;
         private TextBox textBoxBorrowedBookSearch;
@@ -868,5 +847,7 @@
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel2;
         private TextBox textBoxReturnDate;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel3;
+        private Label label2;
+        private ComboBox comboBoxBookSearch;
     }
 }

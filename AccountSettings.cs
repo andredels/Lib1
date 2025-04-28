@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Lib1
 {
@@ -78,11 +79,26 @@ namespace Lib1
                 MessageBox.Show("Username cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             try
             {
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
+
+                    // Check if username exists (excluding current user)
+                    string checkUsernameQuery = "SELECT COUNT(*) FROM Users WHERE Username = ?";
+                    using (OleDbCommand cmdCheckUsername = new OleDbCommand(checkUsernameQuery, conn))
+                    {
+                        cmdCheckUsername.Parameters.AddWithValue("?", newUsername);
+                        int usernameCount = (int)cmdCheckUsername.ExecuteScalar();
+                        if (usernameCount > 0)
+                        {
+                            MessageBox.Show("Username already exists. Please choose a different username.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+
                     string updateQuery = "UPDATE Users SET Username = ? WHERE UserID = ?";
                     using (OleDbCommand cmd = new OleDbCommand(updateQuery, conn))
                     {
@@ -108,11 +124,26 @@ namespace Lib1
                 MessageBox.Show("Email cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             try
             {
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
+
+                    // Check if email exists (excluding current user)
+                    string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = ?";
+                    using (OleDbCommand cmdCheckEmail = new OleDbCommand(checkEmailQuery, conn))
+                    {
+                        cmdCheckEmail.Parameters.AddWithValue("?", newEmail);
+                        int emailCount = (int)cmdCheckEmail.ExecuteScalar();
+                        if (emailCount > 0)
+                        {
+                            MessageBox.Show("Email already exists. Please use a different email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+
                     string updateQuery = "UPDATE Users SET Email = ? WHERE UserID = ?";
                     using (OleDbCommand cmd = new OleDbCommand(updateQuery, conn))
                     {
