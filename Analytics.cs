@@ -13,11 +13,18 @@ namespace Lib1
     public partial class Analytics : UserControl
     {
         private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb";
-        
+
         public Analytics()
         {
             InitializeComponent();
+            
+            // Initialize both charts but only show Book Ratings chart
             LoadBookRatingsChart();
+            LoadMostBorrowedBooksChart();
+            
+            // Set initial visibility
+            cartesianChartBookRating.Visible = true;
+            cartesianChartMostBorrowedBooks.Visible = false;
         }
 
         private void LoadBookRatingsChart()
@@ -95,6 +102,99 @@ namespace Lib1
             {
                 MessageBox.Show($"Error loading book ratings: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void LoadMostBorrowedBooksChart()
+        {
+            var bookBorrowCounts = new Dictionary<string, int>();
+
+            try
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"SELECT b.Title, COUNT(*) as BorrowCount 
+                                   FROM Books b 
+                                   INNER JOIN BookTransactions bt ON b.BookID = bt.BookID 
+                                   WHERE bt.Status IN ('Approved', 'Returned') 
+                                   GROUP BY b.Title 
+                                   ORDER BY COUNT(*) DESC";
+
+                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    using (OleDbDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string title = reader["Title"].ToString();
+                            int borrowCount = Convert.ToInt32(reader["BorrowCount"]);
+                            bookBorrowCounts[title] = borrowCount;
+                        }
+                    }
+                }
+
+                // Prepare chart data
+                var values = new List<double>();
+                var labels = new List<string>();
+
+                foreach (var book in bookBorrowCounts)
+                {
+                    values.Add(book.Value);
+                    labels.Add(book.Key);
+                }
+
+                // Configure the chart
+                cartesianChartMostBorrowedBooks.XAxes = new[]
+                {
+                    new Axis
+                    {
+                        Labels = labels.ToArray(),
+                        LabelsRotation = 45
+                    }
+                };
+
+                cartesianChartMostBorrowedBooks.YAxes = new[]
+                {
+                    new Axis
+                    {
+                        Name = "Times Borrowed",
+                        MinLimit = 0
+                    }
+                };
+
+                cartesianChartMostBorrowedBooks.Series = new ISeries[]
+                {
+                    new ColumnSeries<double>
+                    {
+                        Values = values.ToArray(),
+                        Fill = new SolidColorPaint(SKColors.SaddleBrown),
+                        Name = "Times Borrowed"
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading most borrowed books: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnBookRatings_Click(object sender, EventArgs e)
+        {
+            cartesianChartBookRating.Visible = true;
+            cartesianChartMostBorrowedBooks.Visible = false;
+            
+            // Optional: Update the button states visually
+            btnBookRatings.ButtonBackColor = Color.FromArgb(74, 128, 235); // Pressed color
+            btnViewMostBorrowed.ButtonBackColor = Color.FromArgb(255, 128, 0); // Normal color
+        }
+
+        private void btnViewMostBorrowed_Click(object sender, EventArgs e)
+        {
+            cartesianChartBookRating.Visible = false;
+            cartesianChartMostBorrowedBooks.Visible = true;
+            
+            // Optional: Update the button states visually
+            btnViewMostBorrowed.ButtonBackColor = Color.FromArgb(74, 128, 235); // Pressed color
+            btnBookRatings.ButtonBackColor = Color.FromArgb(255, 128, 0); // Normal color
         }
     }
 }
