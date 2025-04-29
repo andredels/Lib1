@@ -73,6 +73,7 @@ namespace Lib1
                 MessageBox.Show("Error loading books: " + ex.Message, "Database Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            StyleDataGridView();
         }
 
 
@@ -442,10 +443,13 @@ namespace Lib1
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
                         OleDbDataReader reader = cmd.ExecuteReader();
-                        comboBoxBookGenre.Items.Clear(); // Clear any existing items
+                        comboBoxBookGenre.Items.Clear();
+                        comboBoxGenreSearch.Items.Clear(); // ALSO clear and load for search combobox
                         while (reader.Read())
                         {
-                            comboBoxBookGenre.Items.Add(reader["GenreName"].ToString());
+                            string genreName = reader["GenreName"].ToString();
+                            comboBoxBookGenre.Items.Add(genreName);
+                            comboBoxGenreSearch.Items.Add(genreName);
                         }
                     }
                 }
@@ -473,6 +477,15 @@ namespace Lib1
                 int rowIndex = datagridViewAllBooks.SelectedCells[0].RowIndex;
                 int bookId = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["BookID"].Value);
                 string bookTitle = datagridViewAllBooks.Rows[rowIndex].Cells["Title"].Value.ToString();
+                int availableCopies = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["AvailableCopies"].Value);
+
+                // Check if book is available for reservation (only if no copies are available)
+                if (availableCopies > 0)
+                {
+                    MessageBox.Show("This book is currently available for borrowing. Please use the Borrow button instead.",
+                        "Book Available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
                 // Get the current user ID - this is now stored as a property
                 if (UserID <= 0)
@@ -548,6 +561,103 @@ namespace Lib1
                 MessageBox.Show($"Error processing reservation request: {ex.Message}",
                     "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void comboBoxGenreSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void textBoxStartYearSearch_TextChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void textBoxEndYearSearch_TextChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+        private void ApplyFilters()
+        {
+            try
+            {
+                StringBuilder filterBuilder = new StringBuilder();
+
+                // Genre filter
+                if (!string.IsNullOrEmpty(comboBoxGenreSearch.Text))
+                {
+                    filterBuilder.AppendFormat("[Genre] LIKE '%{0}%'", comboBoxGenreSearch.Text.Replace("'", "''"));
+                }
+
+                // Year range filter
+                if (int.TryParse(textBoxStartYearSearch.Text, out int startYear))
+                {
+                    if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+                    filterBuilder.AppendFormat("[PublicationYear] >= {0}", startYear);
+                }
+                if (int.TryParse(textBoxEndYearSearch.Text, out int endYear))
+                {
+                    if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+                    filterBuilder.AppendFormat("[PublicationYear] <= {0}", endYear);
+                }
+
+                // Search textbox filter (searching across multiple fields)
+                if (!string.IsNullOrEmpty(textBoxSearch.Text))
+                {
+                    if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+                    string searchText = textBoxSearch.Text.Replace("'", "''"); // escape single quotes
+                    filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [Author] LIKE '%{0}%' OR [ISBN] LIKE '%{0}%' OR [Genre] LIKE '%{0}%' OR [Publisher] LIKE '%{0}%')", searchText);
+                }
+
+                (datagridViewAllBooks.DataSource as DataTable).DefaultView.RowFilter = filterBuilder.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error filtering books: " + ex.Message, "Filter Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Clear all filter input fields
+                comboBoxGenreSearch.SelectedIndex = -1;
+                comboBoxGenreSearch.Text = "";
+                textBoxStartYearSearch.Clear();
+                textBoxEndYearSearch.Clear();
+                textBoxSearch.Clear();
+
+                // Reload all books from the database
+                LoadAllBooks();
+
+                // Remove any existing filters on the DataGridView
+                (datagridViewAllBooks.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error refreshing data: " + ex.Message, "Refresh Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void StyleDataGridView()
+        {
+            datagridViewAllBooks.EnableHeadersVisualStyles = false;
+            datagridViewAllBooks.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(255, 128, 0);
+            datagridViewAllBooks.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            datagridViewAllBooks.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            datagridViewAllBooks.RowHeadersVisible = false;
+            datagridViewAllBooks.BorderStyle = BorderStyle.None;
+            datagridViewAllBooks.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            datagridViewAllBooks.GridColor = Color.FromArgb(224, 224, 224);
+            datagridViewAllBooks.RowTemplate.Height = 35;
+            datagridViewAllBooks.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+            datagridViewAllBooks.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 128, 0);
+            datagridViewAllBooks.DefaultCellStyle.SelectionForeColor = Color.White;
         }
     }
 }

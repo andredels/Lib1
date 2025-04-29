@@ -36,7 +36,7 @@
             textBoxEndYearSearch = new TextBox();
             textBoxStartYearSearch = new TextBox();
             comboBoxGenreSearch = new ComboBox();
-            buttonSearch = new SiticoneNetCoreUI.SiticoneButton();
+            buttonRefresh = new SiticoneNetCoreUI.SiticoneButton();
             siticoneLabel1 = new SiticoneNetCoreUI.SiticoneLabel();
             siticonePictureBox1 = new SiticoneNetCoreUI.SiticonePictureBox();
             textBoxSearch = new TextBox();
@@ -76,7 +76,7 @@
             panel1.Controls.Add(textBoxEndYearSearch);
             panel1.Controls.Add(textBoxStartYearSearch);
             panel1.Controls.Add(comboBoxGenreSearch);
-            panel1.Controls.Add(buttonSearch);
+            panel1.Controls.Add(buttonRefresh);
             panel1.Controls.Add(siticoneLabel1);
             panel1.Controls.Add(siticonePictureBox1);
             panel1.Controls.Add(textBoxSearch);
@@ -120,6 +120,7 @@
             textBoxEndYearSearch.Name = "textBoxEndYearSearch";
             textBoxEndYearSearch.Size = new Size(125, 27);
             textBoxEndYearSearch.TabIndex = 7;
+            textBoxEndYearSearch.TextChanged += textBoxEndYearSearch_TextChanged;
             // 
             // textBoxStartYearSearch
             // 
@@ -128,90 +129,94 @@
             textBoxStartYearSearch.Name = "textBoxStartYearSearch";
             textBoxStartYearSearch.Size = new Size(125, 27);
             textBoxStartYearSearch.TabIndex = 6;
+            textBoxStartYearSearch.TextChanged += textBoxStartYearSearch_TextChanged;
             // 
             // comboBoxGenreSearch
             // 
+            comboBoxGenreSearch.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxGenreSearch.FormattingEnabled = true;
             comboBoxGenreSearch.Location = new Point(708, 53);
             comboBoxGenreSearch.Name = "comboBoxGenreSearch";
             comboBoxGenreSearch.Size = new Size(125, 28);
             comboBoxGenreSearch.TabIndex = 5;
+            comboBoxGenreSearch.SelectedIndexChanged += comboBoxGenreSearch_SelectedIndexChanged;
             // 
-            // buttonSearch
+            // buttonRefresh
             // 
-            buttonSearch.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
-            buttonSearch.AccessibleName = "Search";
-            buttonSearch.AutoSizeBasedOnText = false;
-            buttonSearch.BackColor = Color.Transparent;
-            buttonSearch.BadgeBackColor = Color.Red;
-            buttonSearch.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
-            buttonSearch.BadgeValue = 0;
-            buttonSearch.BadgeValueForeColor = Color.White;
-            buttonSearch.BorderColor = Color.Transparent;
-            buttonSearch.BorderWidth = 2;
-            buttonSearch.ButtonBackColor = Color.FromArgb(255, 128, 0);
-            buttonSearch.ButtonImage = null;
-            buttonSearch.CanBeep = true;
-            buttonSearch.CanGlow = false;
-            buttonSearch.CanShake = true;
-            buttonSearch.ContextMenuStripEx = null;
-            buttonSearch.CornerRadiusBottomLeft = 8;
-            buttonSearch.CornerRadiusBottomRight = 8;
-            buttonSearch.CornerRadiusTopLeft = 8;
-            buttonSearch.CornerRadiusTopRight = 8;
-            buttonSearch.CustomCursor = Cursors.Default;
-            buttonSearch.DisabledTextColor = Color.FromArgb(150, 150, 150);
-            buttonSearch.EnableLongPress = false;
-            buttonSearch.EnablePressAnimation = true;
-            buttonSearch.EnableRippleEffect = true;
-            buttonSearch.EnableShadow = false;
-            buttonSearch.EnableTextWrapping = false;
-            buttonSearch.Font = new Font("Segoe UI", 9F);
-            buttonSearch.GlowColor = Color.FromArgb(100, 255, 255, 255);
-            buttonSearch.GlowIntensity = 100;
-            buttonSearch.GlowRadius = 20F;
-            buttonSearch.GradientBackground = false;
-            buttonSearch.GradientColor = Color.FromArgb(114, 168, 255);
-            buttonSearch.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            buttonSearch.HintText = null;
-            buttonSearch.HoverBackColor = Color.FromArgb(114, 168, 255);
-            buttonSearch.HoverFontStyle = FontStyle.Regular;
-            buttonSearch.HoverTextColor = Color.White;
-            buttonSearch.HoverTransitionDuration = 250;
-            buttonSearch.ImageAlign = ContentAlignment.MiddleLeft;
-            buttonSearch.ImagePadding = 5;
-            buttonSearch.ImageSize = new Size(16, 16);
-            buttonSearch.IsRadial = false;
-            buttonSearch.IsReadOnly = false;
-            buttonSearch.IsToggleButton = false;
-            buttonSearch.IsToggled = false;
-            buttonSearch.Location = new Point(969, 18);
-            buttonSearch.LongPressDurationMS = 1000;
-            buttonSearch.Name = "buttonSearch";
-            buttonSearch.NormalFontStyle = FontStyle.Regular;
-            buttonSearch.ParticleColor = Color.FromArgb(200, 200, 200);
-            buttonSearch.ParticleCount = 15;
-            buttonSearch.PressAnimationScale = 0.97F;
-            buttonSearch.PressedBackColor = Color.FromArgb(74, 128, 235);
-            buttonSearch.PressedFontStyle = FontStyle.Regular;
-            buttonSearch.PressTransitionDuration = 150;
-            buttonSearch.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
-            buttonSearch.RippleColor = Color.FromArgb(255, 255, 255);
-            buttonSearch.RippleOpacity = 0.3F;
-            buttonSearch.RippleRadiusMultiplier = 0.6F;
-            buttonSearch.ShadowBlur = 5;
-            buttonSearch.ShadowColor = Color.FromArgb(100, 0, 0, 0);
-            buttonSearch.ShadowOffset = new Point(2, 2);
-            buttonSearch.ShakeDuration = 500;
-            buttonSearch.ShakeIntensity = 5;
-            buttonSearch.Size = new Size(126, 29);
-            buttonSearch.TabIndex = 4;
-            buttonSearch.Text = "Search";
-            buttonSearch.TextAlign = ContentAlignment.MiddleCenter;
-            buttonSearch.TextColor = Color.White;
-            buttonSearch.TooltipText = null;
-            buttonSearch.UseAdvancedRendering = true;
-            buttonSearch.UseParticles = false;
+            buttonRefresh.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            buttonRefresh.AccessibleName = "Refresh";
+            buttonRefresh.AutoSizeBasedOnText = false;
+            buttonRefresh.BackColor = Color.Transparent;
+            buttonRefresh.BadgeBackColor = Color.Red;
+            buttonRefresh.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            buttonRefresh.BadgeValue = 0;
+            buttonRefresh.BadgeValueForeColor = Color.White;
+            buttonRefresh.BorderColor = Color.Transparent;
+            buttonRefresh.BorderWidth = 2;
+            buttonRefresh.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            buttonRefresh.ButtonImage = null;
+            buttonRefresh.CanBeep = true;
+            buttonRefresh.CanGlow = false;
+            buttonRefresh.CanShake = true;
+            buttonRefresh.ContextMenuStripEx = null;
+            buttonRefresh.CornerRadiusBottomLeft = 8;
+            buttonRefresh.CornerRadiusBottomRight = 8;
+            buttonRefresh.CornerRadiusTopLeft = 8;
+            buttonRefresh.CornerRadiusTopRight = 8;
+            buttonRefresh.CustomCursor = Cursors.Default;
+            buttonRefresh.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            buttonRefresh.EnableLongPress = false;
+            buttonRefresh.EnablePressAnimation = true;
+            buttonRefresh.EnableRippleEffect = true;
+            buttonRefresh.EnableShadow = false;
+            buttonRefresh.EnableTextWrapping = false;
+            buttonRefresh.Font = new Font("Segoe UI", 9F);
+            buttonRefresh.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            buttonRefresh.GlowIntensity = 100;
+            buttonRefresh.GlowRadius = 20F;
+            buttonRefresh.GradientBackground = false;
+            buttonRefresh.GradientColor = Color.FromArgb(114, 168, 255);
+            buttonRefresh.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            buttonRefresh.HintText = null;
+            buttonRefresh.HoverBackColor = Color.FromArgb(114, 168, 255);
+            buttonRefresh.HoverFontStyle = FontStyle.Regular;
+            buttonRefresh.HoverTextColor = Color.White;
+            buttonRefresh.HoverTransitionDuration = 250;
+            buttonRefresh.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonRefresh.ImagePadding = 5;
+            buttonRefresh.ImageSize = new Size(16, 16);
+            buttonRefresh.IsRadial = false;
+            buttonRefresh.IsReadOnly = false;
+            buttonRefresh.IsToggleButton = false;
+            buttonRefresh.IsToggled = false;
+            buttonRefresh.Location = new Point(969, 18);
+            buttonRefresh.LongPressDurationMS = 1000;
+            buttonRefresh.Name = "buttonRefresh";
+            buttonRefresh.NormalFontStyle = FontStyle.Regular;
+            buttonRefresh.ParticleColor = Color.FromArgb(200, 200, 200);
+            buttonRefresh.ParticleCount = 15;
+            buttonRefresh.PressAnimationScale = 0.97F;
+            buttonRefresh.PressedBackColor = Color.FromArgb(74, 128, 235);
+            buttonRefresh.PressedFontStyle = FontStyle.Regular;
+            buttonRefresh.PressTransitionDuration = 150;
+            buttonRefresh.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            buttonRefresh.RippleColor = Color.FromArgb(255, 255, 255);
+            buttonRefresh.RippleOpacity = 0.3F;
+            buttonRefresh.RippleRadiusMultiplier = 0.6F;
+            buttonRefresh.ShadowBlur = 5;
+            buttonRefresh.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            buttonRefresh.ShadowOffset = new Point(2, 2);
+            buttonRefresh.ShakeDuration = 500;
+            buttonRefresh.ShakeIntensity = 5;
+            buttonRefresh.Size = new Size(126, 29);
+            buttonRefresh.TabIndex = 4;
+            buttonRefresh.Text = "Refresh";
+            buttonRefresh.TextAlign = ContentAlignment.MiddleCenter;
+            buttonRefresh.TextColor = Color.White;
+            buttonRefresh.TooltipText = null;
+            buttonRefresh.UseAdvancedRendering = true;
+            buttonRefresh.UseParticles = false;
+            buttonRefresh.Click += buttonRefresh_Click;
             // 
             // siticoneLabel1
             // 
@@ -272,6 +277,7 @@
             textBoxSearch.Name = "textBoxSearch";
             textBoxSearch.Size = new Size(251, 29);
             textBoxSearch.TabIndex = 0;
+            textBoxSearch.TextChanged += textBoxSearch_TextChanged;
             // 
             // dataGridView1
             // 
@@ -789,7 +795,7 @@
         private TextBox textBoxSearch;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel1;
         private SiticoneNetCoreUI.SiticonePictureBox siticonePictureBox1;
-        private SiticoneNetCoreUI.SiticoneButton buttonSearch;
+        private SiticoneNetCoreUI.SiticoneButton buttonRefresh;
         private ComboBox comboBoxGenreSearch;
         private Label label3;
         private Label label2;

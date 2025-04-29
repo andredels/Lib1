@@ -30,9 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UsersInfo));
             panel1 = new Panel();
+            btnRefresh = new SiticoneNetCoreUI.SiticoneButton();
             label1 = new Label();
-            comboBox1 = new ComboBox();
-            txtboxUsersInfo_Search = new TextBox();
+            comboBoxNames = new ComboBox();
+            txtboxSearch = new TextBox();
             siticoneLabel2 = new SiticoneNetCoreUI.SiticoneLabel();
             siticoneLabel1 = new SiticoneNetCoreUI.SiticoneLabel();
             siticonePictureBox1 = new SiticoneNetCoreUI.SiticonePictureBox();
@@ -55,9 +56,10 @@
             // panel1
             // 
             panel1.BackColor = Color.BurlyWood;
+            panel1.Controls.Add(btnRefresh);
             panel1.Controls.Add(label1);
-            panel1.Controls.Add(comboBox1);
-            panel1.Controls.Add(txtboxUsersInfo_Search);
+            panel1.Controls.Add(comboBoxNames);
+            panel1.Controls.Add(txtboxSearch);
             panel1.Controls.Add(siticoneLabel2);
             panel1.Controls.Add(siticoneLabel1);
             panel1.Controls.Add(siticonePictureBox1);
@@ -67,35 +69,115 @@
             panel1.Size = new Size(1098, 125);
             panel1.TabIndex = 0;
             // 
+            // btnRefresh
+            // 
+            btnRefresh.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnRefresh.AccessibleName = "Refresh";
+            btnRefresh.AutoSizeBasedOnText = false;
+            btnRefresh.BackColor = Color.Transparent;
+            btnRefresh.BadgeBackColor = Color.Red;
+            btnRefresh.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnRefresh.BadgeValue = 0;
+            btnRefresh.BadgeValueForeColor = Color.White;
+            btnRefresh.BorderColor = Color.Transparent;
+            btnRefresh.BorderWidth = 2;
+            btnRefresh.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            btnRefresh.ButtonImage = null;
+            btnRefresh.CanBeep = true;
+            btnRefresh.CanGlow = false;
+            btnRefresh.CanShake = true;
+            btnRefresh.ContextMenuStripEx = null;
+            btnRefresh.CornerRadiusBottomLeft = 8;
+            btnRefresh.CornerRadiusBottomRight = 8;
+            btnRefresh.CornerRadiusTopLeft = 8;
+            btnRefresh.CornerRadiusTopRight = 8;
+            btnRefresh.CustomCursor = Cursors.Default;
+            btnRefresh.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnRefresh.EnableLongPress = false;
+            btnRefresh.EnablePressAnimation = true;
+            btnRefresh.EnableRippleEffect = true;
+            btnRefresh.EnableShadow = false;
+            btnRefresh.EnableTextWrapping = false;
+            btnRefresh.Font = new Font("Segoe UI", 9F);
+            btnRefresh.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnRefresh.GlowIntensity = 100;
+            btnRefresh.GlowRadius = 20F;
+            btnRefresh.GradientBackground = false;
+            btnRefresh.GradientColor = Color.FromArgb(114, 168, 255);
+            btnRefresh.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnRefresh.HintText = null;
+            btnRefresh.HoverBackColor = Color.FromArgb(114, 168, 255);
+            btnRefresh.HoverFontStyle = FontStyle.Regular;
+            btnRefresh.HoverTextColor = Color.White;
+            btnRefresh.HoverTransitionDuration = 250;
+            btnRefresh.ImageAlign = ContentAlignment.MiddleLeft;
+            btnRefresh.ImagePadding = 5;
+            btnRefresh.ImageSize = new Size(16, 16);
+            btnRefresh.IsRadial = false;
+            btnRefresh.IsReadOnly = false;
+            btnRefresh.IsToggleButton = false;
+            btnRefresh.IsToggled = false;
+            btnRefresh.Location = new Point(1004, 24);
+            btnRefresh.LongPressDurationMS = 1000;
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.NormalFontStyle = FontStyle.Regular;
+            btnRefresh.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnRefresh.ParticleCount = 15;
+            btnRefresh.PressAnimationScale = 0.97F;
+            btnRefresh.PressedBackColor = Color.FromArgb(74, 128, 235);
+            btnRefresh.PressedFontStyle = FontStyle.Regular;
+            btnRefresh.PressTransitionDuration = 150;
+            btnRefresh.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnRefresh.RippleColor = Color.FromArgb(255, 255, 255);
+            btnRefresh.RippleOpacity = 0.3F;
+            btnRefresh.RippleRadiusMultiplier = 0.6F;
+            btnRefresh.ShadowBlur = 5;
+            btnRefresh.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnRefresh.ShadowOffset = new Point(2, 2);
+            btnRefresh.ShakeDuration = 500;
+            btnRefresh.ShakeIntensity = 5;
+            btnRefresh.Size = new Size(91, 29);
+            btnRefresh.TabIndex = 14;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.TextAlign = ContentAlignment.MiddleCenter;
+            btnRefresh.TextColor = Color.White;
+            btnRefresh.TooltipText = null;
+            btnRefresh.UseAdvancedRendering = true;
+            btnRefresh.UseParticles = false;
+            btnRefresh.Click += btnRefresh_Click;
+            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(986, 83);
+            label1.Location = new Point(904, 91);
             label1.Name = "label1";
             label1.Size = new Size(88, 20);
             label1.TabIndex = 7;
             label1.Text = "User Names";
             // 
-            // comboBox1
+            // comboBoxNames
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(929, 51);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(151, 28);
-            comboBox1.TabIndex = 6;
+            comboBoxNames.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxNames.FormattingEnabled = true;
+            comboBoxNames.Location = new Point(847, 59);
+            comboBoxNames.Name = "comboBoxNames";
+            comboBoxNames.Size = new Size(151, 28);
+            comboBoxNames.TabIndex = 6;
+            comboBoxNames.SelectedIndexChanged += comboBoxNames_SelectedIndexChanged;
             // 
-            // txtboxUsersInfo_Search
+            // txtboxSearch
             // 
-            txtboxUsersInfo_Search.Location = new Point(815, 18);
-            txtboxUsersInfo_Search.Name = "txtboxUsersInfo_Search";
-            txtboxUsersInfo_Search.Size = new Size(265, 27);
-            txtboxUsersInfo_Search.TabIndex = 5;
+            txtboxSearch.Location = new Point(733, 26);
+            txtboxSearch.Name = "txtboxSearch";
+            txtboxSearch.Size = new Size(265, 27);
+            txtboxSearch.TabIndex = 5;
+            txtboxSearch.TextChanged += txtboxSearch_TextChanged;
             // 
             // siticoneLabel2
             // 
             siticoneLabel2.BackColor = Color.Transparent;
             siticoneLabel2.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            siticoneLabel2.Location = new Point(677, 18);
+            siticoneLabel2.Location = new Point(595, 26);
             siticoneLabel2.Name = "siticoneLabel2";
             siticoneLabel2.Size = new Size(132, 29);
             siticoneLabel2.TabIndex = 4;
@@ -371,9 +453,10 @@
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel3;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel1;
         private SiticoneNetCoreUI.SiticonePictureBox siticonePictureBox1;
-        private TextBox txtboxUsersInfo_Search;
+        private TextBox txtboxSearch;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel2;
         private Label label1;
-        private ComboBox comboBox1;
+        private ComboBox comboBoxNames;
+        private SiticoneNetCoreUI.SiticoneButton btnRefresh;
     }
 }

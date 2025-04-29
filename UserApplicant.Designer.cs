@@ -30,7 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserApplicant));
             panel1 = new Panel();
-            txtboxstdntrgstrnts_StudentNameSearch = new TextBox();
+            btnRefresh = new SiticoneNetCoreUI.SiticoneButton();
+            label1 = new Label();
+            comboBoxNames = new ComboBox();
+            txtbox_Search = new TextBox();
             siticoneLabel2 = new SiticoneNetCoreUI.SiticoneLabel();
             siticoneLabel1 = new SiticoneNetCoreUI.SiticoneLabel();
             siticonePictureBox1 = new SiticoneNetCoreUI.SiticonePictureBox();
@@ -54,7 +57,10 @@
             // panel1
             // 
             panel1.BackColor = Color.BurlyWood;
-            panel1.Controls.Add(txtboxstdntrgstrnts_StudentNameSearch);
+            panel1.Controls.Add(btnRefresh);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(comboBoxNames);
+            panel1.Controls.Add(txtbox_Search);
             panel1.Controls.Add(siticoneLabel2);
             panel1.Controls.Add(siticoneLabel1);
             panel1.Controls.Add(siticonePictureBox1);
@@ -64,22 +70,119 @@
             panel1.Size = new Size(1098, 125);
             panel1.TabIndex = 0;
             // 
-            // txtboxstdntrgstrnts_StudentNameSearch
+            // btnRefresh
             // 
-            txtboxstdntrgstrnts_StudentNameSearch.Location = new Point(714, 84);
-            txtboxstdntrgstrnts_StudentNameSearch.Name = "txtboxstdntrgstrnts_StudentNameSearch";
-            txtboxstdntrgstrnts_StudentNameSearch.Size = new Size(265, 27);
-            txtboxstdntrgstrnts_StudentNameSearch.TabIndex = 5;
+            btnRefresh.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnRefresh.AccessibleName = "Refresh";
+            btnRefresh.AutoSizeBasedOnText = false;
+            btnRefresh.BackColor = Color.Transparent;
+            btnRefresh.BadgeBackColor = Color.Red;
+            btnRefresh.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnRefresh.BadgeValue = 0;
+            btnRefresh.BadgeValueForeColor = Color.White;
+            btnRefresh.BorderColor = Color.Transparent;
+            btnRefresh.BorderWidth = 2;
+            btnRefresh.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            btnRefresh.ButtonImage = null;
+            btnRefresh.CanBeep = true;
+            btnRefresh.CanGlow = false;
+            btnRefresh.CanShake = true;
+            btnRefresh.ContextMenuStripEx = null;
+            btnRefresh.CornerRadiusBottomLeft = 8;
+            btnRefresh.CornerRadiusBottomRight = 8;
+            btnRefresh.CornerRadiusTopLeft = 8;
+            btnRefresh.CornerRadiusTopRight = 8;
+            btnRefresh.CustomCursor = Cursors.Default;
+            btnRefresh.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnRefresh.EnableLongPress = false;
+            btnRefresh.EnablePressAnimation = true;
+            btnRefresh.EnableRippleEffect = true;
+            btnRefresh.EnableShadow = false;
+            btnRefresh.EnableTextWrapping = false;
+            btnRefresh.Font = new Font("Segoe UI", 9F);
+            btnRefresh.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnRefresh.GlowIntensity = 100;
+            btnRefresh.GlowRadius = 20F;
+            btnRefresh.GradientBackground = false;
+            btnRefresh.GradientColor = Color.FromArgb(114, 168, 255);
+            btnRefresh.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnRefresh.HintText = null;
+            btnRefresh.HoverBackColor = Color.FromArgb(114, 168, 255);
+            btnRefresh.HoverFontStyle = FontStyle.Regular;
+            btnRefresh.HoverTextColor = Color.White;
+            btnRefresh.HoverTransitionDuration = 250;
+            btnRefresh.ImageAlign = ContentAlignment.MiddleLeft;
+            btnRefresh.ImagePadding = 5;
+            btnRefresh.ImageSize = new Size(16, 16);
+            btnRefresh.IsRadial = false;
+            btnRefresh.IsReadOnly = false;
+            btnRefresh.IsToggleButton = false;
+            btnRefresh.IsToggled = false;
+            btnRefresh.Location = new Point(1004, 28);
+            btnRefresh.LongPressDurationMS = 1000;
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.NormalFontStyle = FontStyle.Regular;
+            btnRefresh.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnRefresh.ParticleCount = 15;
+            btnRefresh.PressAnimationScale = 0.97F;
+            btnRefresh.PressedBackColor = Color.FromArgb(74, 128, 235);
+            btnRefresh.PressedFontStyle = FontStyle.Regular;
+            btnRefresh.PressTransitionDuration = 150;
+            btnRefresh.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnRefresh.RippleColor = Color.FromArgb(255, 255, 255);
+            btnRefresh.RippleOpacity = 0.3F;
+            btnRefresh.RippleRadiusMultiplier = 0.6F;
+            btnRefresh.ShadowBlur = 5;
+            btnRefresh.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnRefresh.ShadowOffset = new Point(2, 2);
+            btnRefresh.ShakeDuration = 500;
+            btnRefresh.ShakeIntensity = 5;
+            btnRefresh.Size = new Size(91, 29);
+            btnRefresh.TabIndex = 13;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.TextAlign = ContentAlignment.MiddleCenter;
+            btnRefresh.TextColor = Color.White;
+            btnRefresh.TooltipText = null;
+            btnRefresh.UseAdvancedRendering = true;
+            btnRefresh.UseParticles = false;
+            btnRefresh.Click += btnRefresh_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(904, 95);
+            label1.Name = "label1";
+            label1.Size = new Size(88, 20);
+            label1.TabIndex = 11;
+            label1.Text = "User Names";
+            // 
+            // comboBoxNames
+            // 
+            comboBoxNames.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxNames.FormattingEnabled = true;
+            comboBoxNames.Location = new Point(847, 63);
+            comboBoxNames.Name = "comboBoxNames";
+            comboBoxNames.Size = new Size(151, 28);
+            comboBoxNames.TabIndex = 10;
+            comboBoxNames.SelectedIndexChanged += comboBoxNames_SelectedIndexChanged;
+            // 
+            // txtbox_Search
+            // 
+            txtbox_Search.Location = new Point(733, 30);
+            txtbox_Search.Name = "txtbox_Search";
+            txtbox_Search.Size = new Size(265, 27);
+            txtbox_Search.TabIndex = 9;
+            txtbox_Search.TextChanged += txtbox_Search_TextChanged;
             // 
             // siticoneLabel2
             // 
             siticoneLabel2.BackColor = Color.Transparent;
             siticoneLabel2.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            siticoneLabel2.Location = new Point(576, 84);
+            siticoneLabel2.Location = new Point(595, 30);
             siticoneLabel2.Name = "siticoneLabel2";
             siticoneLabel2.Size = new Size(132, 29);
-            siticoneLabel2.TabIndex = 4;
-            siticoneLabel2.Text = "Student Name";
+            siticoneLabel2.TabIndex = 8;
+            siticoneLabel2.Text = "Search User";
             // 
             // siticoneLabel1
             // 
@@ -430,7 +533,10 @@
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel3;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel1;
         private SiticoneNetCoreUI.SiticonePictureBox siticonePictureBox1;
-        private TextBox txtboxstdntrgstrnts_StudentNameSearch;
+        private Label label1;
+        private ComboBox comboBoxNames;
+        private TextBox txtbox_Search;
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel2;
+        private SiticoneNetCoreUI.SiticoneButton btnRefresh;
     }
 }

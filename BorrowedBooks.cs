@@ -133,6 +133,7 @@ namespace Lib1
                         HighlightRows();
                     }
                 }
+                StyleDataGridView();
             }
             catch (Exception ex)
             {
@@ -793,6 +794,7 @@ namespace Lib1
                                           $"Author LIKE '%{searchText}%' OR " +
                                           $"ISBN LIKE '%{searchText}%' OR " +
                                           $"FullName LIKE '%{searchText}%' OR " +
+                                          $"Status LIKE '%{searchText}%' OR " +
                                           $"GenreName LIKE '%{searchText}%'";
 
                     // Apply the filter
@@ -860,6 +862,21 @@ namespace Lib1
             {
                 MessageBox.Show("Error initializing search controls: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private void StyleDataGridView()
+        {
+            dataGridView_BorrowedBooks.EnableHeadersVisualStyles = false;
+            dataGridView_BorrowedBooks.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(255, 128, 0);
+            dataGridView_BorrowedBooks.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView_BorrowedBooks.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridView_BorrowedBooks.RowHeadersVisible = false;
+            dataGridView_BorrowedBooks.BorderStyle = BorderStyle.None;
+            dataGridView_BorrowedBooks.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridView_BorrowedBooks.GridColor = Color.FromArgb(224, 224, 224);
+            dataGridView_BorrowedBooks.RowTemplate.Height = 35;
+            dataGridView_BorrowedBooks.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+            dataGridView_BorrowedBooks.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 128, 0);
+            dataGridView_BorrowedBooks.DefaultCellStyle.SelectionForeColor = Color.White;
         }
     }
 }

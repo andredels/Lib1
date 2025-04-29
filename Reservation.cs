@@ -16,6 +16,7 @@ namespace Lib1
         private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb";
         private int selectedTransactionID = 0;
         private string adminFullName;
+        private bool isPendingView = false;
 
         public Reservation(int userID)
         {
@@ -102,6 +103,12 @@ namespace Lib1
 
                         // Apply professional styling
                         StyleDataGridView();
+
+                        // Update the view flag
+                        isPendingView = false;
+
+                        // Load student names for filter from current data
+                        LoadStudentNamesFromGrid();
                     }
                 }
             }
@@ -114,55 +121,18 @@ namespace Lib1
 
         private void StyleDataGridView()
         {
-            // Basic styling
-            ReservedBooks.BorderStyle = BorderStyle.None;
-            ReservedBooks.BackgroundColor = Color.White;
             ReservedBooks.EnableHeadersVisualStyles = false;
-            ReservedBooks.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            ReservedBooks.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            ReservedBooks.GridColor = Color.FromArgb(224, 224, 224);
-
-            // Header styling
             ReservedBooks.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(255, 128, 0);
             ReservedBooks.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             ReservedBooks.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            ReservedBooks.ColumnHeadersHeight = 40;
-            ReservedBooks.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            // Row styling
+            ReservedBooks.RowHeadersVisible = false;
+            ReservedBooks.BorderStyle = BorderStyle.None;
+            ReservedBooks.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            ReservedBooks.GridColor = Color.FromArgb(224, 224, 224);
             ReservedBooks.RowTemplate.Height = 35;
+            ReservedBooks.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
             ReservedBooks.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 128, 0);
             ReservedBooks.DefaultCellStyle.SelectionForeColor = Color.White;
-            ReservedBooks.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
-            ReservedBooks.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
-            ReservedBooks.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            ReservedBooks.DefaultCellStyle.Padding = new Padding(5, 0, 5, 0);
-
-            // Selection mode
-            ReservedBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            ReservedBooks.MultiSelect = false;
-
-            // Column sizing and scrolling
-            ReservedBooks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            ReservedBooks.AllowUserToResizeColumns = true;
-            ReservedBooks.AllowUserToResizeRows = false;
-            ReservedBooks.ScrollBars = ScrollBars.Both;
-            ReservedBooks.Dock = DockStyle.None;
-            ReservedBooks.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-
-            // Set minimum column widths
-            foreach (DataGridViewColumn column in ReservedBooks.Columns)
-            {
-                column.MinimumWidth = 100;
-                column.Width = 150;
-                column.SortMode = DataGridViewColumnSortMode.Automatic;
-            }
-
-            // Disable row headers
-            ReservedBooks.RowHeadersVisible = false;
-
-            // Add some padding
-            ReservedBooks.Padding = new Padding(10);
         }
 
         private void LoadPendingReservationRequests()
@@ -197,6 +167,12 @@ namespace Lib1
                         {
                             ReservedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
+
+                        // Update the view flag
+                        isPendingView = true;
+
+                        // Load student names for filter from current data
+                        LoadStudentNamesFromGrid();
                     }
                 }
             }
@@ -205,10 +181,48 @@ namespace Lib1
                 MessageBox.Show("Error loading pending reservation requests: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void LoadStudentNames()
+        private void LoadStudentNamesFromGrid()
         {
+            try
+            {
+                // Clear previous items
+                comboBoxStudentNameSearch.Items.Clear();
 
+                // Get the current data source
+                if (ReservedBooks.DataSource is DataTable dataTable)
+                {
+                    // Create a HashSet to store unique student names
+                    HashSet<string> uniqueStudentNames = new HashSet<string>();
+
+                    // Check if the FullName column exists
+                    if (dataTable.Columns.Contains("FullName"))
+                    {
+                        // Extract unique values
+                        foreach (DataRow row in dataTable.Rows)
+                        {
+                            if (row["FullName"] != DBNull.Value)
+                            {
+                                string fullname = row["FullName"].ToString().Trim();
+                                if (!string.IsNullOrEmpty(fullname))
+                                {
+                                    uniqueStudentNames.Add(fullname);
+                                }
+                            }
+                        }
+
+                        // Sort the names alphabetically
+                        List<string> sortedNames = uniqueStudentNames.OrderBy(name => name).ToList();
+
+                        // Add to combo box
+                        comboBoxStudentNameSearch.Items.AddRange(sortedNames.ToArray());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading student names: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
@@ -401,69 +415,27 @@ namespace Lib1
             textBoxRequestType.Visible = false;
             siticoneLabel7.Visible = false;
             textBoxProcessedBy.Visible = false;
-            
+
             LoadPendingReservationRequests();
             ClearSelection();
         }
 
         private void comboBoxStudentNameSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+            ApplyFilters();
         }
 
         private void textBoxBorrowedBookSearch_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                string searchText = textBoxBorrowedBookSearch.Text.Trim();
-                if (string.IsNullOrEmpty(searchText)) return;
-
-                using (OleDbConnection connection = new OleDbConnection(connectionString))
-                {
-                    connection.Open();
-
-                    string query = @"SELECT bt.TransactionID, b.BookID, b.Title, b.Author, b.ISBN, 
-                                    g.GenreName, u.FullName, bt.BorrowDate, bt.ReturnDate, bt.Status, 
-                                    bt.ProcessedBy, bt.RequestType
-                                    FROM (((BookTransactions bt 
-                                    INNER JOIN Books b ON bt.BookID = b.BookID)
-                                    INNER JOIN Users u ON bt.UserID = u.UserID)
-                                    INNER JOIN Genres g ON b.GenreID = g.GenreID)
-                                    WHERE bt.RequestType = 'Reservation' AND 
-                                    (b.Title LIKE @SearchText OR 
-                                     b.Author LIKE @SearchText OR 
-                                     b.ISBN LIKE @SearchText OR 
-                                     u.FullName LIKE @SearchText)";
-
-                    if (btnLendBook.Visible)
-                    {
-                        query += " AND bt.Status = 'Approved'";
-                    }
-                    else
-                    {
-                        query += " AND bt.Status = 'Pending'";
-                    }
-
-                    using (OleDbCommand command = new OleDbCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@SearchText", "%" + searchText + "%");
-
-                        OleDbDataAdapter adapter = new OleDbDataAdapter(command);
-                        DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);
-
-                        ReservedBooks.DataSource = dataTable;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error searching: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            ApplyFilters();
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            // Clear filters
+            comboBoxStudentNameSearch.Text = string.Empty;
+            textBoxBorrowedBookSearch.Text = string.Empty;
+
             LoadReservedBooks();
             ClearSelection();
             btnAccept.Visible = false;
@@ -572,6 +544,56 @@ namespace Lib1
                     btnAccept.Enabled = status.Equals("Pending", StringComparison.OrdinalIgnoreCase);
                     btnDecline.Enabled = status.Equals("Pending", StringComparison.OrdinalIgnoreCase);
                 }
+            }
+        }
+        private void ApplyFilters()
+        {
+            try
+            {
+                // Get the current data source
+                if (ReservedBooks.DataSource is DataTable dt)
+                {
+                    StringBuilder filterBuilder = new StringBuilder();
+
+                    // Student name filter
+                    if (!string.IsNullOrEmpty(comboBoxStudentNameSearch.Text))
+                    {
+                        string studentName = comboBoxStudentNameSearch.Text.Replace("'", "''");
+                        filterBuilder.AppendFormat("[FullName] LIKE '%{0}%'", studentName);
+                    }
+
+                    // General search text filter
+                    if (!string.IsNullOrEmpty(textBoxBorrowedBookSearch.Text))
+                    {
+                        if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+
+                        string searchText = textBoxBorrowedBookSearch.Text.Replace("'", "''");
+
+                        // Add all relevant columns for searching
+                        filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [FullName] LIKE '%{0}%' " +
+                            "OR [ISBN] LIKE '%{0}%' OR [Status] LIKE '%{0}%'", searchText);
+
+                        // Add additional columns based on view
+                        if (isPendingView)
+                        {
+                            filterBuilder.AppendFormat(" OR [RequestType] LIKE '%{0}%'", searchText);
+                        }
+                        else
+                        {
+                            filterBuilder.AppendFormat(" OR [ProcessedBy] LIKE '%{0}%'", searchText);
+                        }
+
+                        filterBuilder.Append(")");
+                    }
+
+                    // Apply the filter
+                    dt.DefaultView.RowFilter = filterBuilder.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error filtering data: {ex.Message}", "Filter Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

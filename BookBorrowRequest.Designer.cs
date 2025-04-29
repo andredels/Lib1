@@ -59,6 +59,12 @@
             siticoneLabel8 = new SiticoneNetCoreUI.SiticoneLabel();
             btnDecline_BorrowBookRequests = new SiticoneNetCoreUI.SiticoneButton();
             btnAccept_BorrowBookRequests = new SiticoneNetCoreUI.SiticoneButton();
+            label2 = new Label();
+            comboBoxBookSearch = new ComboBox();
+            label1 = new Label();
+            comboBoxStudentNameSearch = new ComboBox();
+            btnRefresh = new SiticoneNetCoreUI.SiticoneButton();
+            textBoxBorrowedBookSearch = new TextBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_BookBorrowRequests).BeginInit();
             SuspendLayout();
@@ -66,6 +72,12 @@
             // panel1
             // 
             panel1.BackColor = Color.BurlyWood;
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(comboBoxBookSearch);
+            panel1.Controls.Add(label1);
+            panel1.Controls.Add(comboBoxStudentNameSearch);
+            panel1.Controls.Add(btnRefresh);
+            panel1.Controls.Add(textBoxBorrowedBookSearch);
             panel1.Controls.Add(siticoneLabel1);
             panel1.Controls.Add(siticonePictureBox1);
             panel1.Dock = DockStyle.Top;
@@ -496,6 +508,130 @@
             btnAccept_BorrowBookRequests.UseParticles = false;
             btnAccept_BorrowBookRequests.Click += btnAccept_BorrowBookRequests_Click;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(818, 87);
+            label2.Name = "label2";
+            label2.Size = new Size(76, 20);
+            label2.TabIndex = 24;
+            label2.Text = "Book Title";
+            // 
+            // comboBoxBookSearch
+            // 
+            comboBoxBookSearch.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxBookSearch.FormattingEnabled = true;
+            comboBoxBookSearch.Location = new Point(818, 56);
+            comboBoxBookSearch.Name = "comboBoxBookSearch";
+            comboBoxBookSearch.Size = new Size(125, 28);
+            comboBoxBookSearch.TabIndex = 23;
+            comboBoxBookSearch.SelectedIndexChanged += comboBoxBookSearch_SelectedIndexChanged;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(687, 87);
+            label1.Name = "label1";
+            label1.Size = new Size(104, 20);
+            label1.TabIndex = 22;
+            label1.Text = "Student Name";
+            // 
+            // comboBoxStudentNameSearch
+            // 
+            comboBoxStudentNameSearch.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxStudentNameSearch.FormattingEnabled = true;
+            comboBoxStudentNameSearch.Location = new Point(687, 56);
+            comboBoxStudentNameSearch.Name = "comboBoxStudentNameSearch";
+            comboBoxStudentNameSearch.Size = new Size(125, 28);
+            comboBoxStudentNameSearch.TabIndex = 21;
+            comboBoxStudentNameSearch.SelectedIndexChanged += comboBoxStudentNameSearch_SelectedIndexChanged;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnRefresh.AccessibleName = "Refresh";
+            btnRefresh.AutoSizeBasedOnText = false;
+            btnRefresh.BackColor = Color.Transparent;
+            btnRefresh.BadgeBackColor = Color.Red;
+            btnRefresh.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnRefresh.BadgeValue = 0;
+            btnRefresh.BadgeValueForeColor = Color.White;
+            btnRefresh.BorderColor = Color.Transparent;
+            btnRefresh.BorderWidth = 2;
+            btnRefresh.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            btnRefresh.ButtonImage = null;
+            btnRefresh.CanBeep = true;
+            btnRefresh.CanGlow = false;
+            btnRefresh.CanShake = true;
+            btnRefresh.ContextMenuStripEx = null;
+            btnRefresh.CornerRadiusBottomLeft = 8;
+            btnRefresh.CornerRadiusBottomRight = 8;
+            btnRefresh.CornerRadiusTopLeft = 8;
+            btnRefresh.CornerRadiusTopRight = 8;
+            btnRefresh.CustomCursor = Cursors.Default;
+            btnRefresh.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnRefresh.EnableLongPress = false;
+            btnRefresh.EnablePressAnimation = true;
+            btnRefresh.EnableRippleEffect = true;
+            btnRefresh.EnableShadow = false;
+            btnRefresh.EnableTextWrapping = false;
+            btnRefresh.Font = new Font("Segoe UI", 9F);
+            btnRefresh.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnRefresh.GlowIntensity = 100;
+            btnRefresh.GlowRadius = 20F;
+            btnRefresh.GradientBackground = false;
+            btnRefresh.GradientColor = Color.FromArgb(114, 168, 255);
+            btnRefresh.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnRefresh.HintText = null;
+            btnRefresh.HoverBackColor = Color.FromArgb(114, 168, 255);
+            btnRefresh.HoverFontStyle = FontStyle.Regular;
+            btnRefresh.HoverTextColor = Color.White;
+            btnRefresh.HoverTransitionDuration = 250;
+            btnRefresh.ImageAlign = ContentAlignment.MiddleLeft;
+            btnRefresh.ImagePadding = 5;
+            btnRefresh.ImageSize = new Size(16, 16);
+            btnRefresh.IsRadial = false;
+            btnRefresh.IsReadOnly = false;
+            btnRefresh.IsToggleButton = false;
+            btnRefresh.IsToggled = false;
+            btnRefresh.Location = new Point(954, 21);
+            btnRefresh.LongPressDurationMS = 1000;
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.NormalFontStyle = FontStyle.Regular;
+            btnRefresh.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnRefresh.ParticleCount = 15;
+            btnRefresh.PressAnimationScale = 0.97F;
+            btnRefresh.PressedBackColor = Color.FromArgb(74, 128, 235);
+            btnRefresh.PressedFontStyle = FontStyle.Regular;
+            btnRefresh.PressTransitionDuration = 150;
+            btnRefresh.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnRefresh.RippleColor = Color.FromArgb(255, 255, 255);
+            btnRefresh.RippleOpacity = 0.3F;
+            btnRefresh.RippleRadiusMultiplier = 0.6F;
+            btnRefresh.ShadowBlur = 5;
+            btnRefresh.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnRefresh.ShadowOffset = new Point(2, 2);
+            btnRefresh.ShakeDuration = 500;
+            btnRefresh.ShakeIntensity = 5;
+            btnRefresh.Size = new Size(126, 29);
+            btnRefresh.TabIndex = 20;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.TextAlign = ContentAlignment.MiddleCenter;
+            btnRefresh.TextColor = Color.White;
+            btnRefresh.TooltipText = null;
+            btnRefresh.UseAdvancedRendering = true;
+            btnRefresh.UseParticles = false;
+            btnRefresh.Click += btnRefresh_Click;
+            // 
+            // textBoxBorrowedBookSearch
+            // 
+            textBoxBorrowedBookSearch.Location = new Point(687, 21);
+            textBoxBorrowedBookSearch.Multiline = true;
+            textBoxBorrowedBookSearch.Name = "textBoxBorrowedBookSearch";
+            textBoxBorrowedBookSearch.Size = new Size(256, 29);
+            textBoxBorrowedBookSearch.TabIndex = 19;
+            textBoxBorrowedBookSearch.TextChanged += textBoxBorrowedBookSearch_TextChanged;
+            // 
             // BookBorrowRequest
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -532,6 +668,7 @@
             Name = "BookBorrowRequest";
             Size = new Size(1098, 721);
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView_BookBorrowRequests).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -569,5 +706,11 @@
         private SiticoneNetCoreUI.SiticoneLabel siticoneLabel8;
         private SiticoneNetCoreUI.SiticoneButton btnDecline_BorrowBookRequests;
         private SiticoneNetCoreUI.SiticoneButton btnAccept_BorrowBookRequests;
+        private Label label2;
+        private ComboBox comboBoxBookSearch;
+        private Label label1;
+        private ComboBox comboBoxStudentNameSearch;
+        private SiticoneNetCoreUI.SiticoneButton btnRefresh;
+        private TextBox textBoxBorrowedBookSearch;
     }
 }

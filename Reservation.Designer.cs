@@ -173,6 +173,7 @@
             // 
             // comboBoxStudentNameSearch
             // 
+            comboBoxStudentNameSearch.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxStudentNameSearch.FormattingEnabled = true;
             comboBoxStudentNameSearch.Location = new Point(689, 65);
             comboBoxStudentNameSearch.Name = "comboBoxStudentNameSearch";

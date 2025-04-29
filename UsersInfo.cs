@@ -56,6 +56,7 @@ namespace Lib1
                         DataTable dt = new DataTable();
                         adapter.Fill(dt);
                         dataGridView_UsersInfo.DataSource = dt;
+                        LoadUniqueNames(dt);
                     }
                 }
             }
@@ -63,6 +64,72 @@ namespace Lib1
             {
                 MessageBox.Show("Error loading users: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void LoadUniqueNames(DataTable dt)
+        {
+            comboBoxNames.Items.Clear();
+            comboBoxNames.Items.Add("All Names");
+
+            var uniqueNames = dt.AsEnumerable()
+                .Select(row => row.Field<string>("Fullname"))
+                .Distinct()
+                .OrderBy(name => name)
+                .ToList();
+
+            comboBoxNames.Items.AddRange(uniqueNames.ToArray());
+            comboBoxNames.SelectedIndex = 0;
+        }
+
+        private void ApplyFilters()
+        {
+            try
+            {
+                if (dataGridView_UsersInfo.DataSource is DataTable dt)
+                {
+                    StringBuilder filterBuilder = new StringBuilder();
+
+                    // Name filter from combobox
+                    if (comboBoxNames.SelectedIndex > 0) // Skip "All Names"
+                    {
+                        string selectedName = comboBoxNames.Text.Replace("'", "''");
+                        filterBuilder.AppendFormat("[Fullname] = '{0}'", selectedName);
+                    }
+
+                    // Search box filter (searching across multiple fields)
+                    if (!string.IsNullOrEmpty(txtboxSearch.Text))
+                    {
+                        if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+                        string searchText = txtboxSearch.Text.Replace("'", "''");
+                        filterBuilder.AppendFormat("(Convert([UserID], 'System.String') LIKE '%{0}%' OR [Username] LIKE '%{0}%' OR [Fullname] LIKE '%{0}%' OR [Email] LIKE '%{0}%' OR [UserType] LIKE '%{0}%')", searchText);
+                    }
+
+                    dt.DefaultView.RowFilter = filterBuilder.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error filtering users: " + ex.Message, "Filter Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtboxSearch_TextChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadUsers();
+            txtboxSearch.Clear();
+            comboBoxNames.SelectedIndex = 0;
+            ClearFields();
+        }
+
+        private void comboBoxNames_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
         }
 
         private void dataGridView_UsersInfo_CellContentClick(object sender, DataGridViewCellEventArgs e)

@@ -13,7 +13,7 @@ namespace Lib1
 {
     public partial class BookBorrowRequest : UserControl
     {
-        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb;";
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb";
         private int adminId;
         private string adminName;
         public BookBorrowRequest(int adminId, string adminName)
@@ -21,13 +21,10 @@ namespace Lib1
             InitializeComponent();
             this.adminId = adminId;
             this.adminName = adminName;
-            this.Load += BookBorrowRequest_Load;
-            this.dataGridView_BookBorrowRequests.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_BookBorrowRequests_CellClick);
-        }
-        private void BookBorrowRequest_Load(object sender, EventArgs e)
-        {
             LoadBorrowRequests();
+
         }
+
         private void dataGridView_BookBorrowRequests_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -266,40 +263,98 @@ namespace Lib1
         {
             try
             {
-                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
-                    conn.Open();
+                    connection.Open();
 
-                    // Use the PendingBorrowRequest query directly
-                    string query = "SELECT * FROM PendingBorrowRequest";
+                    // Build your own JOIN DO NOT USE ReservedBooks
+                    string query = "SELECT * FROM [PendingBorrowRequest]";
 
-                    using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, conn))
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
-                        DataTable dt = new DataTable();
-                        adapter.Fill(dt);
-                        dataGridView_BookBorrowRequests.DataSource = dt;
+                        OleDbDataAdapter adapter = new OleDbDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
 
-                        // Clear text boxes if there's no data
-                        if (dt.Rows.Count == 0)
-                        {
-                            ClearTextBoxes();
-                        }
-                    }
+                        dataGridView_BookBorrowRequests.DataSource = null;
+                        dataGridView_BookBorrowRequests.DataSource = dataTable;
 
-                    // Debug: Print column names 
-                    if (dataGridView_BookBorrowRequests.Columns.Count > 0)
-                    {
-                        Console.WriteLine("Available columns in the DataGridView:");
-                        foreach (DataGridViewColumn col in dataGridView_BookBorrowRequests.Columns)
+                        // Configure the DataGridView columns for better display
+                        if (dataGridView_BookBorrowRequests.Columns.Contains("RequestDate"))
                         {
-                            Console.WriteLine($"- {col.Name}");
+                            dataGridView_BookBorrowRequests.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
+                        if (dataGridView_BookBorrowRequests.Columns.Contains("BorrowDate"))
+                        {
+                            dataGridView_BookBorrowRequests.Columns["BorrowDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
+                        if (dataGridView_BookBorrowRequests.Columns.Contains("ReturnDate"))
+                        {
+                            dataGridView_BookBorrowRequests.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
+                        }
+
+                        // Apply professional styling
+                        StyleDataGridView();
+
+                        // Load the combo boxes with data from the current DataTable
+                        LoadComboBoxesFromDataGrid(dataTable);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading borrow requests: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading reserved books: {ex.Message}\nStack trace: {ex.StackTrace}",
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void LoadComboBoxesFromDataGrid(DataTable dataTable)
+        {
+            try
+            {
+                // Clear previous items
+                comboBoxStudentNameSearch.Items.Clear();
+                comboBoxBookSearch.Items.Clear();
+
+                // Create HashSets to store unique values (to avoid duplicates)
+                HashSet<string> uniqueStudentNames = new HashSet<string>();
+                HashSet<string> uniqueBookTitles = new HashSet<string>();
+
+                // Extract unique values from the DataTable
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    // Add student name if it exists and is not null
+                    if (dataTable.Columns.Contains("Fullname") && row["Fullname"] != DBNull.Value)
+                    {
+                        string fullname = row["Fullname"].ToString().Trim();
+                        if (!string.IsNullOrEmpty(fullname))
+                        {
+                            uniqueStudentNames.Add(fullname);
+                        }
+                    }
+
+                    // Add book title if it exists and is not null
+                    if (dataTable.Columns.Contains("Title") && row["Title"] != DBNull.Value)
+                    {
+                        string title = row["Title"].ToString().Trim();
+                        if (!string.IsNullOrEmpty(title))
+                        {
+                            uniqueBookTitles.Add(title);
+                        }
+                    }
+                }
+
+                // Sort the unique values alphabetically
+                List<string> sortedStudentNames = uniqueStudentNames.OrderBy(name => name).ToList();
+                List<string> sortedBookTitles = uniqueBookTitles.OrderBy(title => title).ToList();
+
+                // Add values to combo boxes
+                comboBoxStudentNameSearch.Items.AddRange(sortedStudentNames.ToArray());
+                comboBoxBookSearch.Items.AddRange(sortedBookTitles.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading combo box data: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void ClearTextBoxes()
@@ -318,5 +373,83 @@ namespace Lib1
             txtbxBorrowRequest_ISBN.Text = "";
             txtbxBorrowRequest_Genre.Text = "";
         }
+        private void StyleDataGridView()
+        {
+            dataGridView_BookBorrowRequests.EnableHeadersVisualStyles = false;
+            dataGridView_BookBorrowRequests.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(255, 128, 0);
+            dataGridView_BookBorrowRequests.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView_BookBorrowRequests.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridView_BookBorrowRequests.RowHeadersVisible = false;
+            dataGridView_BookBorrowRequests.BorderStyle = BorderStyle.None;
+            dataGridView_BookBorrowRequests.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridView_BookBorrowRequests.GridColor = Color.FromArgb(224, 224, 224);
+            dataGridView_BookBorrowRequests.RowTemplate.Height = 35;
+            dataGridView_BookBorrowRequests.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+            dataGridView_BookBorrowRequests.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 128, 0);
+            dataGridView_BookBorrowRequests.DefaultCellStyle.SelectionForeColor = Color.White;
+        }
+
+        private void textBoxBorrowedBookSearch_TextChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadBorrowRequests(); // Reload data and refresh combo boxes
+            textBoxBorrowedBookSearch.Clear();
+        }
+
+        private void comboBoxBookSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void comboBoxStudentNameSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+        private void ApplyFilters()
+        {
+            try
+            {
+                StringBuilder filterBuilder = new StringBuilder();
+
+                // Student name filter
+                if (!string.IsNullOrEmpty(comboBoxStudentNameSearch.Text))
+                {
+                    string studentName = comboBoxStudentNameSearch.Text.Replace("'", "''");
+                    filterBuilder.AppendFormat("[Fullname] LIKE '%{0}%'", studentName);
+                }
+
+                // Book title filter
+                if (!string.IsNullOrEmpty(comboBoxBookSearch.Text))
+                {
+                    if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+                    string bookTitle = comboBoxBookSearch.Text.Replace("'", "''");
+                    filterBuilder.AppendFormat("[Title] LIKE '%{0}%'", bookTitle);
+                }
+
+                // General search textbox filter (searching across multiple fields)
+                if (!string.IsNullOrEmpty(textBoxBorrowedBookSearch.Text))
+                {
+                    if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+                    string searchText = textBoxBorrowedBookSearch.Text.Replace("'", "''"); // escape single quotes
+                    filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [Author] LIKE '%{0}%' OR [ISBN] LIKE '%{0}%' OR [GenreName] LIKE '%{0}%' OR [Publisher] LIKE '%{0}%' OR [Fullname] LIKE '%{0}%')", searchText);
+                }
+
+                // Apply the filter
+                if (dataGridView_BookBorrowRequests.DataSource is DataTable dt)
+                {
+                    dt.DefaultView.RowFilter = filterBuilder.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error filtering books: " + ex.Message, "Filter Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+       
     }
 }

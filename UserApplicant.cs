@@ -56,12 +56,78 @@ namespace Lib1
                         DataTable dt = new DataTable();
                         adapter.Fill(dt);
                         dataGridView_UserApplicants.DataSource = dt;
+                        LoadUniqueNames(dt);
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error loading registrants: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadUniqueNames(DataTable dt)
+        {
+            comboBoxNames.Items.Clear();
+            comboBoxNames.Items.Add("All Names");
+
+            var uniqueNames = dt.AsEnumerable()
+                .Select(row => row.Field<string>("Fullname"))
+                .Distinct()
+                .OrderBy(name => name)
+                .ToList();
+
+            comboBoxNames.Items.AddRange(uniqueNames.ToArray());
+            comboBoxNames.SelectedIndex = 0;
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadPendingRegistrants();
+            txtbox_Search.Clear();
+            comboBoxNames.SelectedIndex = 0;
+        }
+
+        private void txtbox_Search_TextChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void comboBoxNames_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ApplyFilters()
+        {
+            try
+            {
+                if (dataGridView_UserApplicants.DataSource is DataTable dt)
+                {
+                    StringBuilder filterBuilder = new StringBuilder();
+
+                    // Name filter from combobox
+                    if (comboBoxNames.SelectedIndex > 0) // Skip "All Names"
+                    {
+                        string selectedName = comboBoxNames.Text.Replace("'", "''");
+                        filterBuilder.AppendFormat("[Fullname] = '{0}'", selectedName);
+                    }
+
+                    // Search box filter (searching across multiple fields)
+                    if (!string.IsNullOrEmpty(txtbox_Search.Text))
+                    {
+                        if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+                        string searchText = txtbox_Search.Text.Replace("'", "''");
+                        filterBuilder.AppendFormat("(Convert([UserID], 'System.String') LIKE '%{0}%' OR [Username] LIKE '%{0}%' OR [Fullname] LIKE '%{0}%' OR [Email] LIKE '%{0}%' OR [UserType] LIKE '%{0}%')", searchText);
+                    }
+
+                    dt.DefaultView.RowFilter = filterBuilder.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error filtering applicants: " + ex.Message, "Filter Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
