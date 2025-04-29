@@ -38,16 +38,22 @@
             studentBorrowedBooksbtn = new SiticoneNetCoreUI.SiticoneButton();
             panel7 = new Panel();
             studentAccountSettingsbtn = new SiticoneNetCoreUI.SiticoneButton();
+            panel1 = new Panel();
+            btnReviewBooks = new SiticoneNetCoreUI.SiticoneButton();
             panel8 = new Panel();
             studentLogoutbtn = new SiticoneNetCoreUI.SiticoneButton();
             userControlpanel = new Panel();
+            panel5 = new Panel();
+            btnAnalytics = new SiticoneNetCoreUI.SiticoneButton();
             flowLayoutPanelSideBar.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
             panel4.SuspendLayout();
             panel7.SuspendLayout();
+            panel1.SuspendLayout();
             panel8.SuspendLayout();
+            panel5.SuspendLayout();
             SuspendLayout();
             // 
             // flowLayoutPanelSideBar
@@ -57,6 +63,8 @@
             flowLayoutPanelSideBar.Controls.Add(panel2);
             flowLayoutPanelSideBar.Controls.Add(panel4);
             flowLayoutPanelSideBar.Controls.Add(panel7);
+            flowLayoutPanelSideBar.Controls.Add(panel1);
+            flowLayoutPanelSideBar.Controls.Add(panel5);
             flowLayoutPanelSideBar.Controls.Add(panel8);
             flowLayoutPanelSideBar.Dock = DockStyle.Left;
             flowLayoutPanelSideBar.Location = new Point(0, 0);
@@ -340,10 +348,96 @@
             studentAccountSettingsbtn.UseParticles = false;
             studentAccountSettingsbtn.Click += studentAccountSettingsbtn_Click;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(btnReviewBooks);
+            panel1.Location = new Point(3, 433);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(247, 53);
+            panel1.TabIndex = 6;
+            // 
+            // btnReviewBooks
+            // 
+            btnReviewBooks.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnReviewBooks.AccessibleName = "Review Books";
+            btnReviewBooks.AutoSizeBasedOnText = false;
+            btnReviewBooks.BackColor = Color.Transparent;
+            btnReviewBooks.BadgeBackColor = Color.Red;
+            btnReviewBooks.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnReviewBooks.BadgeValue = 0;
+            btnReviewBooks.BadgeValueForeColor = Color.White;
+            btnReviewBooks.BorderColor = Color.Transparent;
+            btnReviewBooks.BorderWidth = 2;
+            btnReviewBooks.ButtonBackColor = Color.BurlyWood;
+            btnReviewBooks.ButtonImage = null;
+            btnReviewBooks.CanBeep = true;
+            btnReviewBooks.CanGlow = false;
+            btnReviewBooks.CanShake = true;
+            btnReviewBooks.ContextMenuStripEx = null;
+            btnReviewBooks.CornerRadiusBottomLeft = 2;
+            btnReviewBooks.CornerRadiusBottomRight = 2;
+            btnReviewBooks.CornerRadiusTopLeft = 2;
+            btnReviewBooks.CornerRadiusTopRight = 2;
+            btnReviewBooks.CustomCursor = Cursors.Default;
+            btnReviewBooks.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnReviewBooks.Dock = DockStyle.Fill;
+            btnReviewBooks.EnableLongPress = false;
+            btnReviewBooks.EnablePressAnimation = true;
+            btnReviewBooks.EnableRippleEffect = true;
+            btnReviewBooks.EnableShadow = false;
+            btnReviewBooks.EnableTextWrapping = false;
+            btnReviewBooks.Font = new Font("Segoe UI", 9F);
+            btnReviewBooks.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnReviewBooks.GlowIntensity = 100;
+            btnReviewBooks.GlowRadius = 20F;
+            btnReviewBooks.GradientBackground = true;
+            btnReviewBooks.GradientColor = Color.FromArgb(128, 64, 0);
+            btnReviewBooks.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnReviewBooks.HintText = null;
+            btnReviewBooks.HoverBackColor = Color.SandyBrown;
+            btnReviewBooks.HoverFontStyle = FontStyle.Regular;
+            btnReviewBooks.HoverTextColor = Color.White;
+            btnReviewBooks.HoverTransitionDuration = 250;
+            btnReviewBooks.ImageAlign = ContentAlignment.MiddleLeft;
+            btnReviewBooks.ImagePadding = 5;
+            btnReviewBooks.ImageSize = new Size(16, 16);
+            btnReviewBooks.IsRadial = false;
+            btnReviewBooks.IsReadOnly = false;
+            btnReviewBooks.IsToggleButton = false;
+            btnReviewBooks.IsToggled = false;
+            btnReviewBooks.Location = new Point(0, 0);
+            btnReviewBooks.LongPressDurationMS = 1000;
+            btnReviewBooks.Name = "btnReviewBooks";
+            btnReviewBooks.NormalFontStyle = FontStyle.Regular;
+            btnReviewBooks.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnReviewBooks.ParticleCount = 15;
+            btnReviewBooks.PressAnimationScale = 0.97F;
+            btnReviewBooks.PressedBackColor = Color.White;
+            btnReviewBooks.PressedFontStyle = FontStyle.Regular;
+            btnReviewBooks.PressTransitionDuration = 150;
+            btnReviewBooks.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnReviewBooks.RippleColor = Color.FromArgb(255, 255, 255);
+            btnReviewBooks.RippleOpacity = 0.3F;
+            btnReviewBooks.RippleRadiusMultiplier = 0.6F;
+            btnReviewBooks.ShadowBlur = 5;
+            btnReviewBooks.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnReviewBooks.ShadowOffset = new Point(2, 2);
+            btnReviewBooks.ShakeDuration = 500;
+            btnReviewBooks.ShakeIntensity = 5;
+            btnReviewBooks.Size = new Size(247, 53);
+            btnReviewBooks.TabIndex = 1;
+            btnReviewBooks.Text = "Review Books";
+            btnReviewBooks.TextAlign = ContentAlignment.MiddleCenter;
+            btnReviewBooks.TextColor = Color.White;
+            btnReviewBooks.TooltipText = null;
+            btnReviewBooks.UseAdvancedRendering = true;
+            btnReviewBooks.UseParticles = false;
+            btnReviewBooks.Click += btnReviewBooks_Click;
+            // 
             // panel8
             // 
             panel8.Controls.Add(studentLogoutbtn);
-            panel8.Location = new Point(3, 433);
+            panel8.Location = new Point(3, 551);
             panel8.Name = "panel8";
             panel8.Size = new Size(247, 53);
             panel8.TabIndex = 5;
@@ -435,6 +529,92 @@
             userControlpanel.Size = new Size(1098, 721);
             userControlpanel.TabIndex = 2;
             // 
+            // panel5
+            // 
+            panel5.Controls.Add(btnAnalytics);
+            panel5.Location = new Point(3, 492);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(247, 53);
+            panel5.TabIndex = 6;
+            // 
+            // btnAnalytics
+            // 
+            btnAnalytics.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnAnalytics.AccessibleName = "Analytics";
+            btnAnalytics.AutoSizeBasedOnText = false;
+            btnAnalytics.BackColor = Color.Transparent;
+            btnAnalytics.BadgeBackColor = Color.Red;
+            btnAnalytics.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnAnalytics.BadgeValue = 0;
+            btnAnalytics.BadgeValueForeColor = Color.White;
+            btnAnalytics.BorderColor = Color.Transparent;
+            btnAnalytics.BorderWidth = 2;
+            btnAnalytics.ButtonBackColor = Color.BurlyWood;
+            btnAnalytics.ButtonImage = null;
+            btnAnalytics.CanBeep = true;
+            btnAnalytics.CanGlow = false;
+            btnAnalytics.CanShake = true;
+            btnAnalytics.ContextMenuStripEx = null;
+            btnAnalytics.CornerRadiusBottomLeft = 2;
+            btnAnalytics.CornerRadiusBottomRight = 2;
+            btnAnalytics.CornerRadiusTopLeft = 2;
+            btnAnalytics.CornerRadiusTopRight = 2;
+            btnAnalytics.CustomCursor = Cursors.Default;
+            btnAnalytics.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnAnalytics.Dock = DockStyle.Fill;
+            btnAnalytics.EnableLongPress = false;
+            btnAnalytics.EnablePressAnimation = true;
+            btnAnalytics.EnableRippleEffect = true;
+            btnAnalytics.EnableShadow = false;
+            btnAnalytics.EnableTextWrapping = false;
+            btnAnalytics.Font = new Font("Segoe UI", 9F);
+            btnAnalytics.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnAnalytics.GlowIntensity = 100;
+            btnAnalytics.GlowRadius = 20F;
+            btnAnalytics.GradientBackground = true;
+            btnAnalytics.GradientColor = Color.FromArgb(128, 64, 0);
+            btnAnalytics.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnAnalytics.HintText = null;
+            btnAnalytics.HoverBackColor = Color.SandyBrown;
+            btnAnalytics.HoverFontStyle = FontStyle.Regular;
+            btnAnalytics.HoverTextColor = Color.White;
+            btnAnalytics.HoverTransitionDuration = 250;
+            btnAnalytics.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAnalytics.ImagePadding = 5;
+            btnAnalytics.ImageSize = new Size(16, 16);
+            btnAnalytics.IsRadial = false;
+            btnAnalytics.IsReadOnly = false;
+            btnAnalytics.IsToggleButton = false;
+            btnAnalytics.IsToggled = false;
+            btnAnalytics.Location = new Point(0, 0);
+            btnAnalytics.LongPressDurationMS = 1000;
+            btnAnalytics.Name = "btnAnalytics";
+            btnAnalytics.NormalFontStyle = FontStyle.Regular;
+            btnAnalytics.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnAnalytics.ParticleCount = 15;
+            btnAnalytics.PressAnimationScale = 0.97F;
+            btnAnalytics.PressedBackColor = Color.White;
+            btnAnalytics.PressedFontStyle = FontStyle.Regular;
+            btnAnalytics.PressTransitionDuration = 150;
+            btnAnalytics.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnAnalytics.RippleColor = Color.FromArgb(255, 255, 255);
+            btnAnalytics.RippleOpacity = 0.3F;
+            btnAnalytics.RippleRadiusMultiplier = 0.6F;
+            btnAnalytics.ShadowBlur = 5;
+            btnAnalytics.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnAnalytics.ShadowOffset = new Point(2, 2);
+            btnAnalytics.ShakeDuration = 500;
+            btnAnalytics.ShakeIntensity = 5;
+            btnAnalytics.Size = new Size(247, 53);
+            btnAnalytics.TabIndex = 2;
+            btnAnalytics.Text = "Analytics";
+            btnAnalytics.TextAlign = ContentAlignment.MiddleCenter;
+            btnAnalytics.TextColor = Color.White;
+            btnAnalytics.TooltipText = null;
+            btnAnalytics.UseAdvancedRendering = true;
+            btnAnalytics.UseParticles = false;
+            btnAnalytics.Click += btnAnalytics_Click;
+            // 
             // StudentDashBoard
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -451,7 +631,9 @@
             panel2.ResumeLayout(false);
             panel4.ResumeLayout(false);
             panel7.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             panel8.ResumeLayout(false);
+            panel5.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -469,5 +651,9 @@
         private SiticoneNetCoreUI.SiticoneButton studentLogoutbtn;
         private Panel userControlpanel;
         private PictureBox pictureBox1;
+        private Panel panel1;
+        private SiticoneNetCoreUI.SiticoneButton btnReviewBooks;
+        private Panel panel5;
+        private SiticoneNetCoreUI.SiticoneButton btnAnalytics;
     }
 }

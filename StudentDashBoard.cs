@@ -58,16 +58,27 @@ namespace Lib1
 
             if (result == DialogResult.Yes)
             {
-                // Close the current form
                 this.Hide();
-
-                // Open the login form
                 Form1 loginForm = new Form1();
                 loginForm.Show();
-
-                // Dispose the current form when closed
                 this.FormClosing += (s, args) => this.Dispose();
             }
+        }
+
+        private void btnReviewBooks_Click(object sender, EventArgs e)
+        {
+            userControlpanel.Controls.Clear();
+            ReviewBooks reviewBooksUC = new ReviewBooks(this.userId);
+            reviewBooksUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(reviewBooksUC);
+        }
+
+        private void btnAnalytics_Click(object sender, EventArgs e)
+        {
+            userControlpanel.Controls.Clear();
+            Analytics analyticsUC = new Analytics();
+            analyticsUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(analyticsUC);
         }
     }
 }
