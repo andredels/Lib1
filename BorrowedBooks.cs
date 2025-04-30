@@ -23,6 +23,8 @@ namespace Lib1
             InitializeComponent();
             isAdmin = isAdminUser;
             currentUserID = userID;
+            dataGridView_BorrowedBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            StyleDataGridView();
             SetupUIBasedOnUserType();
             LoadBorrowedBooks();
             if (isAdmin)

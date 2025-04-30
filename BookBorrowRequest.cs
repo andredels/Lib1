@@ -21,8 +21,9 @@ namespace Lib1
             InitializeComponent();
             this.adminId = adminId;
             this.adminName = adminName;
+            dataGridView_BookBorrowRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            StyleDataGridView();
             LoadBorrowRequests();
-
         }
 
         private void dataGridView_BookBorrowRequests_CellClick(object sender, DataGridViewCellEventArgs e)

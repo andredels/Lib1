@@ -18,6 +18,7 @@ namespace Lib1
         {
             InitializeComponent();
             this.Load += UsersInfo_Load;
+            dataGridView_UsersInfo.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             StyleDataGridView();
         }
 

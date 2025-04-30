@@ -22,6 +22,8 @@ namespace Lib1
         {
             InitializeComponent();
             currentUserID = userID;
+            dataGridView_ReservedBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            StyleDataGridView();
             LoadReservedBooks();
         }
 

@@ -21,6 +21,8 @@ namespace Lib1
         public Reservation(int userID)
         {
             InitializeComponent();
+            ReservedBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            StyleDataGridView();
 
             //Get the admin's full name from the database
             try

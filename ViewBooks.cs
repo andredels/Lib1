@@ -23,6 +23,8 @@ namespace Lib1
             InitializeComponent();
             UserRole = userRole;
             UserID = userId;  // Store the userId
+            datagridViewAllBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            StyleDataGridView();
             ConfigureButtons();
             LoadAllBooks();
             LoadGenres();
