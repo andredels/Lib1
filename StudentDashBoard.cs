@@ -80,5 +80,13 @@ namespace Lib1
             analyticsUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(analyticsUC);
         }
+
+        private void siticoneButton1_Click(object sender, EventArgs e)
+        {
+            userControlpanel.Controls.Clear();
+            ReservedBooks reservedBooksUC = new ReservedBooks(this.userId);
+            reservedBooksUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(reservedBooksUC);
+        }
     }
 }

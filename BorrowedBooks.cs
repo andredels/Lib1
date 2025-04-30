@@ -411,7 +411,7 @@ namespace Lib1
             }
         }
 
-            private void btnReturn_Click(object sender, EventArgs e)
+        private void btnReturn_Click(object sender, EventArgs e)
         {
             if (selectedTransactionID == 0)
             {
@@ -878,5 +878,6 @@ namespace Lib1
             dataGridView_BorrowedBooks.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 128, 0);
             dataGridView_BorrowedBooks.DefaultCellStyle.SelectionForeColor = Color.White;
         }
+
     }
 }

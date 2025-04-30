@@ -122,7 +122,10 @@ namespace Lib1
                     string.IsNullOrWhiteSpace(textBoxAuthorNameVwBks.Text) ||
                     string.IsNullOrWhiteSpace(textBoxPublisherVwBks.Text) ||
                     string.IsNullOrWhiteSpace(textBoxPublicationYearVwBks.Text) ||
-                    string.IsNullOrWhiteSpace(textBoxAvailableCopiesVwBks.Text))
+                    string.IsNullOrWhiteSpace(textBoxAvailableCopiesVwBks.Text) ||
+                    string.IsNullOrWhiteSpace(textBoxTotalCopiesVwBks.Text) ||
+                    string.IsNullOrWhiteSpace(textBoxISBNVwBks.Text) ||
+                    comboBoxBookGenre.SelectedIndex == -1)
                 {
                     MessageBox.Show("Please fill in all fields", "Input Required",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -137,29 +140,90 @@ namespace Lib1
                     return;
                 }
 
-                if (!int.TryParse(textBoxAvailableCopiesVwBks.Text, out int availableCopies) || availableCopies < 0)
+                // Get current values from the database
+                int currentTotal = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["TotalCopies"].Value);
+                int currentAvailable = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["AvailableCopies"].Value);
+                int borrowedBooks = currentTotal - currentAvailable; // This represents books that are currently borrowed
+
+                // Validate and get new values
+                if (!int.TryParse(textBoxAvailableCopiesVwBks.Text, out int newAvailableCopies) || newAvailableCopies < 0)
                 {
                     MessageBox.Show("Please enter a valid number of available copies (0 or greater)", "Invalid Input",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Get current data to calculate the new total copies
-                int currentTotal = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["TotalCopies"].Value);
-                int currentAvailable = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["AvailableCopies"].Value);
+                if (!int.TryParse(textBoxTotalCopiesVwBks.Text, out int newTotalCopies))
+                {
+                    MessageBox.Show("Please enter a valid number for total copies", "Invalid Input",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-                // Calculate borrowed books (this number should remain unchanged)
-                int borrowedBooks = currentTotal - currentAvailable;
+                // Calculate the difference in available copies
+                int availableDifference = newAvailableCopies - currentAvailable;
+                // Calculate the difference in total copies
+                int totalDifference = newTotalCopies - currentTotal;
 
-                // Calculate new total copies based on new available copies plus borrowed books
-                int newTotalCopies = availableCopies + borrowedBooks;
+                // If either field was changed, update both to maintain the stock balance
+                if (availableDifference != 0 || totalDifference != 0)
+                {
+                    // If updating available copies
+                    if (availableDifference != 0)
+                    {
+                        // Add the same amount to total copies
+                        newTotalCopies = currentTotal + availableDifference;
+                    }
+                    // If updating total copies
+                    else if (totalDifference != 0)
+                    {
+                        // Check if new total would be less than borrowed books
+                        if (newTotalCopies < borrowedBooks)
+                        {
+                            MessageBox.Show($"Total copies cannot be less than {borrowedBooks} (number of borrowed books)", "Invalid Input",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        // Add the same amount to available copies
+                        newAvailableCopies = currentAvailable + totalDifference;
+                    }
+                }
+
+                if (!int.TryParse(textBoxISBNVwBks.Text, out int isbn))
+                {
+                    MessageBox.Show("Please enter a valid ISBN number", "Invalid Input",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
+
+                    // First get the GenreID for the selected genre
+                    int genreId = -1;
+                    string genreQuery = "SELECT GenreID FROM Genres WHERE GenreName = ?";
+                    using (OleDbCommand genreCmd = new OleDbCommand(genreQuery, conn))
+                    {
+                        genreCmd.Parameters.AddWithValue("?", comboBoxBookGenre.SelectedItem.ToString());
+                        object result = genreCmd.ExecuteScalar();
+                        if (result != null)
+                        {
+                            genreId = Convert.ToInt32(result);
+                        }
+                    }
+
+                    if (genreId == -1)
+                    {
+                        MessageBox.Show("Invalid genre selected", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
                     string query = "UPDATE Books SET Title = @Title, Author = @Author, " +
                                    "Publisher = @Publisher, PublicationYear = @PublicationYear, " +
-                                   "TotalCopies = @TotalCopies, AvailableCopies = @AvailableCopies " +
+                                   "TotalCopies = @TotalCopies, AvailableCopies = @AvailableCopies, " +
+                                   "ISBN = @ISBN, GenreID = @GenreID " +
                                    "WHERE BookID = @BookID";
 
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
@@ -169,7 +233,9 @@ namespace Lib1
                         cmd.Parameters.AddWithValue("@Publisher", textBoxPublisherVwBks.Text.Trim());
                         cmd.Parameters.AddWithValue("@PublicationYear", publicationYear);
                         cmd.Parameters.AddWithValue("@TotalCopies", newTotalCopies);
-                        cmd.Parameters.AddWithValue("@AvailableCopies", availableCopies);
+                        cmd.Parameters.AddWithValue("@AvailableCopies", newAvailableCopies);
+                        cmd.Parameters.AddWithValue("@ISBN", isbn);
+                        cmd.Parameters.AddWithValue("@GenreID", genreId);
                         cmd.Parameters.AddWithValue("@BookID", bookId);
 
                         int result = cmd.ExecuteNonQuery();
