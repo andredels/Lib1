@@ -48,6 +48,8 @@
             siticoneButton1 = new SiticoneNetCoreUI.SiticoneButton();
             panel7 = new Panel();
             adminAccountSettingsbtn = new SiticoneNetCoreUI.SiticoneButton();
+            panel11 = new Panel();
+            btnAnalytics = new SiticoneNetCoreUI.SiticoneButton();
             panel8 = new Panel();
             adminLogoutbtn = new SiticoneNetCoreUI.SiticoneButton();
             userControlpanel = new Panel();
@@ -62,6 +64,7 @@
             panel6.SuspendLayout();
             panel9.SuspendLayout();
             panel7.SuspendLayout();
+            panel11.SuspendLayout();
             panel8.SuspendLayout();
             SuspendLayout();
             // 
@@ -77,6 +80,7 @@
             flowLayoutPanelSideBar.Controls.Add(panel6);
             flowLayoutPanelSideBar.Controls.Add(panel9);
             flowLayoutPanelSideBar.Controls.Add(panel7);
+            flowLayoutPanelSideBar.Controls.Add(panel11);
             flowLayoutPanelSideBar.Controls.Add(panel8);
             flowLayoutPanelSideBar.Dock = DockStyle.Left;
             flowLayoutPanelSideBar.Location = new Point(0, 0);
@@ -107,7 +111,7 @@
             panel1.Controls.Add(adminAddBookbtnbtn);
             panel1.Location = new Point(3, 187);
             panel1.Name = "panel1";
-            panel1.Size = new Size(247, 53);
+            panel1.Size = new Size(247, 45);
             panel1.TabIndex = 1;
             // 
             // adminAddBookbtnbtn
@@ -178,7 +182,7 @@
             adminAddBookbtnbtn.ShadowOffset = new Point(2, 2);
             adminAddBookbtnbtn.ShakeDuration = 500;
             adminAddBookbtnbtn.ShakeIntensity = 5;
-            adminAddBookbtnbtn.Size = new Size(247, 53);
+            adminAddBookbtnbtn.Size = new Size(247, 45);
             adminAddBookbtnbtn.TabIndex = 1;
             adminAddBookbtnbtn.Text = "Add Book";
             adminAddBookbtnbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -191,9 +195,9 @@
             // panel2
             // 
             panel2.Controls.Add(adminViewBooksbtn);
-            panel2.Location = new Point(3, 246);
+            panel2.Location = new Point(3, 238);
             panel2.Name = "panel2";
-            panel2.Size = new Size(247, 53);
+            panel2.Size = new Size(247, 45);
             panel2.TabIndex = 2;
             // 
             // adminViewBooksbtn
@@ -264,7 +268,7 @@
             adminViewBooksbtn.ShadowOffset = new Point(2, 2);
             adminViewBooksbtn.ShakeDuration = 500;
             adminViewBooksbtn.ShakeIntensity = 5;
-            adminViewBooksbtn.Size = new Size(247, 53);
+            adminViewBooksbtn.Size = new Size(247, 45);
             adminViewBooksbtn.TabIndex = 1;
             adminViewBooksbtn.Text = "View Books";
             adminViewBooksbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -277,9 +281,9 @@
             // panel3
             // 
             panel3.Controls.Add(adminBookBorrowRequestbtn);
-            panel3.Location = new Point(3, 305);
+            panel3.Location = new Point(3, 289);
             panel3.Name = "panel3";
-            panel3.Size = new Size(247, 53);
+            panel3.Size = new Size(247, 45);
             panel3.TabIndex = 2;
             // 
             // adminBookBorrowRequestbtn
@@ -350,7 +354,7 @@
             adminBookBorrowRequestbtn.ShadowOffset = new Point(2, 2);
             adminBookBorrowRequestbtn.ShakeDuration = 500;
             adminBookBorrowRequestbtn.ShakeIntensity = 5;
-            adminBookBorrowRequestbtn.Size = new Size(247, 53);
+            adminBookBorrowRequestbtn.Size = new Size(247, 45);
             adminBookBorrowRequestbtn.TabIndex = 1;
             adminBookBorrowRequestbtn.Text = "Book Borrow Request";
             adminBookBorrowRequestbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -363,9 +367,9 @@
             // panel4
             // 
             panel4.Controls.Add(adminBorrowedBooksbtn);
-            panel4.Location = new Point(3, 364);
+            panel4.Location = new Point(3, 340);
             panel4.Name = "panel4";
-            panel4.Size = new Size(247, 53);
+            panel4.Size = new Size(247, 45);
             panel4.TabIndex = 2;
             // 
             // adminBorrowedBooksbtn
@@ -436,7 +440,7 @@
             adminBorrowedBooksbtn.ShadowOffset = new Point(2, 2);
             adminBorrowedBooksbtn.ShakeDuration = 500;
             adminBorrowedBooksbtn.ShakeIntensity = 5;
-            adminBorrowedBooksbtn.Size = new Size(247, 53);
+            adminBorrowedBooksbtn.Size = new Size(247, 45);
             adminBorrowedBooksbtn.TabIndex = 1;
             adminBorrowedBooksbtn.Text = "Borrowed Books";
             adminBorrowedBooksbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -449,9 +453,9 @@
             // panel5
             // 
             panel5.Controls.Add(adminReservation);
-            panel5.Location = new Point(3, 423);
+            panel5.Location = new Point(3, 391);
             panel5.Name = "panel5";
-            panel5.Size = new Size(247, 53);
+            panel5.Size = new Size(247, 45);
             panel5.TabIndex = 2;
             // 
             // adminReservation
@@ -522,7 +526,7 @@
             adminReservation.ShadowOffset = new Point(2, 2);
             adminReservation.ShakeDuration = 500;
             adminReservation.ShakeIntensity = 5;
-            adminReservation.Size = new Size(247, 53);
+            adminReservation.Size = new Size(247, 45);
             adminReservation.TabIndex = 1;
             adminReservation.Text = "Reservation";
             adminReservation.TextAlign = ContentAlignment.MiddleCenter;
@@ -535,9 +539,9 @@
             // panel6
             // 
             panel6.Controls.Add(adminUsersInfobtn);
-            panel6.Location = new Point(3, 482);
+            panel6.Location = new Point(3, 442);
             panel6.Name = "panel6";
-            panel6.Size = new Size(247, 53);
+            panel6.Size = new Size(247, 45);
             panel6.TabIndex = 3;
             // 
             // adminUsersInfobtn
@@ -608,7 +612,7 @@
             adminUsersInfobtn.ShadowOffset = new Point(2, 2);
             adminUsersInfobtn.ShakeDuration = 500;
             adminUsersInfobtn.ShakeIntensity = 5;
-            adminUsersInfobtn.Size = new Size(247, 53);
+            adminUsersInfobtn.Size = new Size(247, 45);
             adminUsersInfobtn.TabIndex = 1;
             adminUsersInfobtn.Text = "Users Info";
             adminUsersInfobtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -621,9 +625,9 @@
             // panel9
             // 
             panel9.Controls.Add(siticoneButton1);
-            panel9.Location = new Point(3, 541);
+            panel9.Location = new Point(3, 493);
             panel9.Name = "panel9";
-            panel9.Size = new Size(247, 53);
+            panel9.Size = new Size(247, 45);
             panel9.TabIndex = 4;
             // 
             // siticoneButton1
@@ -694,7 +698,7 @@
             siticoneButton1.ShadowOffset = new Point(2, 2);
             siticoneButton1.ShakeDuration = 500;
             siticoneButton1.ShakeIntensity = 5;
-            siticoneButton1.Size = new Size(247, 53);
+            siticoneButton1.Size = new Size(247, 45);
             siticoneButton1.TabIndex = 1;
             siticoneButton1.Text = "User Registrants";
             siticoneButton1.TextAlign = ContentAlignment.MiddleCenter;
@@ -707,9 +711,9 @@
             // panel7
             // 
             panel7.Controls.Add(adminAccountSettingsbtn);
-            panel7.Location = new Point(3, 600);
+            panel7.Location = new Point(3, 544);
             panel7.Name = "panel7";
-            panel7.Size = new Size(247, 53);
+            panel7.Size = new Size(247, 45);
             panel7.TabIndex = 4;
             // 
             // adminAccountSettingsbtn
@@ -780,7 +784,7 @@
             adminAccountSettingsbtn.ShadowOffset = new Point(2, 2);
             adminAccountSettingsbtn.ShakeDuration = 500;
             adminAccountSettingsbtn.ShakeIntensity = 5;
-            adminAccountSettingsbtn.Size = new Size(247, 53);
+            adminAccountSettingsbtn.Size = new Size(247, 45);
             adminAccountSettingsbtn.TabIndex = 1;
             adminAccountSettingsbtn.Text = "Account Settings";
             adminAccountSettingsbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -790,12 +794,98 @@
             adminAccountSettingsbtn.UseParticles = false;
             adminAccountSettingsbtn.Click += adminAccountSettingsbtn_Click;
             // 
+            // panel11
+            // 
+            panel11.Controls.Add(btnAnalytics);
+            panel11.Location = new Point(3, 595);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(247, 45);
+            panel11.TabIndex = 6;
+            // 
+            // btnAnalytics
+            // 
+            btnAnalytics.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnAnalytics.AccessibleName = "Book Analytics";
+            btnAnalytics.AutoSizeBasedOnText = false;
+            btnAnalytics.BackColor = Color.Transparent;
+            btnAnalytics.BadgeBackColor = Color.Red;
+            btnAnalytics.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnAnalytics.BadgeValue = 0;
+            btnAnalytics.BadgeValueForeColor = Color.White;
+            btnAnalytics.BorderColor = Color.Transparent;
+            btnAnalytics.BorderWidth = 2;
+            btnAnalytics.ButtonBackColor = Color.BurlyWood;
+            btnAnalytics.ButtonImage = null;
+            btnAnalytics.CanBeep = true;
+            btnAnalytics.CanGlow = false;
+            btnAnalytics.CanShake = true;
+            btnAnalytics.ContextMenuStripEx = null;
+            btnAnalytics.CornerRadiusBottomLeft = 2;
+            btnAnalytics.CornerRadiusBottomRight = 2;
+            btnAnalytics.CornerRadiusTopLeft = 2;
+            btnAnalytics.CornerRadiusTopRight = 2;
+            btnAnalytics.CustomCursor = Cursors.Default;
+            btnAnalytics.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnAnalytics.Dock = DockStyle.Fill;
+            btnAnalytics.EnableLongPress = false;
+            btnAnalytics.EnablePressAnimation = true;
+            btnAnalytics.EnableRippleEffect = true;
+            btnAnalytics.EnableShadow = false;
+            btnAnalytics.EnableTextWrapping = false;
+            btnAnalytics.Font = new Font("Segoe UI", 9F);
+            btnAnalytics.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnAnalytics.GlowIntensity = 100;
+            btnAnalytics.GlowRadius = 20F;
+            btnAnalytics.GradientBackground = true;
+            btnAnalytics.GradientColor = Color.FromArgb(128, 64, 0);
+            btnAnalytics.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnAnalytics.HintText = null;
+            btnAnalytics.HoverBackColor = Color.SandyBrown;
+            btnAnalytics.HoverFontStyle = FontStyle.Regular;
+            btnAnalytics.HoverTextColor = Color.White;
+            btnAnalytics.HoverTransitionDuration = 250;
+            btnAnalytics.ImageAlign = ContentAlignment.MiddleLeft;
+            btnAnalytics.ImagePadding = 5;
+            btnAnalytics.ImageSize = new Size(16, 16);
+            btnAnalytics.IsRadial = false;
+            btnAnalytics.IsReadOnly = false;
+            btnAnalytics.IsToggleButton = false;
+            btnAnalytics.IsToggled = false;
+            btnAnalytics.Location = new Point(0, 0);
+            btnAnalytics.LongPressDurationMS = 1000;
+            btnAnalytics.Name = "btnAnalytics";
+            btnAnalytics.NormalFontStyle = FontStyle.Regular;
+            btnAnalytics.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnAnalytics.ParticleCount = 15;
+            btnAnalytics.PressAnimationScale = 0.97F;
+            btnAnalytics.PressedBackColor = Color.White;
+            btnAnalytics.PressedFontStyle = FontStyle.Regular;
+            btnAnalytics.PressTransitionDuration = 150;
+            btnAnalytics.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnAnalytics.RippleColor = Color.FromArgb(255, 255, 255);
+            btnAnalytics.RippleOpacity = 0.3F;
+            btnAnalytics.RippleRadiusMultiplier = 0.6F;
+            btnAnalytics.ShadowBlur = 5;
+            btnAnalytics.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnAnalytics.ShadowOffset = new Point(2, 2);
+            btnAnalytics.ShakeDuration = 500;
+            btnAnalytics.ShakeIntensity = 5;
+            btnAnalytics.Size = new Size(247, 45);
+            btnAnalytics.TabIndex = 1;
+            btnAnalytics.Text = "Book Analytics";
+            btnAnalytics.TextAlign = ContentAlignment.MiddleCenter;
+            btnAnalytics.TextColor = Color.White;
+            btnAnalytics.TooltipText = null;
+            btnAnalytics.UseAdvancedRendering = true;
+            btnAnalytics.UseParticles = false;
+            btnAnalytics.Click += btnAnalytics_Click;
+            // 
             // panel8
             // 
             panel8.Controls.Add(adminLogoutbtn);
-            panel8.Location = new Point(3, 659);
+            panel8.Location = new Point(3, 646);
             panel8.Name = "panel8";
-            panel8.Size = new Size(247, 53);
+            panel8.Size = new Size(247, 45);
             panel8.TabIndex = 5;
             // 
             // adminLogoutbtn
@@ -866,7 +956,7 @@
             adminLogoutbtn.ShadowOffset = new Point(2, 2);
             adminLogoutbtn.ShakeDuration = 500;
             adminLogoutbtn.ShakeIntensity = 5;
-            adminLogoutbtn.Size = new Size(247, 53);
+            adminLogoutbtn.Size = new Size(247, 45);
             adminLogoutbtn.TabIndex = 1;
             adminLogoutbtn.Text = "Logout";
             adminLogoutbtn.TextAlign = ContentAlignment.MiddleCenter;
@@ -879,6 +969,8 @@
             // userControlpanel
             // 
             userControlpanel.BackColor = Color.BurlyWood;
+            userControlpanel.BackgroundImage = (Image)resources.GetObject("userControlpanel.BackgroundImage");
+            userControlpanel.BackgroundImageLayout = ImageLayout.Stretch;
             userControlpanel.Dock = DockStyle.Fill;
             userControlpanel.Location = new Point(250, 0);
             userControlpanel.Name = "userControlpanel";
@@ -906,6 +998,7 @@
             panel6.ResumeLayout(false);
             panel9.ResumeLayout(false);
             panel7.ResumeLayout(false);
+            panel11.ResumeLayout(false);
             panel8.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -935,5 +1028,7 @@
         private FlowLayoutPanel flowLayoutPanelSideBar;
         private Panel panel10;
         private PictureBox pictureBox2;
+        private Panel panel11;
+        private SiticoneNetCoreUI.SiticoneButton btnAnalytics;
     }
 }

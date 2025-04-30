@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Windows.Forms;
+using System.Linq;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.WinForms;
+using LiveChartsCore.Measure;
 using SkiaSharp;
 
 namespace Lib1
@@ -13,6 +15,19 @@ namespace Lib1
     public partial class Analytics : UserControl
     {
         private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Andre\Documents\Library.accdb";
+        private readonly SKColor[] chartColors = new SKColor[]
+        {
+            SKColors.RoyalBlue,
+            SKColors.ForestGreen,
+            SKColors.Crimson,
+            SKColors.DarkOrange,
+            SKColors.Purple,
+            SKColors.Teal,
+            SKColors.DarkMagenta,
+            SKColors.SaddleBrown,
+            SKColors.DarkSlateBlue,
+            SKColors.Chocolate
+        };
 
         public Analytics()
         {
@@ -58,14 +73,26 @@ namespace Lib1
                 }
 
                 // Calculate average ratings and prepare chart data
-                var values = new List<double>();
-                var labels = new List<string>();
+                var series = new List<ISeries>();
+                int index = 0;
 
                 foreach (var book in bookRatings)
                 {
                     double averageRating = book.Value.Count > 0 ? book.Value.Average() : 0;
-                    values.Add(averageRating);
-                    labels.Add(book.Key);
+                    var color = chartColors[index % chartColors.Length];
+                    
+                    var columnSeries = new ColumnSeries<double>
+                    {
+                        Name = book.Key,
+                        Fill = new SolidColorPaint(color),
+                        Values = Enumerable.Repeat(0.0, index)
+                            .Concat(new[] { averageRating })
+                            .Concat(Enumerable.Repeat(0.0, bookRatings.Count - index - 1))
+                            .ToArray()
+                    };
+                    
+                    series.Add(columnSeries);
+                    index++;
                 }
 
                 // Configure the chart
@@ -73,8 +100,7 @@ namespace Lib1
                 {
                     new Axis
                     {
-                        Labels = labels.ToArray(),
-                        LabelsRotation = 45
+                        Labels = Enumerable.Range(0, bookRatings.Count).Select(x => "").ToArray()
                     }
                 };
 
@@ -88,15 +114,8 @@ namespace Lib1
                     }
                 };
 
-                cartesianChartBookRating.Series = new ISeries[]
-                {
-                    new ColumnSeries<double>
-                    {
-                        Values = values.ToArray(),
-                        Fill = new SolidColorPaint(SKColors.BurlyWood),
-                        Name = "Average Book Rating"
-                    }
-                };
+                cartesianChartBookRating.Series = series.ToArray();
+                cartesianChartBookRating.LegendPosition = LegendPosition.Right;
             }
             catch (Exception ex)
             {
@@ -133,13 +152,25 @@ namespace Lib1
                 }
 
                 // Prepare chart data
-                var values = new List<double>();
-                var labels = new List<string>();
+                var series = new List<ISeries>();
+                int index = 0;
 
                 foreach (var book in bookBorrowCounts)
                 {
-                    values.Add(book.Value);
-                    labels.Add(book.Key);
+                    var color = chartColors[index % chartColors.Length];
+                    
+                    var columnSeries = new ColumnSeries<double>
+                    {
+                        Name = book.Key,
+                        Fill = new SolidColorPaint(color),
+                        Values = Enumerable.Repeat(0.0, index)
+                            .Concat(new[] { (double)book.Value })
+                            .Concat(Enumerable.Repeat(0.0, bookBorrowCounts.Count - index - 1))
+                            .ToArray()
+                    };
+                    
+                    series.Add(columnSeries);
+                    index++;
                 }
 
                 // Configure the chart
@@ -147,8 +178,7 @@ namespace Lib1
                 {
                     new Axis
                     {
-                        Labels = labels.ToArray(),
-                        LabelsRotation = 45
+                        Labels = Enumerable.Range(0, bookBorrowCounts.Count).Select(x => "").ToArray()
                     }
                 };
 
@@ -161,15 +191,8 @@ namespace Lib1
                     }
                 };
 
-                cartesianChartMostBorrowedBooks.Series = new ISeries[]
-                {
-                    new ColumnSeries<double>
-                    {
-                        Values = values.ToArray(),
-                        Fill = new SolidColorPaint(SKColors.SaddleBrown),
-                        Name = "Times Borrowed"
-                    }
-                };
+                cartesianChartMostBorrowedBooks.Series = series.ToArray();
+                cartesianChartMostBorrowedBooks.LegendPosition = LegendPosition.Right;
             }
             catch (Exception ex)
             {

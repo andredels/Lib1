@@ -190,14 +190,34 @@ namespace Lib1
                 return;
             }
 
-            var result = MessageBox.Show("Are you sure you want to delete this user?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
+            try
             {
-                try
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
-                    using (OleDbConnection conn = new OleDbConnection(connectionString))
+                    conn.Open();
+                    
+                    // Check if user has any active book transactions
+                    string checkQuery = @"SELECT COUNT(*) FROM BookTransactions 
+                                        WHERE UserID = @UserId 
+                                        AND Status = 'Approved' 
+                                        AND RequestType = 'Borrow'";
+                    
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
                     {
-                        conn.Open();
+                        checkCmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(txtboxUsersInfo_UserId.Text));
+                        int activeTransactions = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                        if (activeTransactions > 0)
+                        {
+                            MessageBox.Show("Cannot delete this user as they have active book borrowings. Please ensure all books are returned first.", 
+                                "Deletion Restricted", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+                    var result = MessageBox.Show("Are you sure you want to delete this user?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
                         string query = "DELETE FROM Users WHERE UserID = @UserId";
 
                         using (OleDbCommand cmd = new OleDbCommand(query, conn))
@@ -205,16 +225,16 @@ namespace Lib1
                             cmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(txtboxUsersInfo_UserId.Text));
                             cmd.ExecuteNonQuery();
                         }
-                    }
 
-                    MessageBox.Show("User deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadUsers();
-                    ClearFields();
+                        MessageBox.Show("User deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadUsers();
+                        ClearFields();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error deleting user: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error deleting user: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

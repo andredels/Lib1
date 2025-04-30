@@ -743,6 +743,7 @@
             // 
             // comboBoxBookGenre
             // 
+            comboBoxBookGenre.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxBookGenre.FormattingEnabled = true;
             comboBoxBookGenre.Location = new Point(748, 577);
             comboBoxBookGenre.Name = "comboBoxBookGenre";

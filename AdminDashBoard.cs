@@ -100,5 +100,13 @@ namespace Lib1
             accountSettingsUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(accountSettingsUC);
         }
+
+        private void btnAnalytics_Click(object sender, EventArgs e)
+        {
+            userControlpanel.Controls.Clear();
+            Analytics analyticsUC = new Analytics();
+            analyticsUC.Dock = DockStyle.Fill;
+            userControlpanel.Controls.Add(analyticsUC);
+        }
     }
 }
