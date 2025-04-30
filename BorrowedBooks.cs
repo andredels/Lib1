@@ -56,16 +56,10 @@ namespace Lib1
             if (!isAdmin)
             {
                 label1.Visible = false;
-                if (textBoxUserID != null && textBoxUserID.Parent is Label lblUserID)
-                {
-                    lblUserID.Visible = false;
-                }
-                textBoxUserID.Visible = false;
 
-                if (textBoxFullName != null && textBoxFullName.Parent is Label lblFullName)
-                {
-                    lblFullName.Visible = false;
-                }
+                labelUserID.Visible = false;
+                textBoxUserID.Visible = false;
+                labelFullName.Visible = false;
                 textBoxFullName.Visible = false;
             }
         }
@@ -432,39 +426,136 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    // First get the book ID to update available copies
+                    // First get the book ID and return date to update available copies and check for fines
                     int bookID = 0;
-                    string getBookIDQuery = "SELECT BookID FROM BookTransactions WHERE TransactionID = @TransactionID";
-                    using (OleDbCommand command = new OleDbCommand(getBookIDQuery, connection))
+                    DateTime returnDate = DateTime.Now; // Default value
+                    bool hasReturnDate = false;
+
+                    // Debug: Verify selected transaction ID
+                    Console.WriteLine($"Processing return for TransactionID: {selectedTransactionID}");
+
+                    string getInfoQuery = "SELECT BookID, ReturnDate FROM BookTransactions WHERE TransactionID = @TransactionID";
+                    using (OleDbCommand command = new OleDbCommand(getInfoQuery, connection))
                     {
                         command.Parameters.AddWithValue("@TransactionID", selectedTransactionID);
-                        bookID = Convert.ToInt32(command.ExecuteScalar());
+                        using (OleDbDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                bookID = Convert.ToInt32(reader["BookID"]);
+                                Console.WriteLine($"Found BookID: {bookID}");
+
+                                if (reader["ReturnDate"] != DBNull.Value)
+                                {
+                                    returnDate = Convert.ToDateTime(reader["ReturnDate"]);
+                                    hasReturnDate = true;
+                                    Console.WriteLine($"Expected Return Date: {returnDate.ToShortDateString()}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("No return date set");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No record found for this TransactionID");
+                            }
+                        }
                     }
 
-                    // Update transaction status to "Returned"
+                    // Calculate fine if the book is returned late
+                    int fineAmount = 0;
+                    DateTime currentDate = DateTime.Now.Date;
+                    Console.WriteLine($"Current Date: {currentDate.ToShortDateString()}");
+
+                    if (hasReturnDate && currentDate > returnDate)
+                    {
+                        // Calculate days overdue
+                        TimeSpan daysLate = currentDate - returnDate;
+                        int daysOverdue = (int)daysLate.TotalDays;
+
+                        // Calculate fine (5 pesos per day overdue)
+                        fineAmount = daysOverdue * 5;
+
+                        Console.WriteLine($"Book is {daysOverdue} days overdue. Fine calculated: ₱{fineAmount}");
+
+                        // Show fine information to the user
+                        DialogResult result = MessageBox.Show(
+                            $"This book is returned {daysOverdue} day(s) late.\n" +
+                            $"Fine amount: ₱{fineAmount}\n\n" +
+                            "Do you want to proceed with the return?",
+                            "Late Return",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning);
+
+                        if (result == DialogResult.No)
+                        {
+                            Console.WriteLine("User cancelled return operation");
+                            return; // User cancelled the return operation
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Book is not overdue. No fine.");
+                    }
+
+                    // Update transaction status to "Returned" and set FineAmount
+                    Console.WriteLine($"Updating transaction with Status='Returned' and FineAmount={fineAmount}");
+
+                    // Use parameterized query for safety and correctness
                     string updateStatusQuery = @"UPDATE BookTransactions 
-                                              SET Status = 'Returned' 
-                                              WHERE TransactionID = @TransactionID";
+                                      SET Status = 'Returned', FineAmount = ? 
+                                      WHERE TransactionID = ?";
 
                     using (OleDbCommand command = new OleDbCommand(updateStatusQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@TransactionID", selectedTransactionID);
+                        command.Parameters.AddWithValue("?", fineAmount);
+                        command.Parameters.AddWithValue("?", selectedTransactionID);
+
                         int rowsAffected = command.ExecuteNonQuery();
+                        Console.WriteLine($"Update affected {rowsAffected} rows");
 
                         if (rowsAffected > 0)
                         {
                             // Increase available copies in the Books table
                             string updateBookQuery = @"UPDATE Books 
-                                                   SET AvailableCopies = AvailableCopies + 1 
-                                                   WHERE BookID = @BookID";
+                                           SET AvailableCopies = AvailableCopies + 1 
+                                           WHERE BookID = ?";
 
                             using (OleDbCommand bookCommand = new OleDbCommand(updateBookQuery, connection))
                             {
-                                bookCommand.Parameters.AddWithValue("@BookID", bookID);
-                                bookCommand.ExecuteNonQuery();
+                                bookCommand.Parameters.AddWithValue("?", bookID);
+                                int booksUpdated = bookCommand.ExecuteNonQuery();
+                                Console.WriteLine($"Book update affected {booksUpdated} rows");
                             }
 
-                            MessageBox.Show("Book returned successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            // Double check the update was successful
+                            string verifyQuery = "SELECT Status, FineAmount FROM BookTransactions WHERE TransactionID = ?";
+                            using (OleDbCommand verifyCommand = new OleDbCommand(verifyQuery, connection))
+                            {
+                                verifyCommand.Parameters.AddWithValue("?", selectedTransactionID);
+                                using (OleDbDataReader reader = verifyCommand.ExecuteReader())
+                                {
+                                    if (reader.Read())
+                                    {
+                                        string status = reader["Status"].ToString();
+                                        int fine = Convert.ToInt32(reader["FineAmount"]);
+                                        Console.WriteLine($"Verified update: Status={status}, FineAmount={fine}");
+                                    }
+                                }
+                            }
+
+                            // Show appropriate message based on whether a fine was charged
+                            if (fineAmount > 0)
+                            {
+                                MessageBox.Show($"Book returned successfully!\nFine of ₱{fineAmount} has been recorded.",
+                                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Book returned successfully!",
+                                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
 
                             // Refresh the data
                             LoadBorrowedBooks();
@@ -472,11 +563,18 @@ namespace Lib1
                             // Clear the selection
                             ClearSelection();
                         }
+                        else
+                        {
+                            MessageBox.Show("No records were updated. Please try again.",
+                                "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Exception: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
                 MessageBox.Show("Error returning book: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
