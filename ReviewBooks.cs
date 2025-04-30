@@ -71,6 +71,9 @@ namespace Lib1
 
                         // Apply professional styling
                         StyleDataGridView();
+
+                        // Load book titles for filter from current data
+                        LoadBookTitlesFromGrid();
                     }
                 }
             }
@@ -97,27 +100,104 @@ namespace Lib1
             dataGridViewReviewBooks.DefaultCellStyle.SelectionForeColor = Color.White;
         }
 
+        private void LoadBookTitlesFromGrid()
+        {
+            try
+            {
+                // Clear previous items
+                comboBoxBookTitleSearch.Items.Clear();
+
+                // Get the current data source
+                if (dataGridViewReviewBooks.DataSource is DataTable dataTable)
+                {
+                    // Create a HashSet to store unique book titles
+                    HashSet<string> uniqueBookTitles = new HashSet<string>();
+
+                    // Check if the Title column exists
+                    if (dataTable.Columns.Contains("Title"))
+                    {
+                        // Extract unique values
+                        foreach (DataRow row in dataTable.Rows)
+                        {
+                            if (row["Title"] != DBNull.Value)
+                            {
+                                string title = row["Title"].ToString().Trim();
+                                if (!string.IsNullOrEmpty(title))
+                                {
+                                    uniqueBookTitles.Add(title);
+                                }
+                            }
+                        }
+
+                        // Sort the titles alphabetically
+                        List<string> sortedTitles = uniqueBookTitles.OrderBy(title => title).ToList();
+
+                        // Add to combo box
+                        comboBoxBookTitleSearch.Items.AddRange(sortedTitles.ToArray());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading book titles: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void textBoxBookSearch_TextChanged(object sender, EventArgs e)
         {
-            if (dataGridViewReviewBooks.DataSource != null)
+            ApplyFilters();
+        }
+
+        private void comboBoxBookTitleSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ApplyFilters()
+        {
+            try
             {
-                DataTable dt = (DataTable)dataGridViewReviewBooks.DataSource;
-                dt.DefaultView.RowFilter = $"BookTitle LIKE '%{textBoxBookSearch.Text}%'";
+                // Get the current data source
+                if (dataGridViewReviewBooks.DataSource is DataTable dt)
+                {
+                    StringBuilder filterBuilder = new StringBuilder();
+
+                    // Book title filter from combobox
+                    if (!string.IsNullOrEmpty(comboBoxBookTitleSearch.Text))
+                    {
+                        string bookTitle = comboBoxBookTitleSearch.Text.Replace("'", "''");
+                        filterBuilder.AppendFormat("[Title] = '{0}'", bookTitle);
+                    }
+
+                    // General search text filter
+                    if (!string.IsNullOrEmpty(textBoxBookSearch.Text))
+                    {
+                        if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
+
+                        string searchText = textBoxBookSearch.Text.Replace("'", "''");
+
+                        // Add all relevant columns for searching
+                        filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [ISBN] LIKE '%{0}%')", searchText);
+                    }
+
+                    // Apply the filter
+                    dt.DefaultView.RowFilter = filterBuilder.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error filtering data: {ex.Message}", "Filter Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            // Clear filters
+            comboBoxBookTitleSearch.Text = string.Empty;
+            textBoxBookSearch.Text = string.Empty;
             LoadReturnedBooks();
-        }
-
-        private void comboBoxBookTitleSearch_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (dataGridViewReviewBooks.DataSource != null)
-            {
-                DataTable dt = (DataTable)dataGridViewReviewBooks.DataSource;
-                dt.DefaultView.RowFilter = $"BookTitle = '{comboBoxBookTitleSearch.SelectedItem}'";
-            }
         }
 
         private void btnRate_Click(object sender, EventArgs e)

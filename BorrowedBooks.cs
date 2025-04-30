@@ -47,7 +47,6 @@ namespace Lib1
 
             // Show/hide student filter for admin, hide for students
             comboBoxStudentNameSearch.Visible = isAdmin;
-            comboBoxBookSearch.Visible = isAdmin;
             if (comboBoxStudentNameSearch.Parent is Label lblStudentName)
             {
                 lblStudentName.Visible = isAdmin;
@@ -57,7 +56,6 @@ namespace Lib1
             if (!isAdmin)
             {
                 label1.Visible = false;
-                label2.Visible = false;
                 if (textBoxUserID != null && textBoxUserID.Parent is Label lblUserID)
                 {
                     lblUserID.Visible = false;
