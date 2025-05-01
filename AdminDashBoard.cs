@@ -104,7 +104,7 @@ namespace Lib1
         private void btnAnalytics_Click(object sender, EventArgs e)
         {
             userControlpanel.Controls.Clear();
-            Analytics analyticsUC = new Analytics();
+            Analytics analyticsUC = new Analytics(true); // Pass true for admin
             analyticsUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(analyticsUC);
         }

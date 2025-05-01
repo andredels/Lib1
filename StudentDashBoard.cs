@@ -76,7 +76,7 @@ namespace Lib1
         private void btnAnalytics_Click(object sender, EventArgs e)
         {
             userControlpanel.Controls.Clear();
-            Analytics analyticsUC = new Analytics();
+            Analytics analyticsUC = new Analytics(false); // Pass false for student
             analyticsUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(analyticsUC);
         }

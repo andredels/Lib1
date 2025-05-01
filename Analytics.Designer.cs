@@ -30,21 +30,29 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Analytics));
             panel1 = new Panel();
+            label2 = new Label();
+            comboBoxBookSearch = new ComboBox();
+            btnViewBookReviews = new SiticoneNetCoreUI.SiticoneButton();
             btnViewMostBorrowed = new SiticoneNetCoreUI.SiticoneButton();
             btnBookRatings = new SiticoneNetCoreUI.SiticoneButton();
             label1 = new Label();
             pictureBox2 = new PictureBox();
             cartesianChartBookRating = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
             panel2 = new Panel();
+            dataGridView_BookReviews = new DataGridView();
             cartesianChartMostBorrowedBooks = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView_BookReviews).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.BurlyWood;
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(comboBoxBookSearch);
+            panel1.Controls.Add(btnViewBookReviews);
             panel1.Controls.Add(btnViewMostBorrowed);
             panel1.Controls.Add(btnBookRatings);
             panel1.Controls.Add(label1);
@@ -54,6 +62,102 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1098, 125);
             panel1.TabIndex = 1;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(1000, 48);
+            label2.Name = "label2";
+            label2.Size = new Size(76, 20);
+            label2.TabIndex = 89;
+            label2.Text = "Book Title";
+            // 
+            // comboBoxBookSearch
+            // 
+            comboBoxBookSearch.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxBookSearch.FormattingEnabled = true;
+            comboBoxBookSearch.Location = new Point(853, 17);
+            comboBoxBookSearch.Name = "comboBoxBookSearch";
+            comboBoxBookSearch.Size = new Size(223, 28);
+            comboBoxBookSearch.TabIndex = 88;
+            comboBoxBookSearch.SelectedIndexChanged += comboBoxBookSearch_SelectedIndexChanged;
+            // 
+            // btnViewBookReviews
+            // 
+            btnViewBookReviews.AccessibleDescription = "The default button control that accept input though the mouse, touch and keyboard";
+            btnViewBookReviews.AccessibleName = "View Book Reviews";
+            btnViewBookReviews.AutoSizeBasedOnText = false;
+            btnViewBookReviews.BackColor = Color.Transparent;
+            btnViewBookReviews.BadgeBackColor = Color.Red;
+            btnViewBookReviews.BadgeFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnViewBookReviews.BadgeValue = 0;
+            btnViewBookReviews.BadgeValueForeColor = Color.White;
+            btnViewBookReviews.BorderColor = Color.Transparent;
+            btnViewBookReviews.BorderWidth = 2;
+            btnViewBookReviews.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            btnViewBookReviews.ButtonImage = null;
+            btnViewBookReviews.CanBeep = true;
+            btnViewBookReviews.CanGlow = false;
+            btnViewBookReviews.CanShake = true;
+            btnViewBookReviews.ContextMenuStripEx = null;
+            btnViewBookReviews.CornerRadiusBottomLeft = 8;
+            btnViewBookReviews.CornerRadiusBottomRight = 8;
+            btnViewBookReviews.CornerRadiusTopLeft = 8;
+            btnViewBookReviews.CornerRadiusTopRight = 8;
+            btnViewBookReviews.CustomCursor = Cursors.Default;
+            btnViewBookReviews.DisabledTextColor = Color.FromArgb(150, 150, 150);
+            btnViewBookReviews.EnableLongPress = false;
+            btnViewBookReviews.EnablePressAnimation = true;
+            btnViewBookReviews.EnableRippleEffect = true;
+            btnViewBookReviews.EnableShadow = false;
+            btnViewBookReviews.EnableTextWrapping = false;
+            btnViewBookReviews.Font = new Font("Segoe UI", 9F);
+            btnViewBookReviews.GlowColor = Color.FromArgb(100, 255, 255, 255);
+            btnViewBookReviews.GlowIntensity = 100;
+            btnViewBookReviews.GlowRadius = 20F;
+            btnViewBookReviews.GradientBackground = false;
+            btnViewBookReviews.GradientColor = Color.FromArgb(114, 168, 255);
+            btnViewBookReviews.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            btnViewBookReviews.HintText = null;
+            btnViewBookReviews.HoverBackColor = Color.FromArgb(114, 168, 255);
+            btnViewBookReviews.HoverFontStyle = FontStyle.Regular;
+            btnViewBookReviews.HoverTextColor = Color.White;
+            btnViewBookReviews.HoverTransitionDuration = 250;
+            btnViewBookReviews.ImageAlign = ContentAlignment.MiddleLeft;
+            btnViewBookReviews.ImagePadding = 5;
+            btnViewBookReviews.ImageSize = new Size(16, 16);
+            btnViewBookReviews.IsRadial = false;
+            btnViewBookReviews.IsReadOnly = false;
+            btnViewBookReviews.IsToggleButton = false;
+            btnViewBookReviews.IsToggled = false;
+            btnViewBookReviews.Location = new Point(456, 79);
+            btnViewBookReviews.LongPressDurationMS = 1000;
+            btnViewBookReviews.Name = "btnViewBookReviews";
+            btnViewBookReviews.NormalFontStyle = FontStyle.Regular;
+            btnViewBookReviews.ParticleColor = Color.FromArgb(200, 200, 200);
+            btnViewBookReviews.ParticleCount = 15;
+            btnViewBookReviews.PressAnimationScale = 0.97F;
+            btnViewBookReviews.PressedBackColor = Color.FromArgb(74, 128, 235);
+            btnViewBookReviews.PressedFontStyle = FontStyle.Regular;
+            btnViewBookReviews.PressTransitionDuration = 150;
+            btnViewBookReviews.ReadOnlyTextColor = Color.FromArgb(100, 100, 100);
+            btnViewBookReviews.RippleColor = Color.FromArgb(255, 255, 255);
+            btnViewBookReviews.RippleOpacity = 0.3F;
+            btnViewBookReviews.RippleRadiusMultiplier = 0.6F;
+            btnViewBookReviews.ShadowBlur = 5;
+            btnViewBookReviews.ShadowColor = Color.FromArgb(100, 0, 0, 0);
+            btnViewBookReviews.ShadowOffset = new Point(2, 2);
+            btnViewBookReviews.ShakeDuration = 500;
+            btnViewBookReviews.ShakeIntensity = 5;
+            btnViewBookReviews.Size = new Size(210, 34);
+            btnViewBookReviews.TabIndex = 87;
+            btnViewBookReviews.Text = "View Book Reviews";
+            btnViewBookReviews.TextAlign = ContentAlignment.MiddleCenter;
+            btnViewBookReviews.TextColor = Color.White;
+            btnViewBookReviews.TooltipText = null;
+            btnViewBookReviews.UseAdvancedRendering = true;
+            btnViewBookReviews.UseParticles = false;
+            btnViewBookReviews.Click += btnViewBookReviews_Click;
             // 
             // btnViewMostBorrowed
             // 
@@ -103,7 +207,7 @@
             btnViewMostBorrowed.IsReadOnly = false;
             btnViewMostBorrowed.IsToggleButton = false;
             btnViewMostBorrowed.IsToggled = false;
-            btnViewMostBorrowed.Location = new Point(866, 79);
+            btnViewMostBorrowed.Location = new Point(888, 79);
             btnViewMostBorrowed.LongPressDurationMS = 1000;
             btnViewMostBorrowed.Name = "btnViewMostBorrowed";
             btnViewMostBorrowed.NormalFontStyle = FontStyle.Regular;
@@ -180,7 +284,7 @@
             btnBookRatings.IsReadOnly = false;
             btnBookRatings.IsToggleButton = false;
             btnBookRatings.IsToggled = false;
-            btnBookRatings.Location = new Point(597, 79);
+            btnBookRatings.Location = new Point(672, 79);
             btnBookRatings.LongPressDurationMS = 1000;
             btnBookRatings.Name = "btnBookRatings";
             btnBookRatings.NormalFontStyle = FontStyle.Regular;
@@ -242,12 +346,26 @@
             // panel2
             // 
             panel2.BackColor = Color.White;
+            panel2.Controls.Add(dataGridView_BookReviews);
             panel2.Controls.Add(cartesianChartBookRating);
             panel2.Controls.Add(cartesianChartMostBorrowedBooks);
             panel2.Location = new Point(17, 156);
             panel2.Name = "panel2";
             panel2.Size = new Size(1059, 543);
             panel2.TabIndex = 3;
+            // 
+            // dataGridView_BookReviews
+            // 
+            dataGridView_BookReviews.BackgroundColor = Color.BurlyWood;
+            dataGridView_BookReviews.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView_BookReviews.Dock = DockStyle.Fill;
+            dataGridView_BookReviews.Location = new Point(0, 0);
+            dataGridView_BookReviews.Name = "dataGridView_BookReviews";
+            dataGridView_BookReviews.ReadOnly = true;
+            dataGridView_BookReviews.RowHeadersWidth = 51;
+            dataGridView_BookReviews.Size = new Size(1059, 543);
+            dataGridView_BookReviews.TabIndex = 4;
+            dataGridView_BookReviews.CellContentClick += dataGridView_BookReviews_CellContentClick;
             // 
             // cartesianChartMostBorrowedBooks
             // 
@@ -272,6 +390,7 @@
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView_BookReviews).EndInit();
             ResumeLayout(false);
         }
 
@@ -285,5 +404,9 @@
         private Panel panel2;
         private SiticoneNetCoreUI.SiticoneButton btnViewMostBorrowed;
         private SiticoneNetCoreUI.SiticoneButton btnBookRatings;
+        private DataGridView dataGridView_BookReviews;
+        private SiticoneNetCoreUI.SiticoneButton btnViewBookReviews;
+        private Label label2;
+        private ComboBox comboBoxBookSearch;
     }
 }
