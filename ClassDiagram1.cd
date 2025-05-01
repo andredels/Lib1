@@ -1,111 +1,152 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Lib1.Addbook">
-    <Position X="8.75" Y="11" Width="1.5" />
+  <Class Name="Lib1.BookAdding" Collapsed="true">
+    <Position X="16.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAABgAAAACMABBoACACAIAACAICgAQAwAAAAAQBAQAA=</HashCode>
-      <FileName>Addbook.cs</FileName>
+      <HashCode>AAAAgAAAACAABBAAAACAIAACAIAgAQEQAAAAAQBAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="System.Windows.Forms.Form" Collapsed="true">
-    <Position X="20.5" Y="7.5" Width="1.5" />
+    <Position X="15.5" Y="0.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="Lib1.AdminLogin">
-    <Position X="11" Y="11" Width="1.5" />
+  <Class Name="Lib1.AdminLogin" Collapsed="true">
+    <Position X="8.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAgIhAAACAAABhCAACAQAQCAAAAQCAAABAAAQBAQAA=</HashCode>
+      <HashCode>QAAgIhAAgCAAQBhCAACAQgQCAAAAQCAAAAAAAQBAQAA=</HashCode>
       <FileName>AdminLogin.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib1.AdminMenu">
-    <Position X="13.25" Y="11" Width="1.5" />
+  <Class Name="Lib1.Form1" Collapsed="true">
+    <Position X="17.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CQAAAABgAGgGAAAADACAAAACAAAgQAQAIAAAAACgBAA=</HashCode>
-      <FileName>AdminMenu.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Lib1.BorrowRequests">
-    <Position X="15.5" Y="11" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAEkJgkBMGQUEZxACBCwAAQCAAABAAAADhAAAspDCgE=</HashCode>
-      <FileName>BorrowRequests.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Lib1.CompleteBookDetails">
-    <Position X="17.75" Y="11" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAIgAAACAAAABACACAAAQCBAAQAAAAAAAAAABAAAA=</HashCode>
-      <FileName>CompleteBookDetails.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Lib1.Form1">
-    <Position X="20" Y="11" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACIhAAACAAABhAAACCQAQCAAgACAgAABAAIUBAAAA=</HashCode>
+      <HashCode>AAACIhAAgCAAABhAAACCQkQCAAgACAgAAAAAIWBAAAA=</HashCode>
       <FileName>Form1.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib1.Signup">
-    <Position X="22.25" Y="11" Width="1.5" />
+  <Class Name="Lib1.Signup" Collapsed="true">
+    <Position X="20" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAwCAACAAANAABACAQHYmAgAgAAICBDAAAAACAAg=</HashCode>
+      <HashCode>ACAAAwCAACAAANAABACAQHYmAgAgAAICBCAAAQACACg=</HashCode>
       <FileName>Signup.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib1.StudentMenu">
-    <Position X="24.5" Y="11" Width="1.5" />
+  <Class Name="Lib1.ViewBorrowedBooks" Collapsed="true">
+    <Position X="22.25" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQCAAAAAACAAAAAACACAAAACAAgAAABAQAAAAAAAMAA=</HashCode>
-      <FileName>StudentMenu.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Lib1.StudentRegistrants">
-    <Position X="26.75" Y="11" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAEYgRAECAgAQhBAFCgAAQHACZBAQBUQAhAAgBMACA=</HashCode>
-      <FileName>StudentRegistrants.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Lib1.ViewAllBooks">
-    <Position X="29" Y="11" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AIIGIhACA2CVNQlAACGCAA4CEBEQgggpAAAAEgJJAYA=</HashCode>
-      <FileName>ViewAllBooks.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Lib1.ViewBorrowedBooks">
-    <Position X="31.25" Y="11" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAMgAAACAQAQhQAACAAAQCAAgAAAIAMAAAAABIAAA=</HashCode>
+      <HashCode>AEAGMgAAICoQAQhQAACQAIQSIAgAAhAAAAAAAABIAwA=</HashCode>
       <FileName>ViewBorrowedBooks.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib1.ViewStudentInfo">
-    <Position X="33.5" Y="11" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ICAFIgAAACAQAQhAAACQAARCIAgAAAEgFAAAAABICgQ=</HashCode>
-      <FileName>ViewStudentInfo.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Lib1.Properties.Resources">
-    <Position X="16" Y="6.5" Width="1.5" />
+  <Class Name="Lib1.Properties.Resources" Collapsed="true">
+    <Position X="9" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib1.Program">
-    <Position X="13.5" Y="6.75" Width="1.5" />
+  <Class Name="Lib1.Program" Collapsed="true">
+    <Position X="15" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Lib1.SecurityHelper">
-    <Position X="11" Y="6.75" Width="1.5" />
+  <Class Name="Lib1.SecurityHelper" Collapsed="true">
+    <Position X="11" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>SecurityHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.AccountSettings" Collapsed="true">
+    <Position X="13.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAEJgQAACQAARwACACAAIRCIAAIAIBAASAAAQZAAEA=</HashCode>
+      <FileName>AccountSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.AdminDashBoard" Collapsed="true">
+    <Position X="13.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAARAAAAACAAIAAACAKEABATAIAggAAQAGAAAwCDAAA=</HashCode>
+      <FileName>AdminDashBoard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.Analytics" Collapsed="true">
+    <Position X="15" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAgAgASAAABgAAACgACACAAABAAAAAAAAAQAAAAE=</HashCode>
+      <FileName>Analytics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.BookBorrowRequest" Collapsed="true">
+    <Position X="18.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAMUAokEMGQVCRhACgLQQAQKQAAAAAAACgAACUIDKkA=</HashCode>
+      <FileName>BookBorrowRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.BorrowedBooks" Collapsed="true">
+    <Position X="13.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAIgAFuSAQKRlAAgKcAAZGQASABAwAKAAhAcYIIgE=</HashCode>
+      <FileName>BorrowedBooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.ForgotPassword" Collapsed="true">
+    <Position X="11" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACABSAAABgAAAKQBIACAAABAABAAAAKAQBEACg=</HashCode>
+      <FileName>ForgotPassword.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.Reservation" Collapsed="true">
+    <Position X="16.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAKEKwABgCAxKRhACgqQQAaKQECQABoAKAIhFRAIIgA=</HashCode>
+      <FileName>Reservation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.ReservedBooks" Collapsed="true">
+    <Position X="18.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EACEKgBBgCARKRtACAiQQMSKAECAQFoAKAAhBRAIAgA=</HashCode>
+      <FileName>ReservedBooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.ReviewBooks" Collapsed="true">
+    <Position X="15" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAIhAAQCAQqJhACACAQAQDIAEABABAASAAARAACEA=</HashCode>
+      <FileName>ReviewBooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.StudentDashBoard" Collapsed="true">
+    <Position X="15.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAIAARAAACAAIABACAKEAhgGAAAAAAAAAAAAEQBAIAA=</HashCode>
+      <FileName>StudentDashBoard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.UserApplicant" Collapsed="true">
+    <Position X="18.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEIgAAECAwCRhAQACAQAQDgWoBAABQQAAAAQAAACQ=</HashCode>
+      <FileName>UserApplicant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.UsersInfo" Collapsed="true">
+    <Position X="13.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEIgAAACEQKbhQAACAQAQGwAgAIAAAEAIAAQAAQCQ=</HashCode>
+      <FileName>UsersInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lib1.ViewBooks" Collapsed="true">
+    <Position X="16.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAAGIhAIAGAxJRhACCCCQCjCMBsEgMihFAAIAwgDAIA=</HashCode>
+      <FileName>ViewBooks.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

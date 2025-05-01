@@ -236,7 +236,7 @@
             cartesianChartBookRating.Location = new Point(0, 0);
             cartesianChartBookRating.MatchAxesScreenDataRatio = false;
             cartesianChartBookRating.Name = "cartesianChartBookRating";
-            cartesianChartBookRating.Size = new Size(1059, 489);
+            cartesianChartBookRating.Size = new Size(1059, 543);
             cartesianChartBookRating.TabIndex = 2;
             // 
             // panel2
@@ -246,7 +246,7 @@
             panel2.Controls.Add(cartesianChartMostBorrowedBooks);
             panel2.Location = new Point(17, 156);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1059, 489);
+            panel2.Size = new Size(1059, 543);
             panel2.TabIndex = 3;
             // 
             // cartesianChartMostBorrowedBooks
@@ -256,7 +256,7 @@
             cartesianChartMostBorrowedBooks.Location = new Point(0, 0);
             cartesianChartMostBorrowedBooks.MatchAxesScreenDataRatio = false;
             cartesianChartMostBorrowedBooks.Name = "cartesianChartMostBorrowedBooks";
-            cartesianChartMostBorrowedBooks.Size = new Size(1059, 489);
+            cartesianChartMostBorrowedBooks.Size = new Size(1059, 543);
             cartesianChartMostBorrowedBooks.TabIndex = 3;
             // 
             // Analytics
