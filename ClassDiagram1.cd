@@ -76,7 +76,7 @@
   <Class Name="Lib1.Analytics" Collapsed="true">
     <Position X="15" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQEAgAgASAAABgCAAKgACACAgABAAAAAAAAAQQAAgE=</HashCode>
+      <HashCode>EAQEAgAkASAAABgCACKgQCACAgABAAgAAAAAARQQAAE=</HashCode>
       <FileName>Analytics.cs</FileName>
     </TypeIdentifier>
   </Class>

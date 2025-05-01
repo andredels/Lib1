@@ -134,6 +134,21 @@ namespace Lib1
                     return;
                 }
 
+                // Validate ISBN format
+                string isbnString = textBoxISBNVwBks.Text.Trim();
+                if (!isbnString.All(char.IsDigit))
+                {
+                    MessageBox.Show("ISBN must contain only numbers", "Invalid ISBN",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (isbnString.Length != 10 && isbnString.Length != 13)
+                {
+                    MessageBox.Show("ISBN must be either 10 or 13 digits long", "Invalid ISBN",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 // Validate numeric fields
                 if (!int.TryParse(textBoxPublicationYearVwBks.Text, out int publicationYear))
                 {
@@ -191,13 +206,6 @@ namespace Lib1
                     }
                 }
 
-                if (!int.TryParse(textBoxISBNVwBks.Text, out int isbn))
-                {
-                    MessageBox.Show("Please enter a valid ISBN number", "Invalid Input",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
@@ -236,7 +244,7 @@ namespace Lib1
                         cmd.Parameters.AddWithValue("@PublicationYear", publicationYear);
                         cmd.Parameters.AddWithValue("@TotalCopies", newTotalCopies);
                         cmd.Parameters.AddWithValue("@AvailableCopies", newAvailableCopies);
-                        cmd.Parameters.AddWithValue("@ISBN", isbn);
+                        cmd.Parameters.AddWithValue("@ISBN", isbnString);
                         cmd.Parameters.AddWithValue("@GenreID", genreId);
                         cmd.Parameters.AddWithValue("@BookID", bookId);
 
@@ -282,39 +290,46 @@ namespace Lib1
             int bookId = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["BookID"].Value);
             string bookTitle = datagridViewAllBooks.Rows[rowIndex].Cells["Title"].Value.ToString();
 
-            // Confirm deletion
-            DialogResult result = MessageBox.Show($"Are you sure you want to delete '{bookTitle}'?",
-                "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (result == DialogResult.Yes)
+            try
             {
-                try
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
-                    // Check if book is currently borrowed
-                    using (OleDbConnection conn = new OleDbConnection(connectionString))
+                    conn.Open();
+
+                    // First check if the book has any transactions
+                    string checkQuery = @"SELECT COUNT(*) FROM BookTransactions WHERE BookID = ?";
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
                     {
-                        conn.Open();
+                        checkCmd.Parameters.AddWithValue("?", bookId);
+                        int transactionCount = Convert.ToInt32(checkCmd.ExecuteScalar());
 
-                        // Check if book has any active loans
-                        string checkQuery = "SELECT COUNT(*) FROM BookTransactions WHERE BookID = @BookID AND Status = 'Borrowed'";
-                        using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
+                        if (transactionCount > 0)
                         {
-                            checkCmd.Parameters.AddWithValue("@BookID", bookId);
-                            int activeLoans = Convert.ToInt32(checkCmd.ExecuteScalar());
-
-                            if (activeLoans > 0)
-                            {
-                                MessageBox.Show("Cannot delete this book as it is currently borrowed by one or more users.",
-                                    "Deletion Restricted", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
+                            MessageBox.Show(
+                                $"Cannot delete '{bookTitle}' because it has existing transaction records.\n\n" +
+                                "This includes borrowed, returned, or reserved records.\n" +
+                                "To maintain the integrity of transaction history, books with existing records cannot be deleted.",
+                                "Deletion Restricted",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                            return;
                         }
+                    }
 
-                        // Proceed with deletion
-                        string deleteQuery = "DELETE FROM Books WHERE BookID = @BookID";
+                    // If no transactions exist, proceed with deletion confirmation
+                    DialogResult result = MessageBox.Show(
+                        $"Are you sure you want to delete '{bookTitle}'?\n\n" +
+                        "This action cannot be undone.",
+                        "Confirm Deletion",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        string deleteQuery = "DELETE FROM Books WHERE BookID = ?";
                         using (OleDbCommand deleteCmd = new OleDbCommand(deleteQuery, conn))
                         {
-                            deleteCmd.Parameters.AddWithValue("@BookID", bookId);
+                            deleteCmd.Parameters.AddWithValue("?", bookId);
                             int deleteResult = deleteCmd.ExecuteNonQuery();
 
                             if (deleteResult > 0)
@@ -334,14 +349,13 @@ namespace Lib1
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-                        conn.Close();
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error deleting book: " + ex.Message, "Database Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error deleting book: {ex.Message}", "Database Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void ClearTextBoxes()
@@ -481,8 +495,8 @@ namespace Lib1
             {
                 if (!textBoxISBNVwBks.Text.All(char.IsDigit))
                 {
-                    MessageBox.Show("Please enter only numbers for Available Copies", "Invalid Input",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("ISBN must contain only numbers", "Invalid Input",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     textBoxISBNVwBks.Text = string.Empty;
                 }
             }

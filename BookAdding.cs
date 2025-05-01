@@ -50,6 +50,18 @@ namespace Lib1
                 MessageBox.Show("Error loading genres: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void txtbxAddBookISBN_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtbxAddBookISBN.Text))
+            {
+                if (!txtbxAddBookISBN.Text.All(char.IsDigit))
+                {
+                    MessageBox.Show("ISBN must contain only numbers", "Invalid Input",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtbxAddBookISBN.Text = string.Empty;
+                }
+            }
+        }
         private void siticonebtn_AddBookSave_Click(object sender, EventArgs e)
         {
             string title = txtbxAddBookTitle.Text.Trim();
@@ -66,6 +78,20 @@ namespace Lib1
                 string.IsNullOrEmpty(isbn) || comboBoxAddBookGenre.SelectedIndex == -1)
             {
                 MessageBox.Show("All fields are required!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Validate ISBN format
+            if (!isbn.All(char.IsDigit))
+            {
+                MessageBox.Show("ISBN must contain only numbers", "Invalid ISBN",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (isbn.Length != 10 && isbn.Length != 13)
+            {
+                MessageBox.Show("ISBN must be either 10 or 13 digits long", "Invalid ISBN",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -86,6 +112,21 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
+
+                    // Check for duplicate ISBN
+                    string checkQuery = "SELECT COUNT(*) FROM Books WHERE ISBN = ?";
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("?", isbn);
+                        int existingBooks = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                        if (existingBooks > 0)
+                        {
+                            MessageBox.Show("A book with this ISBN already exists in the library. ISBN must be unique for each book.", 
+                                "Duplicate ISBN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
 
                     // Get the selected genre ID
                     int genreID;
