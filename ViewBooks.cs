@@ -408,7 +408,26 @@ namespace Lib1
                 {
                     conn.Open();
 
-                    // First check if user already has this book borrowed or pending
+                    // First check total number of books (both borrowed and pending)
+                    string checkTotalQuery = @"SELECT COUNT(*) FROM BookTransactions 
+                                         WHERE UserID = ? 
+                                         AND (Status = 'Pending' OR Status = 'Approved')
+                                         AND (RequestType = 'Borrow' OR RequestType = 'Reservation')";
+                    using (OleDbCommand checkTotalCmd = new OleDbCommand(checkTotalQuery, conn))
+                    {
+                        checkTotalCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
+                        int totalBooks = Convert.ToInt32(checkTotalCmd.ExecuteScalar());
+
+                        if (totalBooks >= 3) // Assuming the limit is 3 books total
+                        {
+                            MessageBox.Show("You have reached the maximum limit of books (3) that can be borrowed or reserved at once. " +
+                                "Please return some books or wait for your pending requests to be processed before making new requests.",
+                                "Limit Reached", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                    }
+
+                    // Then check if user already has this specific book borrowed or pending
                     string checkBorrowedQuery = @"SELECT COUNT(*) FROM BookTransactions 
                                          WHERE UserID = ? AND BookID = ? 
                                          AND (Status = 'Pending' OR Status = 'Borrowed')";
@@ -580,6 +599,25 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
+
+                    // First check total number of books (both borrowed and pending)
+                    string checkTotalQuery = @"SELECT COUNT(*) FROM BookTransactions 
+                                         WHERE UserID = ? 
+                                         AND (Status = 'Pending' OR Status = 'Approved')
+                                         AND (RequestType = 'Borrow' OR RequestType = 'Reservation')";
+                    using (OleDbCommand checkTotalCmd = new OleDbCommand(checkTotalQuery, conn))
+                    {
+                        checkTotalCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
+                        int totalBooks = Convert.ToInt32(checkTotalCmd.ExecuteScalar());
+
+                        if (totalBooks >= 3) // Assuming the limit is 3 books total
+                        {
+                            MessageBox.Show("You have reached the maximum limit of books (3) that can be borrowed or reserved at once. " +
+                                "Please return some books or wait for your pending requests to be processed before making new requests.",
+                                "Limit Reached", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                    }
 
                     // First check if user already has this book borrowed, reserved, or pending
                     string checkExistingQuery = @"SELECT COUNT(*) FROM BookTransactions 

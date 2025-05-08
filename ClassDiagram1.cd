@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Lib1.BookAdding" Collapsed="true">
-    <Position X="16.75" Y="3.25" Width="1.5" />
+    <Position X="16.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAACAABBAAAACAIAACAIAgAQEQAAAAAQBAAAA=</HashCode>
       <FileName>BookAdding.cs</FileName>
@@ -46,7 +46,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.Program" Collapsed="true">
-    <Position X="15" Y="4.25" Width="1.5" />
+    <Position X="15" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Program.cs</FileName>
@@ -60,7 +60,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.AccountSettings" Collapsed="true">
-    <Position X="13.25" Y="3.25" Width="1.5" />
+    <Position X="13.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAEJgQAACQAARwACACAAIRCIAAIAIBAASAAAQZAAEA=</HashCode>
       <FileName>AccountSettings.cs</FileName>
@@ -74,21 +74,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.Analytics" Collapsed="true">
-    <Position X="15" Y="3.25" Width="1.5" />
+    <Position X="15" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAQEAgAkASAAABgCACKgQCACAgABAAgAAAAAARQQAAE=</HashCode>
       <FileName>Analytics.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.BookBorrowRequest" Collapsed="true">
-    <Position X="18.5" Y="3.25" Width="1.5" />
+    <Position X="18.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAMUAokEMGQVCRhACgLQQAQKQAAAAAAACgAACUIDKkA=</HashCode>
       <FileName>BookBorrowRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.BorrowedBooks" Collapsed="true">
-    <Position X="13.25" Y="4.25" Width="1.5" />
+    <Position X="13.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAIAIgAFuSAQKRlAAgKcAAZGQASABAwAKAAhAcYIIgE=</HashCode>
       <FileName>BorrowedBooks.cs</FileName>
@@ -102,21 +102,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.Reservation" Collapsed="true">
-    <Position X="16.75" Y="4.25" Width="1.5" />
+    <Position X="16.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAKEKwABgCAxKRhACgqQQAaKQECQABoAKAIhFRAIIgA=</HashCode>
       <FileName>Reservation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.ReservedBooks" Collapsed="true">
-    <Position X="18.5" Y="4.25" Width="1.5" />
+    <Position X="18.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EACEKgBBgCARKRtACAiQQMSKAECAQFoAKAAhBRAIAgA=</HashCode>
       <FileName>ReservedBooks.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.ReviewBooks" Collapsed="true">
-    <Position X="15" Y="5.25" Width="1.5" />
+    <Position X="15" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAIhAAQCAQqJhACACAQAQDIAEABABAASAAARAACEA=</HashCode>
       <FileName>ReviewBooks.cs</FileName>
@@ -130,25 +130,33 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.UserApplicant" Collapsed="true">
-    <Position X="18.5" Y="5.25" Width="1.5" />
+    <Position X="18.5" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAEIgAAECAwCRhAQACAQAQDgWoBAABQQAAAAQAAACQ=</HashCode>
       <FileName>UserApplicant.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.UsersInfo" Collapsed="true">
-    <Position X="13.25" Y="5.25" Width="1.5" />
+    <Position X="13.25" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAEIgAAACEQKbhQAACAQAQGwAgAIAAAEAIAAQAAQCQ=</HashCode>
       <FileName>UsersInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Lib1.ViewBooks" Collapsed="true">
-    <Position X="16.75" Y="5.25" Width="1.5" />
+    <Position X="16.75" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>FAAGIhAIAGAxJRhACCCCQCjCMBsEgMihFAAIAwgDAIA=</HashCode>
       <FileName>ViewBooks.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Forms.UserControl" Collapsed="true">
+    <Position X="16" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="10.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
