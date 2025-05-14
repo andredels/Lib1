@@ -107,14 +107,12 @@ namespace Lib1
                 {
                     StringBuilder filterBuilder = new StringBuilder();
 
-                    // Name filter from combobox
-                    if (comboBoxNames.SelectedIndex > 0) // Skip "All Names"
+                    if (comboBoxNames.SelectedIndex > 0) 
                     {
                         string selectedName = comboBoxNames.Text.Replace("'", "''");
                         filterBuilder.AppendFormat("[Fullname] = '{0}'", selectedName);
                     }
 
-                    // Search box filter (searching across multiple fields)
                     if (!string.IsNullOrEmpty(txtbox_Search.Text))
                     {
                         if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");

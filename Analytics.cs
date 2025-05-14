@@ -37,14 +37,11 @@ namespace Lib1
             InitializeComponent();
             isAdmin = isAdminUser;
 
-            // Set admin-specific controls visibility
             btnViewBookReviews.Visible = isAdmin;
 
-            // Initialize both charts but only show Book Ratings chart
             LoadBookRatingsChart();
             LoadMostBorrowedBooksChart();
 
-            // Set initial visibility
             cartesianChartBookRating.Visible = true;
             cartesianChartMostBorrowedBooks.Visible = false;
             dataGridView_BookReviews.Visible = false;
@@ -82,7 +79,6 @@ namespace Lib1
                     }
                 }
 
-                // Calculate average ratings and prepare chart data
                 var series = new List<ISeries>();
                 int index = 0;
 
@@ -105,7 +101,6 @@ namespace Lib1
                     index++;
                 }
 
-                // Configure the chart
                 cartesianChartBookRating.XAxes = new[]
                 {
                     new Axis
@@ -161,7 +156,6 @@ namespace Lib1
                     }
                 }
 
-                // Prepare chart data
                 var series = new List<ISeries>();
                 int index = 0;
 
@@ -183,7 +177,6 @@ namespace Lib1
                     index++;
                 }
 
-                // Configure the chart
                 cartesianChartMostBorrowedBooks.XAxes = new[]
                 {
                     new Axis
@@ -212,20 +205,17 @@ namespace Lib1
 
         private void btnViewBookReviews_Click(object sender, EventArgs e)
         {
-            // Hide charts and show book reviews
             cartesianChartBookRating.Visible = false;
             cartesianChartMostBorrowedBooks.Visible = false;
             dataGridView_BookReviews.Visible = true;
             comboBoxBookSearch.Visible = true;
             label2.Visible = true;
 
-            // Load book reviews data
             LoadBookReviews();
 
-            // Update button states visually
-            btnViewBookReviews.ButtonBackColor = Color.FromArgb(74, 128, 235); // Pressed color
-            btnBookRatings.ButtonBackColor = Color.FromArgb(255, 128, 0); // Normal color
-            btnViewMostBorrowed.ButtonBackColor = Color.FromArgb(255, 128, 0); // Normal color
+            btnViewBookReviews.ButtonBackColor = Color.FromArgb(74, 128, 235);
+            btnBookRatings.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            btnViewMostBorrowed.ButtonBackColor = Color.FromArgb(255, 128, 0);
         }
 
         private void LoadBookReviews()
@@ -246,16 +236,13 @@ FROM Genres INNER JOIN (Users INNER JOIN (Books INNER JOIN BookRatings ON Books.
 
                         dataGridView_BookReviews.DataSource = dataTable;
 
-                        // Configure date format
                         if (dataGridView_BookReviews.Columns.Contains("RatingDate"))
                         {
                             dataGridView_BookReviews.Columns["RatingDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Style the DataGridView
                         StyleDataGridView();
 
-                        // Load book titles for filter
                         LoadBookTitlesFromGrid(dataTable);
                     }
                 }
@@ -286,19 +273,14 @@ FROM Genres INNER JOIN (Users INNER JOIN (Books INNER JOIN BookRatings ON Books.
         {
             try
             {
-                // Clear previous items
                 comboBoxBookSearch.Items.Clear();
 
-                // Add "All Books" option
                 comboBoxBookSearch.Items.Add("All Books");
 
-                // Create a HashSet to store unique book titles
                 HashSet<string> uniqueBookTitles = new HashSet<string>();
 
-                // Check if the Title column exists
                 if (dataTable.Columns.Contains("Title"))
                 {
-                    // Extract unique values
                     foreach (DataRow row in dataTable.Rows)
                     {
                         if (row["Title"] != DBNull.Value)
@@ -311,14 +293,11 @@ FROM Genres INNER JOIN (Users INNER JOIN (Books INNER JOIN BookRatings ON Books.
                         }
                     }
 
-                    // Sort the titles alphabetically
                     List<string> sortedTitles = uniqueBookTitles.OrderBy(title => title).ToList();
 
-                    // Add to combo box
                     comboBoxBookSearch.Items.AddRange(sortedTitles.ToArray());
                 }
 
-                // Select "All Books" by default
                 if (comboBoxBookSearch.Items.Count > 0)
                 {
                     comboBoxBookSearch.SelectedIndex = 0;
@@ -344,14 +323,12 @@ FROM Genres INNER JOIN (Users INNER JOIN (Books INNER JOIN BookRatings ON Books.
                 {
                     StringBuilder filterBuilder = new StringBuilder();
 
-                    // Book title filter from combobox
                     if (!string.IsNullOrEmpty(comboBoxBookSearch.Text) && comboBoxBookSearch.Text != "All Books")
                     {
                         string bookTitle = comboBoxBookSearch.Text.Replace("'", "''");
                         filterBuilder.AppendFormat("[Title] = '{0}'", bookTitle);
                     }
 
-                    // Apply the filter
                     dt.DefaultView.RowFilter = filterBuilder.ToString();
                 }
             }
@@ -370,10 +347,9 @@ FROM Genres INNER JOIN (Users INNER JOIN (Books INNER JOIN BookRatings ON Books.
             comboBoxBookSearch.Visible = false;
             label2.Visible = false;
 
-            // Optional: Update the button states visually
-            btnBookRatings.ButtonBackColor = Color.FromArgb(74, 128, 235); // Pressed color
-            btnViewMostBorrowed.ButtonBackColor = Color.FromArgb(255, 128, 0); // Normal color
-            btnViewBookReviews.ButtonBackColor = Color.FromArgb(255, 128, 0); // Normal color
+            btnBookRatings.ButtonBackColor = Color.FromArgb(74, 128, 235);
+            btnViewMostBorrowed.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            btnViewBookReviews.ButtonBackColor = Color.FromArgb(255, 128, 0);
         }
 
         private void btnViewMostBorrowed_Click(object sender, EventArgs e)
@@ -384,10 +360,9 @@ FROM Genres INNER JOIN (Users INNER JOIN (Books INNER JOIN BookRatings ON Books.
             comboBoxBookSearch.Visible = false;
             label2.Visible = false;
 
-            // Optional: Update the button states visually
-            btnViewMostBorrowed.ButtonBackColor = Color.FromArgb(74, 128, 235); // Pressed color
-            btnBookRatings.ButtonBackColor = Color.FromArgb(255, 128, 0); // Normal color
-            btnViewBookReviews.ButtonBackColor = Color.FromArgb(255, 128, 0); // Normal color
+            btnViewMostBorrowed.ButtonBackColor = Color.FromArgb(74, 128, 235);
+            btnBookRatings.ButtonBackColor = Color.FromArgb(255, 128, 0);
+            btnViewBookReviews.ButtonBackColor = Color.FromArgb(255, 128, 0);
         }
 
         private void dataGridView_BookReviews_CellContentClick(object sender, DataGridViewCellEventArgs e)

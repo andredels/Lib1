@@ -86,7 +86,6 @@ namespace Lib1
                 {
                     conn.Open();
 
-                    // Check if username exists (excluding current user)
                     string checkUsernameQuery = "SELECT COUNT(*) FROM Users WHERE Username = ?";
                     using (OleDbCommand cmdCheckUsername = new OleDbCommand(checkUsernameQuery, conn))
                     {
@@ -131,7 +130,6 @@ namespace Lib1
                 {
                     conn.Open();
 
-                    // Check if email exists (excluding current user)
                     string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = ?";
                     using (OleDbCommand cmdCheckEmail = new OleDbCommand(checkEmailQuery, conn))
                     {

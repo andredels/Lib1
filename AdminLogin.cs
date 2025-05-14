@@ -41,7 +41,7 @@ namespace Lib1
                 return;
             }
 
-            string hashedPassword = SecurityHelper.HashPassword(password); // ✔ Hashing enabled again
+            string hashedPassword = SecurityHelper.HashPassword(password); 
 
             try
             {

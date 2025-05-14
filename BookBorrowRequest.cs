@@ -30,10 +30,7 @@ namespace Lib1
         {
             if (e.RowIndex >= 0)
             {
-                // Select the entire row when any cell is clicked
                 dataGridView_BookBorrowRequests.Rows[e.RowIndex].Selected = true;
-
-                // You can also trigger your existing cell content click handler
                 dataGridView_BookBorrowRequests_CellContentClick(sender, e);
             }
         }
@@ -47,10 +44,8 @@ namespace Lib1
                 return;
             }
 
-            // Get the selected row using the CurrentCell's row index
             DataGridViewRow row = dataGridView_BookBorrowRequests.Rows[dataGridView_BookBorrowRequests.CurrentCell.RowIndex];
 
-            // Check that required columns exist and get values safely
             if (!dataGridView_BookBorrowRequests.Columns.Contains("TransactionID") ||
                 !dataGridView_BookBorrowRequests.Columns.Contains("BookID"))
             {
@@ -61,7 +56,6 @@ namespace Lib1
             int transactionID = Convert.ToInt32(row.Cells["TransactionID"].Value);
             int bookID = Convert.ToInt32(row.Cells["BookID"].Value);
 
-            // Check for available copies if the column exists
             if (dataGridView_BookBorrowRequests.Columns.Contains("AvailableCopies"))
             {
                 int availableCopies = Convert.ToInt32(row.Cells["AvailableCopies"].Value);
@@ -73,7 +67,7 @@ namespace Lib1
             }
 
             DateTime currentDate = DateTime.Now;
-            DateTime returnDate = currentDate.AddDays(7); // Return date is 1 week later
+            DateTime returnDate = currentDate.AddDays(7); 
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
@@ -82,7 +76,6 @@ namespace Lib1
 
                 try
                 {
-                    // Update transaction status to Approved and set all dates, ProcessedBy, and RequestType
                     string updateQuery = @"UPDATE BookTransactions 
                                         SET Status = 'Approved', 
                                             [ApprovalDate] = ?, 
@@ -102,7 +95,6 @@ namespace Lib1
                         cmd.ExecuteNonQuery();
                     }
 
-                    // Reduce AvailableCopies in Books table
                     string updateBookQuery = "UPDATE Books SET AvailableCopies = AvailableCopies - 1 WHERE BookID = ?";
                     using (OleDbCommand cmd = new OleDbCommand(updateBookQuery, conn, transaction))
                     {
@@ -110,7 +102,6 @@ namespace Lib1
                         cmd.ExecuteNonQuery();
                     }
 
-                    // Commit the transaction if everything is successful
                     transaction.Commit();
 
                     MessageBox.Show("Borrow request approved! The book is now marked as borrowed and will be due in one week.",
@@ -118,38 +109,32 @@ namespace Lib1
                 }
                 catch (Exception ex)
                 {
-                    // If any operation fails, roll back all changes
                     transaction.Rollback();
                     MessageBox.Show("Error approving request: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
-            // Refresh the data to show updated list (pending request should be gone)
             LoadBorrowRequests();
         }
 
         private void dataGridView_BookBorrowRequests_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) // Make sure a valid row is clicked (not header)
+            if (e.RowIndex >= 0) 
             {
                 DataGridViewRow row = dataGridView_BookBorrowRequests.Rows[e.RowIndex];
 
-                // Get the values safely with null checking
-                // First check if the column exists in the DataGridView
                 if (dataGridView_BookBorrowRequests.Columns.Contains("UserId"))
                     txtbxBorrowRequest_UserId.Text = row.Cells["UserId"].Value?.ToString() ?? "";
 
                 if (dataGridView_BookBorrowRequests.Columns.Contains("BookID"))
                     txtbxBorrowRequest_BookID.Text = row.Cells["BookID"].Value?.ToString() ?? "";
 
-                // For TotalCopies, we need to check if the column exists
                 if (dataGridView_BookBorrowRequests.Columns.Contains("TotalCopies"))
                     txtbxBorrowRequest_TotalCopies.Text = row.Cells["TotalCopies"].Value?.ToString() ?? "";
 
                 if (dataGridView_BookBorrowRequests.Columns.Contains("AvailableCopies"))
                     txtbxBorrowRequest_AvailableCopies.Text = row.Cells["AvailableCopies"].Value?.ToString() ?? "";
 
-                // Fill other textboxes
                 if (dataGridView_BookBorrowRequests.Columns.Contains("Fullname"))
                     txtbxBorrowRequest_Fullname.Text = row.Cells["Fullname"].Value?.ToString() ?? "";
 
@@ -165,13 +150,11 @@ namespace Lib1
                 if (dataGridView_BookBorrowRequests.Columns.Contains("PublicationYear"))
                     txtbxBorrowRequest_PublicationYear.Text = row.Cells["PublicationYear"].Value?.ToString() ?? "";
 
-                // Handle possible name differences for request date
                 if (dataGridView_BookBorrowRequests.Columns.Contains("Request Date"))
                     txtbxBorrowRequest_RequestDate.Text = row.Cells["Request Date"].Value?.ToString() ?? "";
                 else if (dataGridView_BookBorrowRequests.Columns.Contains("RequestDate"))
                     txtbxBorrowRequest_RequestDate.Text = row.Cells["RequestDate"].Value?.ToString() ?? "";
 
-                // Handle new textboxes
                 if (dataGridView_BookBorrowRequests.Columns.Contains("ISBN"))
                     txtbxBorrowRequest_ISBN.Text = row.Cells["ISBN"].Value?.ToString() ?? "";
 
@@ -196,10 +179,8 @@ namespace Lib1
                     return;
                 }
 
-                // Get the selected row index
                 int rowIndex = dataGridView_BookBorrowRequests.CurrentCell.RowIndex;
 
-                // Check that TransactionID column exists
                 if (!dataGridView_BookBorrowRequests.Columns.Contains("TransactionID"))
                 {
                     MessageBox.Show("Missing required transaction information.", "Error",
@@ -209,7 +190,6 @@ namespace Lib1
 
                 int transactionID = Convert.ToInt32(dataGridView_BookBorrowRequests.Rows[rowIndex].Cells["TransactionID"].Value);
 
-                // Confirm before declining
                 DialogResult result = MessageBox.Show("Are you sure you want to decline this book request?",
                     "Confirm Decline", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -221,7 +201,6 @@ namespace Lib1
                         {
                             conn.Open();
 
-                            // Update transaction status to Declined and set who processed it
                             string updateQuery = @"UPDATE BookTransactions 
                                       SET Status = 'Declined', ProcessedBy = ? 
                                       WHERE TransactionID = ?";
@@ -237,7 +216,7 @@ namespace Lib1
                                 {
                                     MessageBox.Show("Borrow request declined successfully!", "Success",
                                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    LoadBorrowRequests(); // Refresh the list
+                                    LoadBorrowRequests(); 
                                 }
                                 else
                                 {
@@ -268,7 +247,6 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    // Build your own JOIN DO NOT USE ReservedBooks
                     string query = "SELECT * FROM [PendingBorrowRequest]";
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
@@ -280,7 +258,6 @@ namespace Lib1
                         dataGridView_BookBorrowRequests.DataSource = null;
                         dataGridView_BookBorrowRequests.DataSource = dataTable;
 
-                        // Configure the DataGridView columns for better display
                         if (dataGridView_BookBorrowRequests.Columns.Contains("RequestDate"))
                         {
                             dataGridView_BookBorrowRequests.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
@@ -294,10 +271,8 @@ namespace Lib1
                             dataGridView_BookBorrowRequests.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Apply professional styling
                         StyleDataGridView();
 
-                        // Load the combo boxes with data from the current DataTable
                         LoadComboBoxesFromDataGrid(dataTable);
                     }
                 }
@@ -312,18 +287,14 @@ namespace Lib1
         {
             try
             {
-                // Clear previous items
                 comboBoxStudentNameSearch.Items.Clear();
                 comboBoxBookSearch.Items.Clear();
 
-                // Create HashSets to store unique values (to avoid duplicates)
                 HashSet<string> uniqueStudentNames = new HashSet<string>();
                 HashSet<string> uniqueBookTitles = new HashSet<string>();
 
-                // Extract unique values from the DataTable
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    // Add student name if it exists and is not null
                     if (dataTable.Columns.Contains("Fullname") && row["Fullname"] != DBNull.Value)
                     {
                         string fullname = row["Fullname"].ToString().Trim();
@@ -333,7 +304,6 @@ namespace Lib1
                         }
                     }
 
-                    // Add book title if it exists and is not null
                     if (dataTable.Columns.Contains("Title") && row["Title"] != DBNull.Value)
                     {
                         string title = row["Title"].ToString().Trim();
@@ -344,11 +314,9 @@ namespace Lib1
                     }
                 }
 
-                // Sort the unique values alphabetically
                 List<string> sortedStudentNames = uniqueStudentNames.OrderBy(name => name).ToList();
                 List<string> sortedBookTitles = uniqueBookTitles.OrderBy(title => title).ToList();
 
-                // Add values to combo boxes
                 comboBoxStudentNameSearch.Items.AddRange(sortedStudentNames.ToArray());
                 comboBoxBookSearch.Items.AddRange(sortedBookTitles.ToArray());
             }
@@ -360,7 +328,6 @@ namespace Lib1
         }
         private void ClearTextBoxes()
         {
-            // Clear all textboxes when there's no data
             txtbxBorrowRequest_UserId.Text = "";
             txtbxBorrowRequest_BookID.Text = "";
             txtbxBorrowRequest_TotalCopies.Text = "";
@@ -397,7 +364,7 @@ namespace Lib1
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            LoadBorrowRequests(); // Reload data and refresh combo boxes
+            LoadBorrowRequests(); 
             textBoxBorrowedBookSearch.Clear();
         }
 
@@ -416,14 +383,12 @@ namespace Lib1
             {
                 StringBuilder filterBuilder = new StringBuilder();
 
-                // Student name filter
                 if (!string.IsNullOrEmpty(comboBoxStudentNameSearch.Text))
                 {
                     string studentName = comboBoxStudentNameSearch.Text.Replace("'", "''");
                     filterBuilder.AppendFormat("[Fullname] LIKE '%{0}%'", studentName);
                 }
 
-                // Book title filter
                 if (!string.IsNullOrEmpty(comboBoxBookSearch.Text))
                 {
                     if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
@@ -431,15 +396,13 @@ namespace Lib1
                     filterBuilder.AppendFormat("[Title] LIKE '%{0}%'", bookTitle);
                 }
 
-                // General search textbox filter (searching across multiple fields)
                 if (!string.IsNullOrEmpty(textBoxBorrowedBookSearch.Text))
                 {
                     if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
-                    string searchText = textBoxBorrowedBookSearch.Text.Replace("'", "''"); // escape single quotes
+                    string searchText = textBoxBorrowedBookSearch.Text.Replace("'", "''");
                     filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [Author] LIKE '%{0}%' OR [ISBN] LIKE '%{0}%' OR [GenreName] LIKE '%{0}%' OR [Publisher] LIKE '%{0}%' OR [Fullname] LIKE '%{0}%')", searchText);
                 }
 
-                // Apply the filter
                 if (dataGridView_BookBorrowRequests.DataSource is DataTable dt)
                 {
                     dt.DefaultView.RowFilter = filterBuilder.ToString();

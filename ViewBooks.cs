@@ -22,7 +22,7 @@ namespace Lib1
         {
             InitializeComponent();
             UserRole = userRole;
-            UserID = userId;  // Store the userId
+            UserID = userId; 
             datagridViewAllBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             StyleDataGridView();
             ConfigureButtons();
@@ -56,7 +56,6 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-                    // Modified query to include Genre from Genres table via JOIN
                     string query = @"SELECT Books.BookID, Books.Title, Books.Author, Books.Publisher, 
                                    Books.PublicationYear, Books.ISBN, Books.TotalCopies, Books.AvailableCopies, 
                                    Genres.GenreName as Genre 
@@ -100,7 +99,6 @@ namespace Lib1
         {
             try
             {
-                // Check if a row is selected
                 if (datagridViewAllBooks.SelectedRows.Count == 0 && datagridViewAllBooks.SelectedCells.Count == 0)
                 {
                     MessageBox.Show("Please select a book to update", "Selection Required",
@@ -108,7 +106,6 @@ namespace Lib1
                     return;
                 }
 
-                // Get the BookID of the selected row
                 int rowIndex = datagridViewAllBooks.SelectedCells[0].RowIndex;
                 if (rowIndex < 0 || rowIndex >= datagridViewAllBooks.Rows.Count)
                 {
@@ -119,7 +116,6 @@ namespace Lib1
 
                 int bookId = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["BookID"].Value);
 
-                // Validate input fields
                 if (string.IsNullOrWhiteSpace(textBoxBookNameVwBks.Text) ||
                     string.IsNullOrWhiteSpace(textBoxAuthorNameVwBks.Text) ||
                     string.IsNullOrWhiteSpace(textBoxPublisherVwBks.Text) ||
@@ -134,7 +130,6 @@ namespace Lib1
                     return;
                 }
 
-                // Validate ISBN format
                 string isbnString = textBoxISBNVwBks.Text.Trim();
                 if (!isbnString.All(char.IsDigit))
                 {
@@ -149,7 +144,6 @@ namespace Lib1
                     return;
                 }
 
-                // Validate numeric fields
                 if (!int.TryParse(textBoxPublicationYearVwBks.Text, out int publicationYear))
                 {
                     MessageBox.Show("Please enter a valid publication year", "Invalid Input",
@@ -157,12 +151,10 @@ namespace Lib1
                     return;
                 }
 
-                // Get current values from the database
                 int currentTotal = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["TotalCopies"].Value);
                 int currentAvailable = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["AvailableCopies"].Value);
-                int borrowedBooks = currentTotal - currentAvailable; // This represents books that are currently borrowed
+                int borrowedBooks = currentTotal - currentAvailable;
 
-                // Validate and get new values
                 if (!int.TryParse(textBoxAvailableCopiesVwBks.Text, out int newAvailableCopies) || newAvailableCopies < 0)
                 {
                     MessageBox.Show("Please enter a valid number of available copies (0 or greater)", "Invalid Input",
@@ -177,31 +169,24 @@ namespace Lib1
                     return;
                 }
 
-                // Calculate the difference in available copies
                 int availableDifference = newAvailableCopies - currentAvailable;
-                // Calculate the difference in total copies
                 int totalDifference = newTotalCopies - currentTotal;
 
-                // If either field was changed, update both to maintain the stock balance
                 if (availableDifference != 0 || totalDifference != 0)
                 {
-                    // If updating available copies
                     if (availableDifference != 0)
                     {
-                        // Add the same amount to total copies
                         newTotalCopies = currentTotal + availableDifference;
                     }
-                    // If updating total copies
                     else if (totalDifference != 0)
                     {
-                        // Check if new total would be less than borrowed books
+
                         if (newTotalCopies < borrowedBooks)
                         {
                             MessageBox.Show($"Total copies cannot be less than {borrowedBooks} (number of borrowed books)", "Invalid Input",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
-                        // Add the same amount to available copies
                         newAvailableCopies = currentAvailable + totalDifference;
                     }
                 }
@@ -210,7 +195,6 @@ namespace Lib1
                 {
                     conn.Open();
 
-                    // First get the GenreID for the selected genre
                     int genreId = -1;
                     string genreQuery = "SELECT GenreID FROM Genres WHERE GenreName = ?";
                     using (OleDbCommand genreCmd = new OleDbCommand(genreQuery, conn))
@@ -255,10 +239,7 @@ namespace Lib1
                             MessageBox.Show("Book updated successfully!", "Success",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            // Refresh the grid
                             LoadAllBooks();
-
-                            // Clear the textboxes
                             ClearTextBoxes();
                         }
                         else
@@ -285,7 +266,6 @@ namespace Lib1
                 return;
             }
 
-            // Get the BookID of the selected row
             int rowIndex = datagridViewAllBooks.SelectedCells[0].RowIndex;
             int bookId = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["BookID"].Value);
             string bookTitle = datagridViewAllBooks.Rows[rowIndex].Cells["Title"].Value.ToString();
@@ -295,8 +275,6 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-
-                    // First check if the book has any transactions
                     string checkQuery = @"SELECT COUNT(*) FROM BookTransactions WHERE BookID = ?";
                     using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
                     {
@@ -316,7 +294,6 @@ namespace Lib1
                         }
                     }
 
-                    // If no transactions exist, proceed with deletion confirmation
                     DialogResult result = MessageBox.Show(
                         $"Are you sure you want to delete '{bookTitle}'?\n\n" +
                         "This action cannot be undone.",
@@ -337,10 +314,7 @@ namespace Lib1
                                 MessageBox.Show("Book deleted successfully!", "Success",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                // Refresh the grid
                                 LoadAllBooks();
-
-                                // Clear the textboxes
                                 ClearTextBoxes();
                             }
                             else
@@ -374,7 +348,6 @@ namespace Lib1
         {
             try
             {
-                // Check if a book is selected
                 if (datagridViewAllBooks.SelectedRows.Count == 0 && datagridViewAllBooks.SelectedCells.Count == 0)
                 {
                     MessageBox.Show("Please select a book to borrow", "Selection Required",
@@ -382,13 +355,11 @@ namespace Lib1
                     return;
                 }
 
-                // Get the selected book information
                 int rowIndex = datagridViewAllBooks.SelectedCells[0].RowIndex;
                 int bookId = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["BookID"].Value);
                 string bookTitle = datagridViewAllBooks.Rows[rowIndex].Cells["Title"].Value.ToString();
                 int availableCopies = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["AvailableCopies"].Value);
 
-                // Check if book is available
                 if (availableCopies <= 0)
                 {
                     MessageBox.Show("Sorry, there are no available copies of this book.",
@@ -396,7 +367,6 @@ namespace Lib1
                     return;
                 }
 
-                // Get the current user ID - this is now stored as a property
                 if (UserID <= 0)
                 {
                     MessageBox.Show("User information is not available. Please login again.",
@@ -407,8 +377,6 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-
-                    // First check total number of books (both borrowed and pending)
                     string checkTotalQuery = @"SELECT COUNT(*) FROM BookTransactions 
                                          WHERE UserID = ? 
                                          AND (Status = 'Pending' OR Status = 'Approved')
@@ -418,7 +386,7 @@ namespace Lib1
                         checkTotalCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
                         int totalBooks = Convert.ToInt32(checkTotalCmd.ExecuteScalar());
 
-                        if (totalBooks >= 3) // Assuming the limit is 3 books total
+                        if (totalBooks >= 3) 
                         {
                             MessageBox.Show("You have reached the maximum limit of books (3) that can be borrowed or reserved at once. " +
                                 "Please return some books or wait for your pending requests to be processed before making new requests.",
@@ -427,7 +395,6 @@ namespace Lib1
                         }
                     }
 
-                    // Then check if user already has this specific book borrowed or pending
                     string checkBorrowedQuery = @"SELECT COUNT(*) FROM BookTransactions 
                                          WHERE UserID = ? AND BookID = ? 
                                          AND (Status = 'Pending' OR Status = 'Borrowed')";
@@ -446,10 +413,8 @@ namespace Lib1
                         }
                     }
 
-                    // Create transaction with current date as the request date
                     DateTime requestDate = DateTime.Now;
 
-                    // Insert into BookTransactions with all necessary fields for a pending request
                     string insertQuery = @"INSERT INTO BookTransactions 
                         (BookID, UserID, Status, RequestDate, RequestType) 
                         VALUES (?, ?, ?, ?, ?)";
@@ -470,10 +435,9 @@ namespace Lib1
                                 $"Your request is pending approval from an administrator.", "Request Submitted",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            // Clear selections and refresh the books view
                             datagridViewAllBooks.ClearSelection();
                             ClearTextBoxes();
-                            LoadAllBooks(); // Refresh the book list
+                            LoadAllBooks(); 
                         }
                         else
                         {
@@ -545,7 +509,7 @@ namespace Lib1
                     {
                         OleDbDataReader reader = cmd.ExecuteReader();
                         comboBoxBookGenre.Items.Clear();
-                        comboBoxGenreSearch.Items.Clear(); // ALSO clear and load for search combobox
+                        comboBoxGenreSearch.Items.Clear(); 
                         while (reader.Read())
                         {
                             string genreName = reader["GenreName"].ToString();
@@ -566,7 +530,6 @@ namespace Lib1
         {
             try
             {
-                // Check if a book is selected
                 if (datagridViewAllBooks.SelectedRows.Count == 0 && datagridViewAllBooks.SelectedCells.Count == 0)
                 {
                     MessageBox.Show("Please select a book to reserve", "Selection Required",
@@ -574,13 +537,11 @@ namespace Lib1
                     return;
                 }
 
-                // Get the selected book information
                 int rowIndex = datagridViewAllBooks.SelectedCells[0].RowIndex;
                 int bookId = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["BookID"].Value);
                 string bookTitle = datagridViewAllBooks.Rows[rowIndex].Cells["Title"].Value.ToString();
                 int availableCopies = Convert.ToInt32(datagridViewAllBooks.Rows[rowIndex].Cells["AvailableCopies"].Value);
 
-                // Check if book is available for reservation (only if no copies are available)
                 if (availableCopies > 0)
                 {
                     MessageBox.Show("This book is currently available for borrowing. Please use the Borrow button instead.",
@@ -588,7 +549,6 @@ namespace Lib1
                     return;
                 }
 
-                // Get the current user ID - this is now stored as a property
                 if (UserID <= 0)
                 {
                     MessageBox.Show("User information is not available. Please login again.",
@@ -600,7 +560,6 @@ namespace Lib1
                 {
                     conn.Open();
 
-                    // First check total number of books (both borrowed and pending)
                     string checkTotalQuery = @"SELECT COUNT(*) FROM BookTransactions 
                                          WHERE UserID = ? 
                                          AND (Status = 'Pending' OR Status = 'Approved')
@@ -610,7 +569,7 @@ namespace Lib1
                         checkTotalCmd.Parameters.Add("?", OleDbType.Integer).Value = UserID;
                         int totalBooks = Convert.ToInt32(checkTotalCmd.ExecuteScalar());
 
-                        if (totalBooks >= 3) // Assuming the limit is 3 books total
+                        if (totalBooks >= 3) 
                         {
                             MessageBox.Show("You have reached the maximum limit of books (3) that can be borrowed or reserved at once. " +
                                 "Please return some books or wait for your pending requests to be processed before making new requests.",
@@ -619,7 +578,6 @@ namespace Lib1
                         }
                     }
 
-                    // First check if user already has this book borrowed, reserved, or pending
                     string checkExistingQuery = @"SELECT COUNT(*) FROM BookTransactions 
                                          WHERE UserID = ? AND BookID = ? 
                                          AND (Status = 'Pending' OR Status = 'Approved')
@@ -639,10 +597,8 @@ namespace Lib1
                         }
                     }
 
-                    // Create transaction with current date as the request date
                     DateTime requestDate = DateTime.Now;
 
-                    // Insert into BookTransactions with all necessary fields for a pending reservation
                     string insertQuery = @"INSERT INTO BookTransactions 
                         (BookID, UserID, Status, RequestDate, RequestType) 
                         VALUES (?, ?, ?, ?, ?)";
@@ -663,10 +619,9 @@ namespace Lib1
                                 $"Your request is pending approval from an administrator.", "Request Submitted",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            // Clear selections and refresh the books view
                             datagridViewAllBooks.ClearSelection();
                             ClearTextBoxes();
-                            LoadAllBooks(); // Refresh the book list
+                            LoadAllBooks(); 
                         }
                         else
                         {
@@ -708,13 +663,11 @@ namespace Lib1
             {
                 StringBuilder filterBuilder = new StringBuilder();
 
-                // Genre filter
                 if (!string.IsNullOrEmpty(comboBoxGenreSearch.Text))
                 {
                     filterBuilder.AppendFormat("[Genre] LIKE '%{0}%'", comboBoxGenreSearch.Text.Replace("'", "''"));
                 }
 
-                // Year range filter
                 if (int.TryParse(textBoxStartYearSearch.Text, out int startYear))
                 {
                     if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
@@ -726,11 +679,10 @@ namespace Lib1
                     filterBuilder.AppendFormat("[PublicationYear] <= {0}", endYear);
                 }
 
-                // Search textbox filter (searching across multiple fields)
                 if (!string.IsNullOrEmpty(textBoxSearch.Text))
                 {
                     if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
-                    string searchText = textBoxSearch.Text.Replace("'", "''"); // escape single quotes
+                    string searchText = textBoxSearch.Text.Replace("'", "''"); 
                     filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [Author] LIKE '%{0}%' OR [ISBN] LIKE '%{0}%' OR [Genre] LIKE '%{0}%' OR [Publisher] LIKE '%{0}%')", searchText);
                 }
 
@@ -746,17 +698,14 @@ namespace Lib1
         {
             try
             {
-                // Clear all filter input fields
                 comboBoxGenreSearch.SelectedIndex = -1;
                 comboBoxGenreSearch.Text = "";
                 textBoxStartYearSearch.Clear();
                 textBoxEndYearSearch.Clear();
                 textBoxSearch.Clear();
 
-                // Reload all books from the database
                 LoadAllBooks();
 
-                // Remove any existing filters on the DataGridView
                 (datagridViewAllBooks.DataSource as DataTable).DefaultView.RowFilter = string.Empty;
             }
             catch (Exception ex)

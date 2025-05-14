@@ -25,9 +25,9 @@ namespace Lib1
 
         private void adminViewBooksbtn_Click(object sender, EventArgs e)
         {
-            userControlpanel.Controls.Clear(); // Clear any existing content
-            ViewBooks viewBooksUC = new ViewBooks("Admin"); // Create new instance of the UserControl
-            viewBooksUC.Dock = DockStyle.Fill; // Optional: make it fill the panel
+            userControlpanel.Controls.Clear(); 
+            ViewBooks viewBooksUC = new ViewBooks("Admin"); 
+            viewBooksUC.Dock = DockStyle.Fill; 
             userControlpanel.Controls.Add(viewBooksUC);
         }
 
@@ -72,7 +72,7 @@ namespace Lib1
         private void adminBorrowedBooksbtn_Click(object sender, EventArgs e)
         {
             userControlpanel.Controls.Clear();
-            BorrowedBooks borrowedBooksUC = new BorrowedBooks(true, this.userId);  // true for admin view, pass the admin's userId
+            BorrowedBooks borrowedBooksUC = new BorrowedBooks(true, this.userId);  
             borrowedBooksUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(borrowedBooksUC);
         }
@@ -104,7 +104,7 @@ namespace Lib1
         private void btnAnalytics_Click(object sender, EventArgs e)
         {
             userControlpanel.Controls.Clear();
-            Analytics analyticsUC = new Analytics(true); // Pass true for admin
+            Analytics analyticsUC = new Analytics(true); 
             analyticsUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(analyticsUC);
         }

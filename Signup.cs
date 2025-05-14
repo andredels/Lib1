@@ -42,8 +42,7 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-                    
-                    // Check if username exists
+
                     string checkUsernameQuery = "SELECT COUNT(*) FROM Users WHERE Username = ?";
                     using (OleDbCommand cmdCheckUsername = new OleDbCommand(checkUsernameQuery, conn))
                     {
@@ -56,7 +55,6 @@ namespace Lib1
                         }
                     }
 
-                    // Check if email exists
                     string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = ?";
                     using (OleDbCommand cmdCheckEmail = new OleDbCommand(checkEmailQuery, conn))
                     {
@@ -71,7 +69,6 @@ namespace Lib1
 
                     string hashedPassword = SecurityHelper.HashPassword(rawPassword);
 
-                    // Proceed with signup if username and email are unique
                     string insertQuery = "INSERT INTO Users (Username, [Password], Fullname, Email, UserType, ApprovalStatus) " +
                                        "VALUES (?, ?, ?, ?, ?, ?)";
 

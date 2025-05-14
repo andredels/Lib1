@@ -24,7 +24,6 @@ namespace Lib1
             ReservedBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             StyleDataGridView();
 
-            //Get the admin's full name from the database
             try
             {
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -58,12 +57,10 @@ namespace Lib1
 
         private void SetupUI()
         {
-            // Initially hide approval buttons
             btnAccept.Visible = false;
             btnDecline.Visible = false;
             btnLendBook.Visible = true;
 
-            // Initially disable action buttons until a row is selected
             btnLendBook.Enabled = false;
             btnAccept.Enabled = false;
             btnDecline.Enabled = false;
@@ -77,7 +74,6 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    // Build your own JOIN DO NOT USE ReservedBooks
                     string query = "SELECT * FROM [ReservedBooks]";
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
@@ -89,7 +85,6 @@ namespace Lib1
                         ReservedBooks.DataSource = null;
                         ReservedBooks.DataSource = dataTable;
 
-                        // Configure the DataGridView columns for better display
                         if (ReservedBooks.Columns.Contains("RequestDate"))
                         {
                             ReservedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
@@ -103,13 +98,10 @@ namespace Lib1
                             ReservedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Apply professional styling
                         StyleDataGridView();
 
-                        // Update the view flag
                         isPendingView = false;
 
-                        // Load student names for filter from current data
                         LoadStudentNamesFromGrid();
                     }
                 }
@@ -145,7 +137,6 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    // Use the PendingReservationRequests query directly
                     string query = "SELECT * FROM PendingReservationRequests";
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
@@ -170,10 +161,7 @@ namespace Lib1
                             ReservedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Update the view flag
                         isPendingView = true;
-
-                        // Load student names for filter from current data
                         LoadStudentNamesFromGrid();
                     }
                 }
@@ -187,19 +175,15 @@ namespace Lib1
         {
             try
             {
-                // Clear previous items
                 comboBoxStudentNameSearch.Items.Clear();
 
-                // Get the current data source
                 if (ReservedBooks.DataSource is DataTable dataTable)
                 {
-                    // Create a HashSet to store unique student names
                     HashSet<string> uniqueStudentNames = new HashSet<string>();
 
                     // Check if the FullName column exists
                     if (dataTable.Columns.Contains("FullName"))
                     {
-                        // Extract unique values
                         foreach (DataRow row in dataTable.Rows)
                         {
                             if (row["FullName"] != DBNull.Value)
@@ -211,11 +195,7 @@ namespace Lib1
                                 }
                             }
                         }
-
-                        // Sort the names alphabetically
                         List<string> sortedNames = uniqueStudentNames.OrderBy(name => name).ToList();
-
-                        // Add to combo box
                         comboBoxStudentNameSearch.Items.AddRange(sortedNames.ToArray());
                     }
                 }
@@ -324,7 +304,6 @@ namespace Lib1
 
                     try
                     {
-                        // First get the book ID and check available copies
                         int bookID = 0;
                         int availableCopies = 0;
                         string checkQuery = @"SELECT b.BookID, b.AvailableCopies 
@@ -352,9 +331,8 @@ namespace Lib1
                         }
 
                         DateTime currentDate = DateTime.Now;
-                        DateTime returnDate = currentDate.AddDays(7); // Return date is 1 week later
+                        DateTime returnDate = currentDate.AddDays(7); 
 
-                        // Update transaction status to Approved and set all dates, ProcessedBy, and RequestType
                         string updateQuery = @"UPDATE BookTransactions 
                                             SET Status = 'Approved', 
                                                 ApprovalDate = ?, 
@@ -374,7 +352,6 @@ namespace Lib1
                             cmd.ExecuteNonQuery();
                         }
 
-                        // Reduce AvailableCopies in Books table
                         string updateBookQuery = "UPDATE Books SET AvailableCopies = AvailableCopies - 1 WHERE BookID = ?";
                         using (OleDbCommand cmd = new OleDbCommand(updateBookQuery, connection, transaction))
                         {
@@ -382,7 +359,6 @@ namespace Lib1
                             cmd.ExecuteNonQuery();
                         }
 
-                        // Commit the transaction if everything is successful
                         transaction.Commit();
 
                         MessageBox.Show("Book has been successfully lent! The book is now marked as borrowed and will be due in one week.",
@@ -392,9 +368,8 @@ namespace Lib1
                     }
                     catch (Exception ex)
                     {
-                        // If any operation fails, roll back all changes
                         transaction.Rollback();
-                        throw; // Re-throw to be caught by outer catch block
+                        throw; 
                     }
                 }
             }
@@ -410,7 +385,6 @@ namespace Lib1
             btnDecline.Visible = true;
             btnLendBook.Visible = false;
 
-            // Hide approval date, request type, and processed by fields
             siticoneLabel5.Visible = false;
             textBoxApprovalDate.Visible = false;
             siticoneLabel6.Visible = false;
@@ -434,7 +408,6 @@ namespace Lib1
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // Clear filters
             comboBoxStudentNameSearch.Text = string.Empty;
             textBoxBorrowedBookSearch.Text = string.Empty;
 
@@ -444,7 +417,6 @@ namespace Lib1
             btnDecline.Visible = false;
             btnLendBook.Visible = true;
 
-            // Show approval date, request type, and processed by fields
             siticoneLabel5.Visible = true;
             textBoxApprovalDate.Visible = true;
             siticoneLabel6.Visible = true;
@@ -483,7 +455,6 @@ namespace Lib1
 
                 selectedTransactionID = Convert.ToInt32(row.Cells["TransactionID"].Value);
 
-                // Check if column exists before filling textboxes
                 if (row.DataGridView.Columns.Contains("UserID"))
                     textBoxUserID.Text = row.Cells["UserID"].Value.ToString();
 
@@ -536,7 +507,6 @@ namespace Lib1
 
                 string status = row.DataGridView.Columns.Contains("Status") ? row.Cells["Status"].Value.ToString() : "";
 
-                // Enable buttons based on view
                 if (btnLendBook.Visible)
                 {
                     btnLendBook.Enabled = status.Equals("Approved", StringComparison.OrdinalIgnoreCase);
@@ -552,30 +522,25 @@ namespace Lib1
         {
             try
             {
-                // Get the current data source
                 if (ReservedBooks.DataSource is DataTable dt)
                 {
                     StringBuilder filterBuilder = new StringBuilder();
 
-                    // Student name filter
                     if (!string.IsNullOrEmpty(comboBoxStudentNameSearch.Text))
                     {
                         string studentName = comboBoxStudentNameSearch.Text.Replace("'", "''");
                         filterBuilder.AppendFormat("[FullName] LIKE '%{0}%'", studentName);
                     }
 
-                    // General search text filter
                     if (!string.IsNullOrEmpty(textBoxBorrowedBookSearch.Text))
                     {
                         if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
 
                         string searchText = textBoxBorrowedBookSearch.Text.Replace("'", "''");
 
-                        // Add all relevant columns for searching
                         filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [FullName] LIKE '%{0}%' " +
                             "OR [ISBN] LIKE '%{0}%' OR [Status] LIKE '%{0}%'", searchText);
 
-                        // Add additional columns based on view
                         if (isPendingView)
                         {
                             filterBuilder.AppendFormat(" OR [RequestType] LIKE '%{0}%'", searchText);
@@ -588,7 +553,6 @@ namespace Lib1
                         filterBuilder.Append(")");
                     }
 
-                    // Apply the filter
                     dt.DefaultView.RowFilter = filterBuilder.ToString();
                 }
             }

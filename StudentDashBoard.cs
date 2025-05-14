@@ -30,7 +30,7 @@ namespace Lib1
         {
 
             userControlpanel.Controls.Clear();
-            ViewBooks viewBooksUC = new ViewBooks("Student", this.userId); // Pass the userId here
+            ViewBooks viewBooksUC = new ViewBooks("Student", this.userId); 
             viewBooksUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(viewBooksUC);
         }
@@ -38,7 +38,7 @@ namespace Lib1
         private void studentBorrowedBooksbtn_Click(object sender, EventArgs e)
         {
             userControlpanel.Controls.Clear();
-            BorrowedBooks borrowedBooksUC = new BorrowedBooks(false, this.userId);  // false for student view, pass the userId
+            BorrowedBooks borrowedBooksUC = new BorrowedBooks(false, this.userId);  
             borrowedBooksUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(borrowedBooksUC);
         }
@@ -76,7 +76,7 @@ namespace Lib1
         private void btnAnalytics_Click(object sender, EventArgs e)
         {
             userControlpanel.Controls.Clear();
-            Analytics analyticsUC = new Analytics(false); // Pass false for student
+            Analytics analyticsUC = new Analytics(false); 
             analyticsUC.Dock = DockStyle.Fill;
             userControlpanel.Controls.Add(analyticsUC);
         }

@@ -35,24 +35,20 @@ namespace Lib1
         }
         private void SetupUIBasedOnUserType()
         {
-            // Show/hide buttons based on user type
             btnViewAllBookTransactions.Visible = isAdmin;
             btnViewOverdueBooks.Visible = isAdmin;
             btnReturn.Visible = !isAdmin;
             btnCancelBorrowRequest.Visible = !isAdmin;
 
-            // Initially disable action buttons until a row is selected
             btnReturn.Enabled = false;
             btnCancelBorrowRequest.Enabled = false;
 
-            // Show/hide student filter for admin, hide for students
             comboBoxStudentNameSearch.Visible = isAdmin;
             if (comboBoxStudentNameSearch.Parent is Label lblStudentName)
             {
                 lblStudentName.Visible = isAdmin;
             }
 
-            // Hide UserID and Full Name fields for students
             if (!isAdmin)
             {
                 label1.Visible = false;
@@ -79,18 +75,16 @@ namespace Lib1
                                     INNER JOIN Users u ON bt.UserID = u.UserID)
                                     INNER JOIN Genres g ON b.GenreID = g.GenreID)";
 
-                    // If not admin, show both approved and pending books for the current user
                     if (!isAdmin)
                     {
                         query += " WHERE (bt.Status = 'Approved' OR bt.Status = 'Pending') AND bt.UserID = @UserID AND bt.RequestType = 'Borrow'";
                     }
                     else
                     {
-                        // For admin, show all currently borrowed books (Approved status)
                         query += " WHERE bt.Status = 'Approved' AND bt.RequestType = 'Borrow' AND bt.ReturnDate >= @CurrentDate";
                     }
 
-                    query += " ORDER BY bt.Status DESC, bt.RequestDate DESC"; // Show pending first, then sort by request date
+                    query += " ORDER BY bt.Status DESC, bt.RequestDate DESC"; 
 
                     using (OleDbCommand command = new OleDbCommand(query, connection))
                     {
@@ -109,7 +103,6 @@ namespace Lib1
 
                         dataGridView_BorrowedBooks.DataSource = dataTable;
 
-                        // Configure the DataGridView columns for better display
                         if (dataGridView_BorrowedBooks.Columns.Contains("RequestDate"))
                         {
                             dataGridView_BorrowedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
@@ -123,7 +116,6 @@ namespace Lib1
                             dataGridView_BorrowedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Add row highlighting after setting the data source
                         HighlightRows();
                     }
                 }
@@ -152,7 +144,6 @@ namespace Lib1
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
 
-                    // Add an "All Borrowers" option
                     DataRow allRow = dataTable.NewRow();
                     allRow["UserID"] = 0;
                     allRow["FullName"] = "All Borrowers";
@@ -175,10 +166,8 @@ namespace Lib1
             {
                 DataGridViewRow row = dataGridView_BorrowedBooks.Rows[e.RowIndex];
 
-                // Store the selected transaction ID
                 selectedTransactionID = Convert.ToInt32(row.Cells["TransactionID"].Value);
 
-                // Fill text boxes with the selected row data
                 textBoxBookID.Text = row.Cells["BookID"].Value.ToString();
                 textBoxBookTitle.Text = row.Cells["Title"].Value.ToString();
                 textBoxAuthor.Text = row.Cells["Author"].Value.ToString();
@@ -186,7 +175,6 @@ namespace Lib1
                 textBoxGenre.Text = row.Cells["GenreName"].Value.ToString();
                 textBoxFullName.Text = row.Cells["FullName"].Value.ToString();
 
-                // Handle potentially null dates
                 textBoxBorrowDate.Text = row.Cells["BorrowDate"].Value != DBNull.Value
                     ? Convert.ToDateTime(row.Cells["BorrowDate"].Value).ToShortDateString()
                     : "Not borrowed yet";
@@ -201,7 +189,6 @@ namespace Lib1
                     ? row.Cells["ProcessedBy"].Value.ToString()
                     : "Not processed";
 
-                // Enable/disable buttons based on status and request type
                 if (!isAdmin)
                 {
                     string requestType = row.Cells["RequestType"].Value.ToString();
@@ -217,7 +204,6 @@ namespace Lib1
                     }
                 }
 
-                // Get UserID for the selected transaction
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
                     connection.Open();
@@ -235,17 +221,14 @@ namespace Lib1
         {
             try
             {
-                // Don't proceed if triggered during initialization or if nothing is selected
                 if (comboBoxStudentNameSearch.SelectedIndex == -1)
                     return;
 
-                // Get the selected value correctly using DataRowView
                 DataRowView drv = comboBoxStudentNameSearch.SelectedItem as DataRowView;
                 if (drv == null) return;
 
                 int selectedUserID = Convert.ToInt32(drv["UserID"]);
 
-                // Debug information
                 Console.WriteLine($"Selected UserID: {selectedUserID}");
 
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -261,7 +244,6 @@ namespace Lib1
                             INNER JOIN Genres g ON b.GenreID = g.GenreID)
                             WHERE bt.Status = 'Approved' AND bt.RequestType = 'Borrow'";
 
-                    // If a specific user is selected (not "All Borrowers")
                     if (selectedUserID > 0)
                     {
                         query += " AND bt.UserID = @UserID";
@@ -278,14 +260,11 @@ namespace Lib1
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
 
-                        // Set data source
-                        dataGridView_BorrowedBooks.DataSource = null; // Clear first to force refresh
+                        dataGridView_BorrowedBooks.DataSource = null; 
                         dataGridView_BorrowedBooks.DataSource = dataTable;
 
-                        // Report on number of rows for debugging
                         Console.WriteLine($"Query returned {dataTable.Rows.Count} rows");
 
-                        // Re-apply formatting
                         if (dataGridView_BorrowedBooks.Columns.Contains("BorrowDate"))
                         {
                             dataGridView_BorrowedBooks.Columns["BorrowDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
@@ -295,7 +274,6 @@ namespace Lib1
                             dataGridView_BorrowedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Re-apply row highlighting
                         HighlightRows();
                     }
                 }
@@ -330,7 +308,6 @@ namespace Lib1
 
                     dataGridView_BorrowedBooks.DataSource = dataTable;
 
-                    // Configure the DataGridView columns for better display
                     if (dataGridView_BorrowedBooks.Columns.Contains("RequestDate"))
                     {
                         dataGridView_BorrowedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
@@ -344,13 +321,10 @@ namespace Lib1
                         dataGridView_BorrowedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                     }
 
-                    // Re-initialize search controls for the new data
                     LoadBookNamesIntoComboBox();
 
-                    // Clear any existing search
                     textBoxBorrowedBookSearch.Text = string.Empty;
 
-                    // Re-apply row highlighting
                     HighlightRows();
                 }
             }
@@ -388,13 +362,10 @@ namespace Lib1
 
                         dataGridView_BorrowedBooks.DataSource = dataTable;
 
-                        // Re-initialize search controls for the new data
                         LoadBookNamesIntoComboBox();
 
-                        // Clear any existing search
                         textBoxBorrowedBookSearch.Text = string.Empty;
 
-                        // Re-apply row highlighting
                         HighlightRows();
                     }
                 }
@@ -413,7 +384,6 @@ namespace Lib1
                 return;
             }
 
-            // Verify the status is "Approved" before proceeding
             if (!textBoxStatus.Text.Equals("Approved", StringComparison.OrdinalIgnoreCase))
             {
                 MessageBox.Show("Only currently borrowed books can be returned.", "Invalid Action", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -426,12 +396,10 @@ namespace Lib1
                 {
                     connection.Open();
 
-                    // First get the book ID and return date to update available copies and check for fines
                     int bookID = 0;
-                    DateTime returnDate = DateTime.Now; // Default value
+                    DateTime returnDate = DateTime.Now;
                     bool hasReturnDate = false;
 
-                    // Debug: Verify selected transaction ID
                     Console.WriteLine($"Processing return for TransactionID: {selectedTransactionID}");
 
                     string getInfoQuery = "SELECT BookID, ReturnDate FROM BookTransactions WHERE TransactionID = @TransactionID";
@@ -463,23 +431,19 @@ namespace Lib1
                         }
                     }
 
-                    // Calculate fine if the book is returned late
                     int fineAmount = 0;
                     DateTime currentDate = DateTime.Now.Date;
                     Console.WriteLine($"Current Date: {currentDate.ToShortDateString()}");
 
                     if (hasReturnDate && currentDate > returnDate)
                     {
-                        // Calculate days overdue
                         TimeSpan daysLate = currentDate - returnDate;
                         int daysOverdue = (int)daysLate.TotalDays;
 
-                        // Calculate fine (5 pesos per day overdue)
                         fineAmount = daysOverdue * 5;
 
                         Console.WriteLine($"Book is {daysOverdue} days overdue. Fine calculated: ₱{fineAmount}");
 
-                        // Show fine information to the user
                         DialogResult result = MessageBox.Show(
                             $"This book is returned {daysOverdue} day(s) late.\n" +
                             $"Fine amount: ₱{fineAmount}\n\n" +
@@ -491,7 +455,7 @@ namespace Lib1
                         if (result == DialogResult.No)
                         {
                             Console.WriteLine("User cancelled return operation");
-                            return; // User cancelled the return operation
+                            return;
                         }
                     }
                     else
@@ -499,10 +463,8 @@ namespace Lib1
                         Console.WriteLine("Book is not overdue. No fine.");
                     }
 
-                    // Update transaction status to "Returned" and set FineAmount
                     Console.WriteLine($"Updating transaction with Status='Returned' and FineAmount={fineAmount}");
 
-                    // Use parameterized query for safety and correctness
                     string updateStatusQuery = @"UPDATE BookTransactions 
                                       SET Status = 'Returned', FineAmount = ? 
                                       WHERE TransactionID = ?";
@@ -517,7 +479,6 @@ namespace Lib1
 
                         if (rowsAffected > 0)
                         {
-                            // Increase available copies in the Books table
                             string updateBookQuery = @"UPDATE Books 
                                            SET AvailableCopies = AvailableCopies + 1 
                                            WHERE BookID = ?";
@@ -529,7 +490,6 @@ namespace Lib1
                                 Console.WriteLine($"Book update affected {booksUpdated} rows");
                             }
 
-                            // Double check the update was successful
                             string verifyQuery = "SELECT Status, FineAmount FROM BookTransactions WHERE TransactionID = ?";
                             using (OleDbCommand verifyCommand = new OleDbCommand(verifyQuery, connection))
                             {
@@ -545,7 +505,6 @@ namespace Lib1
                                 }
                             }
 
-                            // Show appropriate message based on whether a fine was charged
                             if (fineAmount > 0)
                             {
                                 MessageBox.Show($"Book returned successfully!\nFine of ₱{fineAmount} has been recorded.",
@@ -557,10 +516,7 @@ namespace Lib1
                                     "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
 
-                            // Refresh the data
                             LoadBorrowedBooks();
-
-                            // Clear the selection
                             ClearSelection();
                         }
                         else
@@ -587,7 +543,6 @@ namespace Lib1
                 return;
             }
 
-            // Verify the status is "Pending" and RequestType is "Borrow" before proceeding
             try
             {
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -619,7 +574,6 @@ namespace Lib1
                         }
                     }
 
-                    // First get the book ID and current status
                     int bookID = 0;
                     string currentStatus = "";
                     string getBookInfoQuery = "SELECT BookID, Status FROM BookTransactions WHERE TransactionID = @TransactionID";
@@ -636,7 +590,6 @@ namespace Lib1
                         }
                     }
 
-                    // Update transaction status to "Cancelled"
                     string updateStatusQuery = @"UPDATE BookTransactions 
                                               SET Status = 'Cancelled' 
                                               WHERE TransactionID = @TransactionID";
@@ -648,8 +601,6 @@ namespace Lib1
 
                         if (rowsAffected > 0)
                         {
-                            // Only increase available copies if the status was "Approved"
-                            // For "Pending" requests, we don't need to modify the available copies
                             if (currentStatus.Equals("Approved", StringComparison.OrdinalIgnoreCase))
                             {
                                 string updateBookQuery = @"UPDATE Books 
@@ -665,10 +616,7 @@ namespace Lib1
 
                             MessageBox.Show("Request cancelled successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            // Refresh the data
                             LoadBorrowedBooks();
-
-                            // Clear the selection
                             ClearSelection();
                         }
                     }
@@ -695,7 +643,6 @@ namespace Lib1
             textBoxStatus.Text = string.Empty;
             textBoxProcessedBy.Text = string.Empty;
 
-            // Disable action buttons when selection is cleared
             if (!isAdmin)
             {
                 btnReturn.Enabled = false;
@@ -710,8 +657,8 @@ namespace Lib1
             {
                 LoadStudentNames();
             }
-            LoadBookNamesIntoComboBox(); // Re-initialize book search
-            textBoxBorrowedBookSearch.Text = string.Empty; // Clear search box
+            LoadBookNamesIntoComboBox(); 
+            textBoxBorrowedBookSearch.Text = string.Empty; 
             ClearSelection();
         }
 
@@ -719,14 +666,12 @@ namespace Lib1
         {
             foreach (DataGridViewRow row in dataGridView_BorrowedBooks.Rows)
             {
-                // First check if the status is Pending
                 if (row.Cells["Status"].Value != null && row.Cells["Status"].Value.ToString() == "Pending")
                 {
                     row.DefaultCellStyle.BackColor = Color.LightBlue;
-                    continue; // Skip date checking for pending requests
+                    continue; 
                 }
 
-                // Only check dates for non-pending (approved) books
                 if (row.Cells["ReturnDate"].Value != null && row.Cells["ReturnDate"].Value != DBNull.Value)
                 {
                     DateTime returnDate = Convert.ToDateTime(row.Cells["ReturnDate"].Value);
@@ -735,13 +680,11 @@ namespace Lib1
 
                     if (returnDate < currentDate)
                     {
-                        // Overdue books - highlight in red
                         row.DefaultCellStyle.BackColor = Color.Red;
                         row.DefaultCellStyle.ForeColor = Color.White;
                     }
                     else if (daysUntilReturn.TotalDays <= 3)
                     {
-                        // Books due within 3 days - highlight in yellow
                         row.DefaultCellStyle.BackColor = Color.Yellow;
                     }
                 }
@@ -752,13 +695,9 @@ namespace Lib1
         {
             try
             {
-                // Clear existing items
                 comboBoxBookSearch.Items.Clear();
-
-                // Add "All Books" option
                 comboBoxBookSearch.Items.Add("All Books");
 
-                // Get the DataTable from the DataGridView
                 DataTable dt = null;
 
                 if (dataGridView_BorrowedBooks.DataSource is DataTable)
@@ -770,13 +709,9 @@ namespace Lib1
                     dt = ((DataView)dataGridView_BorrowedBooks.DataSource).Table;
                 }
 
-                // Check if DataSource is valid
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    // Create a HashSet to avoid duplicate book titles
                     HashSet<string> bookTitles = new HashSet<string>();
-
-                    // Make sure the Title column exists
                     if (dt.Columns.Contains("Title"))
                     {
                         foreach (DataRow row in dt.Rows)
@@ -794,7 +729,6 @@ namespace Lib1
                     }
                 }
 
-                // Select "All Books" by default
                 if (comboBoxBookSearch.Items.Count > 0)
                 {
                     comboBoxBookSearch.SelectedIndex = 0;
@@ -803,7 +737,6 @@ namespace Lib1
             catch (Exception ex)
             {
                 Console.WriteLine("Error loading book titles: " + ex.Message);
-                // Don't show an error dialog as this might be called frequently
             }
         }
 
@@ -811,14 +744,11 @@ namespace Lib1
         {
             try
             {
-                // Don't proceed if triggered during initialization or if nothing is selected
                 if (comboBoxBookSearch.SelectedIndex == -1)
                     return;
 
-                // Get the selected book
                 string selectedBook = comboBoxBookSearch.SelectedItem.ToString();
 
-                // Get the DataTable from the DataGridView
                 if (dataGridView_BorrowedBooks.DataSource == null)
                     return;
 
@@ -828,28 +758,20 @@ namespace Lib1
                 if (dt == null)
                     return;
 
-                // Create a new DataView from the DataTable
                 DataView dv = new DataView(dt);
 
-                // If "All Books" is selected, show all books
                 if (selectedBook == "All Books")
                 {
-                    dv.RowFilter = string.Empty; // Clear any filter
+                    dv.RowFilter = string.Empty; 
                 }
                 else
                 {
-                    // Filter the DataView to show only the selected book
-                    // Use "Title" instead of "BookName"
+
                     dv.RowFilter = $"Title = '{selectedBook.Replace("'", "''")}'";
                 }
 
-                // Apply the filtered DataView to the DataGridView
                 dataGridView_BorrowedBooks.DataSource = dv;
-
-                // Re-apply row highlighting after filtering
                 HighlightRows();
-
-                // Debug message to verify the event fired
                 Console.WriteLine($"Book filter applied: {selectedBook}, Rows: {dv.Count}");
             }
             catch (Exception ex)
@@ -864,7 +786,6 @@ namespace Lib1
             {
                 string searchText = textBoxBorrowedBookSearch.Text.Trim();
 
-                // Get the DataTable from the DataGridView
                 if (dataGridView_BorrowedBooks.DataSource == null)
                     return;
 
@@ -874,20 +795,16 @@ namespace Lib1
                 if (dt == null)
                     return;
 
-                // Create a new DataView from the DataTable (create a fresh one each time)
                 DataView dv = new DataView(dt);
 
                 if (string.IsNullOrEmpty(searchText))
                 {
-                    dv.RowFilter = string.Empty; // Show all if search is empty
+                    dv.RowFilter = string.Empty;
                 }
                 else
                 {
-                    // Escape single quotes in the search text to prevent SQL injection
                     searchText = searchText.Replace("'", "''");
 
-                    // Build a filter string that searches across multiple columns
-                    // Using the actual column names from your SQL query
                     string filterString = $"Title LIKE '%{searchText}%' OR " +
                                           $"Author LIKE '%{searchText}%' OR " +
                                           $"ISBN LIKE '%{searchText}%' OR " +
@@ -895,25 +812,19 @@ namespace Lib1
                                           $"Status LIKE '%{searchText}%' OR " +
                                           $"GenreName LIKE '%{searchText}%'";
 
-                    // Apply the filter
                     dv.RowFilter = filterString;
                 }
 
-                // Debug info
                 Console.WriteLine($"Search filter applied: '{searchText}', Rows: {dv.Count}");
 
-                // Apply the filtered DataView to the DataGridView - force refresh
                 dataGridView_BorrowedBooks.DataSource = null;
                 dataGridView_BorrowedBooks.DataSource = dv;
 
-                // Re-apply row highlighting after filtering
                 HighlightRows();
             }
             catch (Exception ex)
             {
-                // Some filtering expressions might fail, don't show errors for every keystroke
                 Console.WriteLine("Error searching books: " + ex.Message);
-                // Reset the filter if there's an error
                 try
                 {
                     if (dataGridView_BorrowedBooks.DataSource is DataView originalView)
@@ -928,24 +839,19 @@ namespace Lib1
         {
             try
             {
-                // Load book names into combobox
                 LoadBookNamesIntoComboBox();
 
-                // Set the ComboBoxes to read-only mode
                 comboBoxBookSearch.DropDownStyle = ComboBoxStyle.DropDownList;
                 comboBoxStudentNameSearch.DropDownStyle = ComboBoxStyle.DropDownList;
 
-                // Remove any existing event handlers to prevent duplicates
                 comboBoxBookSearch.SelectedIndexChanged -= comboBoxBookSearch_SelectedIndexChanged;
                 comboBoxStudentNameSearch.SelectedIndexChanged -= comboBoxStudentNameSearch_SelectedIndexChanged;
                 textBoxBorrowedBookSearch.TextChanged -= textBoxBorrowedBookSearch_TextChanged;
 
-                // Re-add event handlers
                 comboBoxBookSearch.SelectedIndexChanged += comboBoxBookSearch_SelectedIndexChanged;
                 comboBoxStudentNameSearch.SelectedIndexChanged += comboBoxStudentNameSearch_SelectedIndexChanged;
                 textBoxBorrowedBookSearch.TextChanged += textBoxBorrowedBookSearch_TextChanged;
 
-                // Force the initial selection if needed
                 if (comboBoxBookSearch.Items.Count > 0 && comboBoxBookSearch.SelectedIndex == -1)
                 {
                     comboBoxBookSearch.SelectedIndex = 0;

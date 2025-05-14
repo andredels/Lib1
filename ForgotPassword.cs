@@ -36,7 +36,6 @@ namespace Lib1
                 return;
             }
 
-            // Check if email exists in the database and is approved
             bool emailExistsAndApproved = false;
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
@@ -55,14 +54,11 @@ namespace Lib1
                 MessageBox.Show("Email not found or account not approved!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            // Generate a 6-digit verification code
             Random random = new Random();
             generatedCode = random.Next(100000, 999999).ToString();
 
             try
             {
-                // Configure the SMTP client (Use your Gmail, Outlook, or SMTP provider)
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
                 smtp.Credentials = new NetworkCredential("dredels1@gmail.com", "hubi okyc ohdx dmtc"); // Use your app password!
                 smtp.EnableSsl = true;
@@ -70,7 +66,6 @@ namespace Lib1
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
 
-                // Create the email message
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress("dredels1@gmail.com");
                 mail.To.Add(userEmail);
@@ -117,7 +112,6 @@ namespace Lib1
                 return;
             }
 
-            // Hash the new password before saving
             string hashedPassword = SecurityHelper.HashPassword(newPassword);
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))

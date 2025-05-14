@@ -90,14 +90,12 @@ namespace Lib1
                 {
                     StringBuilder filterBuilder = new StringBuilder();
 
-                    // Name filter from combobox
-                    if (comboBoxNames.SelectedIndex > 0) // Skip "All Names"
+                    if (comboBoxNames.SelectedIndex > 0) 
                     {
                         string selectedName = comboBoxNames.Text.Replace("'", "''");
                         filterBuilder.AppendFormat("[Fullname] = '{0}'", selectedName);
                     }
 
-                    // Search box filter (searching across multiple fields)
                     if (!string.IsNullOrEmpty(txtboxSearch.Text))
                     {
                         if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
@@ -196,8 +194,7 @@ namespace Lib1
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
                     conn.Open();
-                    
-                    // Check if user has any active book transactions
+
                     string checkQuery = @"SELECT COUNT(*) FROM BookTransactions 
                                         WHERE UserID = @UserId 
                                         AND Status = 'Approved' 

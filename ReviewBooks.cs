@@ -25,13 +25,11 @@ namespace Lib1
         {
             InitializeComponent();
             this.userId = userId;
-            btnRate.Enabled = false; // Initially disable the rate button
+            btnRate.Enabled = false;
             LoadReturnedBooks();
-            
-            // Set the selection mode to full row
+
             dataGridViewReviewBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            
-            // Add the selection changed event handler
+
             dataGridViewReviewBooks.SelectionChanged += dataGridViewReviewBooks_SelectionChanged;
         }
 
@@ -63,16 +61,12 @@ namespace Lib1
                         adapter.Fill(dataTable);
                         dataGridViewReviewBooks.DataSource = dataTable;
 
-                        // Configure the DataGridView columns for better display
                         if (dataGridViewReviewBooks.Columns.Contains("ReturnDate"))
                         {
                             dataGridViewReviewBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Apply professional styling
                         StyleDataGridView();
-
-                        // Load book titles for filter from current data
                         LoadBookTitlesFromGrid();
                     }
                 }
@@ -104,19 +98,14 @@ namespace Lib1
         {
             try
             {
-                // Clear previous items
                 comboBoxBookTitleSearch.Items.Clear();
 
-                // Get the current data source
                 if (dataGridViewReviewBooks.DataSource is DataTable dataTable)
                 {
-                    // Create a HashSet to store unique book titles
                     HashSet<string> uniqueBookTitles = new HashSet<string>();
 
-                    // Check if the Title column exists
                     if (dataTable.Columns.Contains("Title"))
                     {
-                        // Extract unique values
                         foreach (DataRow row in dataTable.Rows)
                         {
                             if (row["Title"] != DBNull.Value)
@@ -129,10 +118,7 @@ namespace Lib1
                             }
                         }
 
-                        // Sort the titles alphabetically
                         List<string> sortedTitles = uniqueBookTitles.OrderBy(title => title).ToList();
-
-                        // Add to combo box
                         comboBoxBookTitleSearch.Items.AddRange(sortedTitles.ToArray());
                     }
                 }
@@ -158,30 +144,25 @@ namespace Lib1
         {
             try
             {
-                // Get the current data source
                 if (dataGridViewReviewBooks.DataSource is DataTable dt)
                 {
                     StringBuilder filterBuilder = new StringBuilder();
 
-                    // Book title filter from combobox
                     if (!string.IsNullOrEmpty(comboBoxBookTitleSearch.Text))
                     {
                         string bookTitle = comboBoxBookTitleSearch.Text.Replace("'", "''");
                         filterBuilder.AppendFormat("[Title] = '{0}'", bookTitle);
                     }
 
-                    // General search text filter
                     if (!string.IsNullOrEmpty(textBoxBookSearch.Text))
                     {
                         if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
 
                         string searchText = textBoxBookSearch.Text.Replace("'", "''");
 
-                        // Add all relevant columns for searching
                         filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [ISBN] LIKE '%{0}%')", searchText);
                     }
 
-                    // Apply the filter
                     dt.DefaultView.RowFilter = filterBuilder.ToString();
                 }
             }
@@ -194,7 +175,6 @@ namespace Lib1
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // Clear filters
             comboBoxBookTitleSearch.Text = string.Empty;
             textBoxBookSearch.Text = string.Empty;
             LoadReturnedBooks();
@@ -221,8 +201,7 @@ namespace Lib1
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
                 {
                     connection.Open();
-                    
-                    // Check if user has already rated this book
+
                     string checkQuery = "SELECT COUNT(*) FROM BookRatings WHERE BookID = ? AND UserID = ?";
                     using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, connection))
                     {
@@ -237,7 +216,6 @@ namespace Lib1
                         }
                     }
 
-                    // Insert new rating
                     string insertQuery = "INSERT INTO BookRatings (BookID, UserID, Rating, RatingDate) VALUES (?, ?, ?, ?)";
                     using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, connection))
                     {
@@ -250,7 +228,7 @@ namespace Lib1
 
                     MessageBox.Show("Rating submitted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     textBoxRateBook.Clear();
-                    LoadReturnedBooks(); // Refresh the grid to remove the rated book
+                    LoadReturnedBooks(); 
                 }
             }
             catch (Exception ex)
@@ -261,7 +239,7 @@ namespace Lib1
 
         private void textBoxRateBook_TextChanged(object sender, EventArgs e)
         {
-            // Optional: Add real-time validation if needed
+
         }
 
         private void dataGridViewReviewBooks_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -278,23 +256,19 @@ namespace Lib1
             btnRate.Enabled = !string.IsNullOrWhiteSpace(textBoxBookID.Text);
         }
 
-        // Add this method to handle row selection as well (in case user clicks on row instead of cell content)
         private void dataGridViewReviewBooks_SelectionChanged(object sender, EventArgs e)
         {
             if (dataGridViewReviewBooks.SelectedRows.Count > 0)
             {
                 DataGridViewRow row = dataGridViewReviewBooks.SelectedRows[0];
 
-                // Fill the textboxes with the selected book's information
                 if (row.DataGridView.Columns.Contains("BookID"))
                     textBoxBookID.Text = row.Cells["BookID"].Value.ToString();
 
-                // Enable the rate button since a row is selected
                 btnRate.Enabled = true;
             }
             else
             {
-                // Clear textboxes and disable rate button if no row is selected
                 ClearBookDetails();
                 btnRate.Enabled = false;
             }

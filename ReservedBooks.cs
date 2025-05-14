@@ -67,7 +67,6 @@ namespace Lib1
                         dataGridView_ReservedBooks.DataSource = null;
                         dataGridView_ReservedBooks.DataSource = dataTable;
 
-                        // Configure the DataGridView columns for better display
                         if (dataGridView_ReservedBooks.Columns.Contains("RequestDate"))
                         {
                             dataGridView_ReservedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
@@ -81,13 +80,8 @@ namespace Lib1
                             dataGridView_ReservedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Apply professional styling
                         StyleDataGridView();
-
-                        // Update the view flag
                         isPendingView = false;
-
-                        // Load book titles for filter
                         LoadBookTitlesFromGrid();
                     }
                 }
@@ -135,7 +129,6 @@ namespace Lib1
 
                         dataGridView_ReservedBooks.DataSource = dataTable;
 
-                        // Configure the DataGridView columns for better display
                         if (dataGridView_ReservedBooks.Columns.Contains("RequestDate"))
                         {
                             dataGridView_ReservedBooks.Columns["RequestDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
@@ -149,10 +142,7 @@ namespace Lib1
                             dataGridView_ReservedBooks.Columns["ReturnDate"].DefaultCellStyle.Format = "MM/dd/yyyy";
                         }
 
-                        // Update the view flag
                         isPendingView = true;
-
-                        // Load book titles for filter
                         LoadBookTitlesFromGrid();
                     }
                 }
@@ -169,19 +159,12 @@ namespace Lib1
         {
             try
             {
-                // Clear previous items
                 comboBoxBookTitle.Items.Clear();
-
-                // Get the current data source
                 if (dataGridView_ReservedBooks.DataSource is DataTable dataTable)
                 {
-                    // Create a HashSet to store unique book titles
                     HashSet<string> uniqueBookTitles = new HashSet<string>();
-
-                    // Check if the Title column exists
                     if (dataTable.Columns.Contains("Title"))
                     {
-                        // Extract unique values
                         foreach (DataRow row in dataTable.Rows)
                         {
                             if (row["Title"] != DBNull.Value)
@@ -194,10 +177,7 @@ namespace Lib1
                             }
                         }
 
-                        // Sort the titles alphabetically
                         List<string> sortedTitles = uniqueBookTitles.OrderBy(title => title).ToList();
-
-                        // Add to combo box
                         comboBoxBookTitle.Items.AddRange(sortedTitles.ToArray());
                     }
                 }
@@ -270,7 +250,6 @@ namespace Lib1
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // Clear filters
             comboBoxBookTitle.Text = string.Empty;
             textBoxSearch.Text = string.Empty;
 
@@ -306,7 +285,6 @@ namespace Lib1
 
                 selectedTransactionID = Convert.ToInt32(row.Cells["TransactionID"].Value);
 
-                // Check if column exists before filling textboxes
                 if (row.DataGridView.Columns.Contains("UserID"))
                     textBoxUserID.Text = row.Cells["UserID"].Value.ToString();
 
@@ -360,7 +338,6 @@ namespace Lib1
                 string status = row.DataGridView.Columns.Contains("Status") ?
                     row.Cells["Status"].Value.ToString() : "";
 
-                // Enable cancel button only for pending or approved reservations
                 btnCancel.Enabled = status.Equals("Pending", StringComparison.OrdinalIgnoreCase) ||
                                   status.Equals("Approved", StringComparison.OrdinalIgnoreCase);
             }
@@ -370,30 +347,25 @@ namespace Lib1
         {
             try
             {
-                // Get the current data source
                 if (dataGridView_ReservedBooks.DataSource is DataTable dt)
                 {
                     StringBuilder filterBuilder = new StringBuilder();
 
-                    // Book title filter
                     if (!string.IsNullOrEmpty(comboBoxBookTitle.Text))
                     {
                         string bookTitle = comboBoxBookTitle.Text.Replace("'", "''");
                         filterBuilder.AppendFormat("[Title] LIKE '%{0}%'", bookTitle);
                     }
 
-                    // General search text filter
                     if (!string.IsNullOrEmpty(textBoxSearch.Text))
                     {
                         if (filterBuilder.Length > 0) filterBuilder.Append(" AND ");
 
                         string searchText = textBoxSearch.Text.Replace("'", "''");
 
-                        // Add all relevant columns for searching
                         filterBuilder.AppendFormat("([Title] LIKE '%{0}%' OR [ISBN] LIKE '%{0}%' " +
                             "OR [Status] LIKE '%{0}%'", searchText);
 
-                        // Add additional columns based on view
                         if (isPendingView)
                         {
                             filterBuilder.AppendFormat(" OR [RequestType] LIKE '%{0}%'", searchText);
@@ -406,7 +378,6 @@ namespace Lib1
                         filterBuilder.Append(")");
                     }
 
-                    // Apply the filter
                     dt.DefaultView.RowFilter = filterBuilder.ToString();
                 }
             }

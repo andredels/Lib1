@@ -23,8 +23,7 @@ namespace Lib1
                 return;
             }
 
-            string hashedPassword = SecurityHelper.HashPassword(password); // 🔐 Hash input
-
+            string hashedPassword = SecurityHelper.HashPassword(password); 
             try
             {
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
@@ -47,7 +46,6 @@ namespace Lib1
                                 MessageBox.Show("Login successful! Welcome, " + fullName, "Success",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                // ✅ Open StudentDashBoard instead of StudentMenu
                                 StudentDashBoard studentDash = new StudentDashBoard(userID, fullName);
                                 studentDash.Show();
                                 this.Hide();
