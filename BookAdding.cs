@@ -36,11 +36,10 @@ namespace Lib1
                         DataTable genreTable = new DataTable();
                         adapter.Fill(genreTable);
 
-                        // Set up the combobox to display genre names but store genre IDs
                         comboBoxAddBookGenre.DataSource = genreTable;
                         comboBoxAddBookGenre.DisplayMember = "GenreName";
                         comboBoxAddBookGenre.ValueMember = "GenreID";
-                        comboBoxAddBookGenre.SelectedIndex = -1; // No default selection
+                        comboBoxAddBookGenre.SelectedIndex = -1; 
                     }
                     conn.Close();
                 }
@@ -72,7 +71,6 @@ namespace Lib1
             string isbn = txtbxAddBookISBN.Text.Trim();
             string dateAdded = DateTime.Now.ToString("yyyy-MM-dd");
 
-            // Input validation
             if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(author) || string.IsNullOrEmpty(publisher) ||
                 string.IsNullOrEmpty(publicationYearText) || string.IsNullOrEmpty(quantityText) ||
                 string.IsNullOrEmpty(isbn) || comboBoxAddBookGenre.SelectedIndex == -1)
@@ -81,7 +79,6 @@ namespace Lib1
                 return;
             }
 
-            // Validate ISBN format
             if (!isbn.All(char.IsDigit))
             {
                 MessageBox.Show("ISBN must contain only numbers", "Invalid ISBN",
@@ -113,7 +110,6 @@ namespace Lib1
                 {
                     conn.Open();
 
-                    // Check for duplicate ISBN
                     string checkQuery = "SELECT COUNT(*) FROM Books WHERE ISBN = ?";
                     using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
                     {
@@ -128,7 +124,6 @@ namespace Lib1
                         }
                     }
 
-                    // Get the selected genre ID
                     int genreID;
                     if (comboBoxAddBookGenre.SelectedValue != null)
                     {
@@ -140,7 +135,6 @@ namespace Lib1
                         return;
                     }
 
-                    // Insert the new book with the correct GenreID
                     string query = "INSERT INTO Books (Title, Author, Publisher, PublicationYear, TotalCopies, AvailableCopies, DateAdded, AddedBy, ISBN, GenreID) " +
                                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -150,12 +144,12 @@ namespace Lib1
                         cmd.Parameters.AddWithValue("?", author);
                         cmd.Parameters.AddWithValue("?", publisher);
                         cmd.Parameters.AddWithValue("?", publicationYear);
-                        cmd.Parameters.AddWithValue("?", quantity); // TotalCopies
-                        cmd.Parameters.AddWithValue("?", quantity); // AvailableCopies
+                        cmd.Parameters.AddWithValue("?", quantity); 
+                        cmd.Parameters.AddWithValue("?", quantity); 
                         cmd.Parameters.AddWithValue("?", DateTime.Parse(dateAdded));
                         cmd.Parameters.AddWithValue("?", adminFullName);
                         cmd.Parameters.AddWithValue("?", isbn);
-                        cmd.Parameters.AddWithValue("?", genreID); // Use GenreID instead of Genre name
+                        cmd.Parameters.AddWithValue("?", genreID); 
 
                         cmd.ExecuteNonQuery();
                         MessageBox.Show("Book added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -163,8 +157,6 @@ namespace Lib1
 
                     conn.Close();
                 }
-
-                // Clear input fields
                 txtbxAddBookTitle.Clear();
                 txtbxAddBookAuthorName.Clear();
                 txtbxAddBookPublisher.Clear();

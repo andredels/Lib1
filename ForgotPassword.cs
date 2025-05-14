@@ -60,7 +60,7 @@ namespace Lib1
             try
             {
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-                smtp.Credentials = new NetworkCredential("dredels1@gmail.com", "hubi okyc ohdx dmtc"); // Use your app password!
+                smtp.Credentials = new NetworkCredential("dredels1@gmail.com", "hubi okyc ohdx dmtc"); 
                 smtp.EnableSsl = true;
                 smtp.UseDefaultCredentials = false;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;

@@ -226,7 +226,7 @@ namespace Lib1
                 {
                     conn.Open();
                     string query = @"SELECT BookRatings.RatingID, Users.Fullname, Books.Title, Books.ISBN, BookRatings.Rating, BookRatings.RatingDate
-FROM Genres INNER JOIN (Users INNER JOIN (Books INNER JOIN BookRatings ON Books.BookID = BookRatings.BookID) ON Users.UserID = BookRatings.UserID) ON Genres.GenreID = Books.GenreID;";
+                    FROM Genres INNER JOIN (Users INNER JOIN (Books INNER JOIN BookRatings ON Books.BookID = BookRatings.BookID) ON Users.UserID = BookRatings.UserID) ON Genres.GenreID = Books.GenreID;";
 
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
